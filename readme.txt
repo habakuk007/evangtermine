@@ -1,12 +1,11 @@
 === Evangelische Termine ===
-Contributors: Norbert Räbiger
-Author: URI: http://www.dekant-weilheim.de/
+Contributors: regibaer 
 Tags: evangelische, termine, elkb, vernetzte, kirche
 Requires at least: 3.0
-Tested up to: 4.2.2
-Stable tag: 1.2
-Licence: GPLv2 or later
-Licence URI: http://www.gnu.org/licenses/gpl-2.0.html
+Tested up to: 4.3
+Stable tag: 1.8.1
+License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Mit dem Plugin "Evangelische Termine" wird die Datenbank der "Evangelischen Termine" abgefragt und in Wordpress eingebunden.
 
@@ -71,6 +70,14 @@ die dann statt der CSS-Datei des Plugins verwendet wird.
 ausgewählt werden. Die Daten der Evangelischen Termine werden dann
 entsprechend angepasst (utf8 oder latin1). Default: utf8.
 
+**Protokoll**: Auswahl des Protokolls (http:// | https://). Die meisten
+Veranstaltungsdatenbanken, die mit der Software der Evangelischen Termine arbeiten
+verwenden zur Zeit http://.
+
+**Host**: Der Server, auf dem die Kalenderdaten gehostet werden.
+Erwartet wird das Protokoll (http:// | https://) und der Host.
+Beispiel: http://www.evangelische-termine.de
+
 = Parameter =
 Eine genaue Beschreibung der möglichen Parameter findet sich im [Handbuch der Evangelischen Termine](http://handbuch.evangelische-termine.de/Ausgabe-Parameter/). In der aufgeführten Liste sind die implementierten Parameter aufgeführt:
 
@@ -110,6 +117,20 @@ Die Beschreibung der Parameter findet sich im [Handbuch der Evangelischen Termin
 5. Ausgabe des Widgets
 
 == Changelog ==
+= 1.8 =
+* Host des Kalenderbetreibers wurde auf der Optionsseite hinzugefügt. Das Plugin ist nun leicht auf jede Landeskirche anpassbar.
+* FIXED: Fehler bei der Speicherung der Daten aus den Selectboxen auf der Optionsseite
+* NEW: Link auf die Einstellungen auf der Seite Plugins hinzugefügt
+
+= 1.7 =
+* Problem mit nocss gelöst.
+
+= 1.6 =
+* CHANGED: __construct() in der Widget-Class
+
+= 1.5 =
+* FIXED: JavaScripts der Daten, die von den Evangelischen Terminen geliefert werden teilweise entfernt
+
 = 1.2 =
 * NEW: Dokumentation
 
@@ -117,6 +138,17 @@ Die Beschreibung der Parameter findet sich im [Handbuch der Evangelischen Termin
 * FIXED: Sessionhandling wurde angepasst. Werte werden jetzt direkt an den Pager übergeben (Ersetzung `__HOST__`)
 
 == Upgrade Notice ==
+= 1.8 =
+Host des Kalenderbetreibes wurde auf der Optionsseite hinzugefügt. Das Plugin ist nun leicht auf jede Landeskirche anpassbar.
+FIXED: Fehler bei der Speicherung der Daten aus den Selectboxen auf der Optionsseite
+NEW: Link auf die Einstellungen auf der Seite Plugins hinzugefügt
+
+= 1.7 =
+Link-Tag für nocss wird entfernt.
+
+= 1.5 =
+Bestimmte JavaScripts der Evangelischen Termine haben in manchen Themes zu Problemen geführt. Die störenden JavaScripts werden jetzt entfernt.
+
 = 1.2 =
 Die Dokumentation wurde in das Plugin aufgenommen.
 
