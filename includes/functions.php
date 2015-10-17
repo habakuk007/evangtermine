@@ -117,17 +117,17 @@ function et_veranstalter( $et_defaults ) {
 				$pagecontent = str_replace( '<h1>', '<h2>', $pagecontent );
 				$pagecontent = str_replace( '</h1>', '</h2>', $pagecontent );
 				$pagecontent = str_replace( '<h1 id="et_detail_title">', '<h2 id="et_detail_title">', $pagecontent );
-				$pagecontent = str_replace( '/Upload/', 'http://' . $host . '/Upload/', $pagecontent );
+				$pagecontent = str_replace( '/Upload/', 'http://' . $protocol . $host . '/Upload/', $pagecontent );
 				$pagecontent = str_replace( 'http://_HOST_/?', get_permalink( $post->ID ).'?'.$querystring.'&amp;', $pagecontent ); // 'https://' . $_SERVER[ 'HTTP_HOST' ] . $_SERVER[ 'PHP_SELF' ]
-				$pagecontent = str_replace( '<link rel="stylesheet" type="text/css" href="'. $host .'/bundles/vket/css/publicintegration.css"  />', '', $pagecontent); // Diese Stylesheets liefern im Veranstalter-Script 2.0 weitere CSS-Dateien, die allerdings nicht benötigt werden.
-				$pagecontent = str_replace( '<link rel="stylesheet" type="text/css" href="'. $host .'/bundles/vket/js/jquery/css/smoothness/jquery-ui-1.10.3.custom.min.css"  />', '', $pagecontent); // Diese Stylesheets liefern im Veranstalter-Script 2.0 weitere CSS-Dateien, die allerdings nicht benötigt werden.
+				$pagecontent = str_replace( '<link rel="stylesheet" type="text/css" href="'. $protocol . $host .'/bundles/vket/css/publicintegration.css"  />', '', $pagecontent); // Diese Stylesheets liefern im Veranstalter-Script 2.0 weitere CSS-Dateien, die allerdings nicht benötigt werden.
+				$pagecontent = str_replace( '<link rel="stylesheet" type="text/css" href="'. $protocol . $host .'/bundles/vket/js/jquery/css/smoothness/jquery-ui-1.10.3.custom.min.css"  />', '', $pagecontent); // Diese Stylesheets liefern im Veranstalter-Script 2.0 weitere CSS-Dateien, die allerdings nicht benötigt werden.
 				$pagecontent = str_replace( '<link href="nocss" media="screen, projection" rel="stylesheet" type="text/css" />', '', $pagecontent); // Mit der Angabe nocss wird verhindert, dass das CSS der Evangelischen Termine geladen wird. Durch diese Zeile wird der Code aus dem HTML gelöscht.
 				
 				if( 'veranstaltungen-php' == $filename ) {
-					$pagecontent = str_replace( '<script type="text/javascript" src="' . $host . '/js/e19e663.js"></script>', '', $pagecontent);
+					$pagecontent = str_replace( '<script type="text/javascript" src="' . $protocol . $host . '/js/e19e663.js"></script>', '', $pagecontent);
 				}
 				if( 'detail-php' == $filename ) {
-					$pagecontent = str_replace( '<script type="text/javascript" src="' . $host . '/js/fa34c0d.js"></script><script language="javascript" type="text/javascript">', '', $pagecontent);
+					$pagecontent = str_replace( '<script type="text/javascript" src="' . $protocol . $host . '/js/fa34c0d.js"></script><script language="javascript" type="text/javascript">', '', $pagecontent);
 					$pagecontent = str_replace( '$(function() {', '', $pagecontent);
 					$pagecontent = str_replace( '$(\'#et_place_image_th\').livequery(function(){', '', $pagecontent);
 					$pagecontent = str_replace( '$(this)', '', $pagecontent);
