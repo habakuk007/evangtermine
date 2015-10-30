@@ -3,7 +3,7 @@ Contributors: regibaer
 Tags: evangelische, termine, elkb, vernetzte, kirche
 Requires at least: 3.0
 Tested up to: 4.3
-Stable tag: 1.8.1
+Stable tag: 1.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -105,6 +105,8 @@ Eine genaue Beschreibung der möglichen Parameter findet sich im [Handbuch der E
 
 **until**: Gibt an, ob eine Veranstaltung bis zum Enddatum angezeigt werden soll oder nicht (yes|no). Default: yes.
 
+**q**: Über diesen Parameter können Suchbegriffe übergeben werden. Die Begriffe werden durch ein Komma getrennt.
+
 = Widget =
 Die Beschreibung der Parameter findet sich im [Handbuch der Evangelischen Termine](http://handbuch.evangelische-termine.de/Ausgabe-Parameter/).
 
@@ -117,6 +119,9 @@ Die Beschreibung der Parameter findet sich im [Handbuch der Evangelischen Termin
 5. Ausgabe des Widgets
 
 == Changelog ==
+= 1.9 =
+* NEW: Volltextsuche durch den Parameter 'q' ist möglich.
+
 = 1.8 =
 * Host des Kalenderbetreibers wurde auf der Optionsseite hinzugefügt. Das Plugin ist nun leicht auf jede Landeskirche anpassbar.
 * FIXED: Fehler bei der Speicherung der Daten aus den Selectboxen auf der Optionsseite
@@ -138,6 +143,9 @@ Die Beschreibung der Parameter findet sich im [Handbuch der Evangelischen Termin
 * FIXED: Sessionhandling wurde angepasst. Werte werden jetzt direkt an den Pager übergeben (Ersetzung `__HOST__`)
 
 == Upgrade Notice ==
+= 1.9 =
+* NEW: Volltextsuche durch den Parameter 'q' ist möglich.
+
 = 1.8 =
 Host des Kalenderbetreibes wurde auf der Optionsseite hinzugefügt. Das Plugin ist nun leicht auf jede Landeskirche anpassbar.
 FIXED: Fehler bei der Speicherung der Daten aus den Selectboxen auf der Optionsseite

@@ -1,13 +1,13 @@
 <?php
 /**
  * @package evangtermine
- * @version 1.8.1
+ * @version 1.9
  */
 /*
 Plugin Name: Evangelische Termine
 Description: Dieses Plugin bindet die Evangelischen Termine (www.evangelische-termine.de) in Wordpress ein.
 Author: regibaer
-Version: 1.8.1
+Version: 1.9
 Tested up to: 4.3
 Author URI: mailto:rae@de-zeit.de
 License: GPLv2
@@ -93,7 +93,8 @@ function et_veranstalter_shortcode( $attr, $content = null ) {
 			'cha'		=> ET_OPTION_CHA,
 			'itemsperpage' => get_option( 'itemsPerPage' ) ? get_option ( 'itemsPerPage' ) : ET_OPTION_ITEMSPERPAGE,
 			'dest'		=> ET_OPTION_DEST,
-			'until'		=> get_option( 'until' ) ? get_option ( 'until' ) : ET_OPTION_UNTIL
+			'until'		=> get_option( 'until' ) ? get_option ( 'until' ) : ET_OPTION_UNTIL,
+			'q'	=> get_option ( 'q' ) ? get_option ( 'q' ) : ''
 	), $attr );
 	$a[ 'itemsPerPage' ] = $a[ 'itemsperpage' ];
 	unset( $a[ 'itemsperpage' ] );
@@ -132,7 +133,8 @@ function et_teaser_shortcode( $attr, $content = null ) {
 			'itemsperpage'	=> get_option( 'itemsPerPage' ) ? get_option( 'itemsPerPage' ) : ET_OPTION_ITEMSPERPAGE,
 			'dest'			=> ET_OPTION_DEST,
 			'until'			=> get_option( 'until' ) ? get_option( 'until' ) : ET_OPTION_UNTIL,
-			'tpl'			=> ET_TEMPLATE_TEASER_SHORTCODE
+			'tpl'			=> ET_TEMPLATE_TEASER_SHORTCODE,
+			'q'	=> get_option ( 'q' ) ? get_option ( 'q' ) : ''
 	), $attr );
 	$a[ 'itemsPerPage' ] = $a[ 'itemsperpage' ];
 	unset( $a[ 'itemsperpage' ] );
@@ -232,6 +234,9 @@ class ET_Widget extends WP_Widget {
 		</select>
 		<!-- <input name="<?php echo $this->get_field_name( 'until' ); ?>" type="text" value="<?php echo esc_attr( $instance['until'] ); ?>" /> -->
 	</p>
+	<p>Suchbegriffe (durch Komma getrennte Liste):
+		<input name="<?php echo $this->get_field_name( 'q' ); ?>" type="text" value="<?php echo esc_attr( $instance['q'] ); ?>" />
+	</p>
 	<input name="<?php echo $this->get_field_name( 'tpl' ); ?>" type="hidden" value="2" />
 		
 <?php
@@ -251,6 +256,7 @@ class ET_Widget extends WP_Widget {
 		$instance[ 'dest' ]		= $new_instance[ 'dest' ];
 		$instance[ 'until' ]	= $new_instance[ 'until' ];
 		$instance[ 'tpl' ]		= $new_instance[ 'tpl' ];
+		$instance[ 'q' ] 			= $new_instance[ 'q' ];
 		
 		return $instance;
 	}
