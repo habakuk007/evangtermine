@@ -4,10 +4,10 @@ defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
 function et_veranstalter( $et_defaults ) {
 	// Parameter aus Shortcodes und Widget einlesen
-	if( $et_defaults[ 'vid' ] || $et_defaults[ 'region' ] ) {
+	if( $et_defaults[ 'vid' ] ) {
 		$encoding = get_option( 'encoding' ) ? get_option( 'encoding' ) : ET_DEFAULT_CHARSET;
 		$css = 'nocss'; // Über die Evangelischen Termine geliefertes CSS wird unterdrückt
-
+		
 		// Session für Evangelischen Termine aufbauen
 		if( !session_id() ) {
 			session_start();
@@ -57,6 +57,7 @@ function et_veranstalter( $et_defaults ) {
 			et_setsessionvar( 'people', $session, $et_defaults[ 'people' ] );
 			et_setsessionvar( 'itemsPerPage', $session, $et_defaults[ 'itemsPerPage' ] );
 			et_setsessionvar( 'pageID', $session, '1' );
+			et_setsessionvar( 'p', $session, $et_defaults[ 'q' ] );
 			
 			if( '' != $_REQUEST[ 'et_q' ] ) {
 				$session->et_q = $_REQUEST[ 'et_q' ];
@@ -85,7 +86,8 @@ function et_veranstalter( $et_defaults ) {
 						'&itemsPerPage=' . $session->itemsPerPage .
 						'&pageID='		. $session->pageID .
 						'&encoding='	. $encoding .
-						'&css='			. $css;
+						'&css='			. $css .
+						'&q=' . $et_defaults[ 'q' ];
 						
 		$et_vars = array( 'vid', 'region', 'aid', 'date', 'highlight', 'eventtype', 'people', 'et_q', 'place',
 					'person', 'ipm', 'cha', 'until', 'itemsPerPage', 'pageID', 'encoding', 'css', 'etID', 'Suche', 'action', session_name(), '_token', 'reset' );
