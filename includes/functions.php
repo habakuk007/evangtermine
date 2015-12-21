@@ -2,16 +2,19 @@
 // Exit if accessed directly
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
+add_action('init', 'evangtermineStartSession', 1);
+function evangtermineStartSession() {
+	// Session für Evangelischen Termine aufbauen
+	if( !session_id() ) {
+		session_start();
+	}
+}
+
 function et_veranstalter( $et_defaults ) {
 	// Parameter aus Shortcodes und Widget einlesen
 	if( $et_defaults[ 'vid' ] ) {
 		$encoding = get_option( 'encoding' ) ? get_option( 'encoding' ) : ET_DEFAULT_CHARSET;
 		$css = 'nocss'; // Über die Evangelischen Termine geliefertes CSS wird unterdrückt
-		
-		// Session für Evangelischen Termine aufbauen
-		if( !session_id() ) {
-			session_start();
-		}
 		
 		if( !isset ( $_SESSION[ 'session' ] ) ) {
 			$session = new stdClass;
