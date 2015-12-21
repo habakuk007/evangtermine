@@ -1,19 +1,20 @@
 <?php
 /**
  * @package evangtermine
- * @version 1.2
+ * @version 1.9.2
  */
 /*
 Plugin Name: Evangelische Termine
 Description: Dieses Plugin bindet die Evangelischen Termine (www.evangelische-termine.de) in Wordpress ein.
-Author: Norbert Räbiger
-Version: 1.1
-Author URI: http://www.dekanat-weilheim.de/
+Author: regibaer
+Version: 1.9.2
+Tested up to: 4.4
+Author URI: mailto:rae@de-zeit.de
 License: GPLv2
 */
 
 /*
-Copyright (C) 2015 Norbert Räbiger (E-Mail: rae@dekanat-weilheim.de)
+Copyright (C) 2015 Norbert Räbiger (E-Mail: rae@de-zeit.de)
 This program is free software; you can redistribute it and/or modify it under the terms
 of the GNU General Public License as published by the Free Software Foundation; either
 version 2 of the License, or (at your option) any later version.
@@ -42,6 +43,8 @@ define( 'ET_OPTION_DEST', 'extern' );
 define( 'ET_DEFAULT_CHARSET', 'utf8' );
 define( 'ET_TEMPLATE_TEASER_SHORTCODE', '1' );
 define( 'ET_TEMPLATE_TEASER_WIDGET', '2');
+define( 'ET_DEFAULT_PROTOCOL', 'http://' );
+define( 'ET_DEFAULT_HOST', 'www.evangelische-termine.de' );
 
 // Pluginpfad
 define( 'EVANGTERMINE_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
@@ -80,8 +83,7 @@ require_once ( EVANGTERMINE_PLUGIN_PATH . 'includes/functions.php' );
 function et_veranstalter_shortcode( $attr, $content = null ) {
 	$a = shortcode_atts( array(
 			'vid' 		=> get_option( 'vid' ),
-			'region'	=> '',
-			// 'aid'		=> '', // ist zur Zeit ohne Funktion
+			'region'	=> get_option( 'region' ),
 			'eventtype' => ET_OPTION_EVENTTYPE,
 			'highlight'	=> ET_OPTION_HIGHLIGHT,
 			'people'	=> ET_OPTION_PEOPLE,
@@ -91,7 +93,8 @@ function et_veranstalter_shortcode( $attr, $content = null ) {
 			'cha'		=> ET_OPTION_CHA,
 			'itemsperpage' => get_option( 'itemsPerPage' ) ? get_option ( 'itemsPerPage' ) : ET_OPTION_ITEMSPERPAGE,
 			'dest'		=> ET_OPTION_DEST,
-			'until'		=> get_option( 'until' ) ? get_option ( 'until' ) : ET_OPTION_UNTIL
+			'until'		=> get_option( 'until' ) ? get_option ( 'until' ) : ET_OPTION_UNTIL,
+			'q'	=> get_option ( 'q' ) ? get_option ( 'q' ) : ''
 	), $attr );
 	$a[ 'itemsPerPage' ] = $a[ 'itemsperpage' ];
 	unset( $a[ 'itemsperpage' ] );
@@ -119,7 +122,7 @@ add_shortcode( 'et_veranstalter', 'et_veranstalter_shortcode' );
 function et_teaser_shortcode( $attr, $content = null ) {
 	$a = shortcode_atts( array(
 			'vid' 			=> get_option( 'vid' ),
-			'region'		=> '',
+			'region'		=> get_option( 'region' ),
 			'eventtype'		=> ET_OPTION_EVENTTYPE,
 			'highlight'		=> ET_OPTION_HIGHLIGHT,
 			'people'		=> ET_OPTION_PEOPLE,
@@ -130,7 +133,8 @@ function et_teaser_shortcode( $attr, $content = null ) {
 			'itemsperpage'	=> get_option( 'itemsPerPage' ) ? get_option( 'itemsPerPage' ) : ET_OPTION_ITEMSPERPAGE,
 			'dest'			=> ET_OPTION_DEST,
 			'until'			=> get_option( 'until' ) ? get_option( 'until' ) : ET_OPTION_UNTIL,
-			'tpl'			=> ET_TEMPLATE_TEASER_SHORTCODE
+			'tpl'			=> ET_TEMPLATE_TEASER_SHORTCODE,
+			'q'	=> get_option ( 'q' ) ? get_option ( 'q' ) : ''
 	), $attr );
 	$a[ 'itemsPerPage' ] = $a[ 'itemsperpage' ];
 	unset( $a[ 'itemsperpage' ] );
@@ -143,13 +147,15 @@ add_shortcode( 'et_teaser', 'et_teaser_shortcode' );
 
 // Widget Evangelische Termine
 class ET_Widget extends WP_Widget {
-	function ET_Widget() {
-		$widget_options = array(
-			'classname'		=> 'et_widget_class',
-			'description'	=> __('Zeigt eine Liste der nächsten Veranstaltungen an.')
+	/**
+	 * Register widget with WordPress.
+	 */
+	function __construct() {
+		parent::__construct(
+			'ET_Widget',
+			'Evangelische Termine',
+			array ('description' =>  __('Zeigt eine Liste der nächsten Veranstaltungen an.'), )
 		);
-
-		$this->WP_Widget( 'ET_Widget', 'Evangelische Termine', $widget_options );
 	}
 	
 	function form( $instance ) {
@@ -228,6 +234,9 @@ class ET_Widget extends WP_Widget {
 		</select>
 		<!-- <input name="<?php echo $this->get_field_name( 'until' ); ?>" type="text" value="<?php echo esc_attr( $instance['until'] ); ?>" /> -->
 	</p>
+	<p>Suchbegriffe (durch Komma getrennte Liste):
+		<input name="<?php echo $this->get_field_name( 'q' ); ?>" type="text" value="<?php echo esc_attr( $instance['q'] ); ?>" />
+	</p>
 	<input name="<?php echo $this->get_field_name( 'tpl' ); ?>" type="hidden" value="2" />
 		
 <?php
@@ -247,6 +256,7 @@ class ET_Widget extends WP_Widget {
 		$instance[ 'dest' ]		= $new_instance[ 'dest' ];
 		$instance[ 'until' ]	= $new_instance[ 'until' ];
 		$instance[ 'tpl' ]		= $new_instance[ 'tpl' ];
+		$instance[ 'q' ] 			= $new_instance[ 'q' ];
 		
 		return $instance;
 	}
@@ -280,8 +290,24 @@ add_action( 'widgets_init', 'et_register_widget' );
  */
 add_action( 'wp_head', 'et_include_css' );
 function et_include_css () {
-	$css = plugins_url( 'assets/css/evangtermine.css', EVANGTERMINE_PLUGIN_PATH . 'evangtermine' );
+	if( get_option( 'css' ) ) {
+		$css = get_option( 'css' );
+	} else {
+		$css = plugins_url( 'assets/css/evangtermine.css', EVANGTERMINE_PLUGIN_PATH . 'evangtermine' );
+	}
 	$output = '<link href="' . $css . '" media="screen, projection" rel ="stylesheet" type="text/css" />';
 	echo $output;
+}
+
+/*
+ *  Optionspage auf der Pluginseite aufrufbar
+ *
+ *	@since 1.8
+ */
+add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'et_plugin_actions' );
+
+function et_plugin_actions( $links ) {
+	$links[] = '<a href="'. esc_url( get_admin_url(null, 'options-general.php?page=options.php') ) .'">Einstellungen</a>';
+	return $links;
 }
 ?>
