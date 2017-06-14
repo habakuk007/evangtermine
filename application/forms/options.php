@@ -2,6 +2,8 @@
 // Exit if accessed directly
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
+// TODO Thumbnail in der Detailansicht ja/nein integrieren
+
 // Optionsmenü hinzufügen
 function et_menu() {
 	add_options_page( 'Evangelische Termine Options', 'Evangelische Termine', 'manage_options', 'options.php', 'et_options' );
@@ -32,13 +34,13 @@ function et_show_until() {
 	$items = array ( 'yes', 'no' );
 	echo '<select id="et_option_until" name="until">';
 	foreach ( $items as $item ) {
-	 	 $selected = ( $until == $item ) ? 'selected="selected"' : '';
-	 	 echo '<option value="' . $item . '" ' . $selected . '>' . $item . '</option>';
-	} 
+		$selected = ( $until == $item ) ? 'selected="selected"' : '';
+		echo '<option value="' . $item . '" ' . $selected . '>' . $item . '</option>';
+	}
 	echo '</select>';
 }
 
-// Eigene CSS-Datei. Dadurch werden die CSS-Einstellungen der Evangelischen Termine überschrieben. 
+// Eigene CSS-Datei. Dadurch werden die CSS-Einstellungen der Evangelischen Termine überschrieben.
 function et_show_css() {
 	$css = get_option( 'css' );
 	echo '<input name="css" type="text" value="' . $css . '" size="40" />';
@@ -50,16 +52,19 @@ function et_show_encoding() {
 	$items = array ( 'utf8', 'latin1' );
 	echo '<select id="et_option_encoding" name="encoding">';
 	foreach ( $items as $item ) {
-	 	 $selected = ( $encoding == $item ) ? 'selected="selected"' : '';
-	 	 echo '<option value="' . $item . '" ' . $selected . '>' . $item . '</option>';
-	} 
+		$selected = ( $encoding == $item ) ? 'selected="selected"' : '';
+		echo '<option value="' . $item . '" ' . $selected . '>' . $item . '</option>';
+	}
 	echo '</select>';
 }
 
-// Protokoll und Host des jeweiligen Kalenderbetreibers
+/*
+ * Protokoll und Host des jeweiligen Kalenderbetreibers
+ * Wird nicht mehr benötigt. In den defaults wird das Protokoll über das REQUEST_SCHEME gesetzt.
+ */
 function et_show_etprotocol() {
 	$etprotocol = get_option( 'etprotocol' );
-	$items = array( 'http://', 'https://' );
+	$items = array( '', 'https://', 'http://' );
 	echo '<select id="et_option_protocol" name="etprotocol">';
 	foreach( $items as $item ) {
 		$selected = ( $etprotocol == $item ) ? 'selected="selected"' : '';
@@ -78,7 +83,7 @@ function et_options() {
 	if( !current_user_can( 'manage_options' ) ) {
 		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 	}
-?>
+	?>
 <div class="wrap">
 	<h2><?php _e('Evangelische Termine'); ?></h2>
 	<form method="post" action="options.php">
@@ -94,13 +99,13 @@ function et_options() {
 function et_admin_init() {
 	add_settings_section( 'et_section', 'Grundeinstellungen', 'et_show_section', 'et_menu_slug' );
 	
-	add_settings_field( 'vid', 'Veranstalter-ID (bei mehreren Veranstaltern kommagetrennt): ', 'et_show_vid', 'et_menu_slug', 'et_section' );
+	add_settings_field( 'vid', 'Veranstalter-ID<br/>(bei mehreren Veranstaltern kommagetrennt): ', 'et_show_vid', 'et_menu_slug', 'et_section' );
 	add_settings_field( 'region', 'Dekanats-ID: ', 'et_show_region', 'et_menu_slug', 'et_section' );
 	add_settings_field( 'until', 'Until: ', 'et_show_until', 'et_menu_slug', 'et_section' );
 	add_settings_field( 'css', 'CSS-Datei: ', 'et_show_css', 'et_menu_slug', 'et_section' );
 	add_settings_field( 'encoding', 'Encoding: ', 'et_show_encoding', 'et_menu_slug', 'et_section' );
-	add_settings_field( 'etprotocol', 'Protokoll: ', 'et_show_etprotocol', 'et_menu_slug', 'et_section' );
-	add_settings_field( 'ethost', 'Host und Domain des Kalenderbetreibers (Default: www.evangelische-termine.de): ', 'et_show_ethost', 'et_menu_slug', 'et_section' );
+	add_settings_field( 'etprotocol', 'Protokoll<br/>(wenn das Feld leer ist, wird das Protokoll vom Plugin ermittelt): ', 'et_show_etprotocol', 'et_menu_slug', 'et_section' );
+	add_settings_field( 'ethost', 'Host und Domain des Kalenderbetreibers<br/>(Default: ' . ET_DEFAULT_HOST . '): ', 'et_show_ethost', 'et_menu_slug', 'et_section' );
 		
 	register_setting( 'et_group', 'vid' );
 	register_setting( 'et_group', 'region' );
