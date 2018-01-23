@@ -29,6 +29,7 @@ class EtQuery {
 				'dest' => ET_OPTION_DEST,
 				'until' => get_option ( 'until' ) ? get_option ( 'until' ) : ET_OPTION_UNTIL,
 				'q' => get_option ( 'q' ) ? get_option ( 'q' ) : '',
+				'et_q' => get_option ('et_q') ? get_option ('et_q') : '',
 				'css' => 'nocss', // unterbindet das CSS des Teasers in der Sidebar
 				'encoding' => get_option ( 'encoding' ) ? get_option ( 'encoding' ) : ET_DEFAULT_CHARSET 
 		);
@@ -66,18 +67,11 @@ class EtQuery {
 	/**
 	 * Setzt einen einzelnen Parameter
 	 *
-	 * @param
-	 *        	$key
-	 * @param
-	 *        	$value
+	 * @param	$key
+	 * @param  	$value
 	 */
 	public function setEtParameter($key, $value) {
 		if ($key && $value) {
-			
-			// in den Evangelischen Terminen wird beim Eingabefeld et_q verwendet. Für den Querystring wird aber 'q' benötigt.
-			if ($key == 'et_q') {
-				$key = 'q';
-			}
 			$this->etParameters [$key] = $value;
 		}
 	}
