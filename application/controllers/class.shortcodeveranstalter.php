@@ -18,7 +18,7 @@ class ShortcodeVeranstalter {
 		);
 		// $filterVars beinhaltet die Felder, die vom Filter des Veranstaltermoduls zur Verfügung gestellt werden.
 		// Die Werte werden über $_REQUEST gesetzt, wenn nicht ein Reset ausgelöst wurde.
-		$filterVars = array('vid', 'region', 'eventtype', 'highlight', 'people', 'et_q', 'itemsPerPage', 'pageID', 'date');
+		$filterVars = array('vid', 'region', 'eventtype', 'highlight', 'people', 'et_q', 'q', 'itemsPerPage', 'pageID', 'date');
 		
 		$etstream = new EtQuery();
 		if(get_option ('css') != '') {
@@ -38,6 +38,10 @@ class ShortcodeVeranstalter {
 					$etstream->setEtParameter($key, $_REQUEST[$key]);
 				}
 			}
+		} else {
+			// Suchbegriff zurücksetzen
+			$_REQUEST['q'] = '';
+			$_REQUEST['et_q'] = '';
 		}
 		
 		if ($_REQUEST['q'] <> '') {
