@@ -73,6 +73,11 @@ class EtQuery {
 	 */
 	public function setEtParameter($key, $value) {
 		if ($key && $value) {
+			
+			// in den Evangelischen Terminen wird beim Eingabefeld et_q verwendet. Für den Querystring wird aber 'q' benötigt.
+			if ($key == 'et_q') {
+				$key = 'q';
+			}
 			$this->etParameters [$key] = $value;
 		}
 	}
