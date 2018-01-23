@@ -49,6 +49,8 @@ class ShortcodeVeranstalter {
 				$querystring .= '&' . $key . '='. $val;
 			}
 		}
+		// Suchbegriff an Querystring anhängen - Problem bei den Evangelischen Terminen mit et_q und q.
+		$querystring .= '&' . 'q' . '=' . $etstream->getEtParameter('et_q');
 		
 		// Daten von den Evangelischen Terminen abrufen
 		$content = $etstream->retrieveStream($querystring);
