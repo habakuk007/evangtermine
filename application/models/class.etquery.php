@@ -66,10 +66,8 @@ class EtQuery {
 	/**
 	 * Setzt einen einzelnen Parameter
 	 *
-	 * @param
-	 *        	$key
-	 * @param
-	 *        	$value
+	 * @param	$key
+	 * @param  	$value
 	 */
 	public function setEtParameter($key, $value) {
 		if ($key && $value) {
