@@ -66,10 +66,8 @@ class EtQuery {
 	/**
 	 * Setzt einen einzelnen Parameter
 	 *
-	 * @param
-	 *        	$key
-	 * @param
-	 *        	$value
+	 * @param	$key
+	 * @param  	$value
 	 */
 	public function setEtParameter($key, $value) {
 		if ($key && $value) {
@@ -130,12 +128,18 @@ class EtQuery {
 	public function getQuerystring() {
 		$queryString = '';
 		foreach ( $this->etParameters as $key => $value ) {
-			if ('title' != $key) {
-				if ('region' != $key) {
-					$queryString .= '&' . $key . '=' . $value;
-				} else {
-					$queryString .= '&' . 'region' . '=' . $value;
+			
+			// Erwachsenenbildung in Bayern: Wenn auswahl=eb soll weder ein Eingabeformular noch ein Kanal verwendet werden (Abfrage erfolgt direkt in den Evangelischen Terminen).
+			if ( !(($this->etParameters['auswahl'] == 'eb') && ($key == 'ipm')) && !(($this->etParameters['auswahl'] == 'eb') && ($key == 'cha'))) {
+				if ('title' != $key) {
+					if ('region' != $key) {
+						$queryString .= '&' . $key . '=' . $value;
+					} else {
+						$queryString .= '&' . 'region' . '=' . $value;
+					}
 				}
+			} else {
+				// $queryString .= '&' . $key . '=all'; // ipm=all wenn Erwachsenenbildung (auswahl=eb) abgefragt werden soll
 			}
 		}
 		
@@ -164,6 +168,8 @@ class EtQuery {
 				$queryString .= '&ID=' . $_GET ['etID'];
 				$filename = ET_DETAILS_MODUL;
 			}
+			
+			Debugging::consoleLog('Querystring: ', $queryString);
 			
 			$host = $this->etHost;
 			// TODO Prüfen, ob etHost mit dem angegebenen Protokoll erreichbar ist, wenn nicht, das andere Protokoll testen
