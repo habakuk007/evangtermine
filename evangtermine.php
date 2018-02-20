@@ -1,13 +1,13 @@
 <?php
 /**
  * @package evangtermine
- * @version 2.1.3
+ * @version 2.2
  */
 /*
  * Plugin Name: Evangelische Termine
  * Description: Dieses Plugin bindet die Evangelischen Termine (www.evangelische-termine.de) in Wordpress ein.
  * Author: regibaer
- * Version: 2.1.3
+ * Version: 2.2
  * Tested up to: 4.9
  * Author URI: mailto:rae@de-zeit.de
  * License: GPLv2
@@ -25,6 +25,8 @@
  * if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA 02110-1301, USA.
  */
+
+define('DEBUG', false);
 
 // Exit if accessed directly
 defined('ABSPATH') or die('No script kiddies please!');
