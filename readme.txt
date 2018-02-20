@@ -4,7 +4,7 @@ Contributors: regibaer
 Tags: evangelische, termine, elkb, vernetzte, kirche  
 Requires at least: 3.0  
 Tested up to: 4.9  
-Stable tag: 2.0.2
+Stable tag: 2.2
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html 
 
@@ -123,6 +123,9 @@ all = alle Veranstaltungen). Default: extern.
 
 **q**: über diesen Parameter können Suchbegriffe übergeben werden. Die Begriffe werden durch ein Komma getrennt.
 
+**auswahl**: Über diesen Parameter können in Bayern Erwachsenenbildungsveranstaltungen abgerufen werden, die entweder über die 
+Eingabemaske `Erwachsenenbildung` oder mit den Kanal `Erwachsenenbildung` angelegt wurden.
+
 = Widget =
 
 Die Beschreibung der Parameter findet sich im [Handbuch der Evangelischen Termine](http://handbuch.evangelische-termine.de/Ausgabe-Parameter/).
@@ -136,6 +139,9 @@ Die Beschreibung der Parameter findet sich im [Handbuch der Evangelischen Termin
 5. Ausgabe des Widgets
 
 == Changelog ==
+= 2.2 =
+
+* Es ist nun in Bayern möglich, den Parameter auswahl=eb zu verwenden, mit dem Erwachsenenbildungsveranstaltungen abgefragt werden können. 
 
 = 2.0 =
 
@@ -176,6 +182,14 @@ Die Beschreibung der Parameter findet sich im [Handbuch der Evangelischen Termin
 * FIXED: Sessionhandling wurde angepasst. Werte werden jetzt direkt an den Pager übergeben (Ersetzung `__HOST__`)
 
 == Upgrade Notice ==
+
+= 2.2 =
+
+Parameter auswahl=eb ist in Bayern nun möglich (Abfrage der Eingabemaske Erwachsenenbildung oder des Kanals Erwachsenenbildung)
+
+= 2.0 =
+
+Code an vielen Stellen neu geschrieben und optimiert
 
 = 1.9 =
 

@@ -58,6 +58,7 @@ class EtWidget extends WP_Widget {
 		if(get_option ('css') != '') {
 			$etstream->setLoadCSS(false);
 		}
+		
 		$etstream->setEtParameters($instance);
 		
 		$title	= apply_filters('widget_title', $instance['title']);
