@@ -255,6 +255,11 @@ class EtQuery {
 		$stream = str_replace ( ' align="absmiddle"', '', $stream );
 		$stream = str_replace ( '<a name="veranstaltungen" ></a>', '', $stream );
 		
+		// SSL für die Icons der Barrierefreiheit anpassen
+		if (($this->etProtocol == 'https://') && (strstr($stream, 'http://' . $this->etHost . '/' ))) {
+			$stream = str_replace ( 'http://' . $this->etHost, $this->etProtocol . $this->etHost, $stream);
+		}
+		
 		// Hintergrundbilder in der Detailansicht umschreiben
 		// @deprecated deprecated since version 2.2.2
 		//$stream = str_replace ( '<div id="et_detail_header" style="background-image:url(', '<div id="et_detail_header"><img class="et_header_image" src="', $stream );

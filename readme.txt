@@ -4,7 +4,7 @@ Contributors: regibaer
 Tags: evangelische, termine, elkb, vernetzte, kirche  
 Requires at least: 3.0  
 Tested up to: 4.9  
-Stable tag: 2.2.2
+Stable tag: 2.2.3
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html 
 
@@ -139,6 +139,9 @@ Die Beschreibung der Parameter findet sich im [Handbuch der Evangelischen Termin
 5. Ausgabe des Widgets
 
 == Changelog ==
+= 2.2.3 =
+* Icons für die Barrierefreiheit in der Detailansicht werden jetzt über SSL geladen, wenn verfügbar
+
 = 2.2 =
 
 * Es ist nun in Bayern möglich, den Parameter auswahl=eb zu verwenden, mit dem Erwachsenenbildungsveranstaltungen abgefragt werden können. 
@@ -182,6 +185,8 @@ Die Beschreibung der Parameter findet sich im [Handbuch der Evangelischen Termin
 * FIXED: Sessionhandling wurde angepasst. Werte werden jetzt direkt an den Pager übergeben (Ersetzung `__HOST__`)
 
 == Upgrade Notice ==
+= 2.2.3 =
+* Icons für die Barrierefreiheit in der Detailansicht werden jetzt über SSL geladen, wenn verfügbar
 
 = 2.2 =
 
