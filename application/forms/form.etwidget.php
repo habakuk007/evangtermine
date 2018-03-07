@@ -35,6 +35,17 @@
 	<p>Veranstaltungstyp-ID (kommaseparierte Liste, keine Leerzeichen):
 		<input name="<?php echo $this->get_field_name( 'ipm' ); ?>" type="text" value="<?php echo esc_attr( $instance['ipm'] ); ?>" />
 	</p>
+	<p>Erwachsenenbildung (bei Auswahl von 'eb' werden die Felder Veranstaltungstyp-ID und Kanäle ignoriert):
+		<select name="<?php echo $this->get_field_name( 'auswahl') ?>" >
+			<?php
+			$items = array( '', 'eb' );
+			foreach ($items as $item) {
+				$selected = ( $instance['auswahl'] == $item ) ? 'selected="selected"' : '';
+				echo '<option value="' . $item . '" ' . $selected . '>' . $item . '</option>';
+			}
+			?>
+		</select>
+	</p>	
 	<p>Kanäle (kommaseparierte Liste, keine Leerzeichen):
 		<input name="<?php echo $this->get_field_name( 'cha' ); ?>" type="text" value="<?php echo esc_attr( $instance['cha'] ); ?>" />
 	</p>
