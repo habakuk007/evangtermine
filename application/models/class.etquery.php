@@ -66,13 +66,14 @@ class EtQuery {
 	/**
 	 * Setzt einen einzelnen Parameter
 	 *
-	 * @param
-	 *        	$key
-	 * @param
-	 *        	$value
+	 * @param	$key
+	 * @param  	$value
 	 */
 	public function setEtParameter($key, $value) {
 		if ($key && $value) {
+			if ($key == 'et_q') {
+				$key = 'q';
+			}
 			$this->etParameters [$key] = $value;
 		}
 	}
@@ -130,12 +131,18 @@ class EtQuery {
 	public function getQuerystring() {
 		$queryString = '';
 		foreach ( $this->etParameters as $key => $value ) {
-			if ('title' != $key) {
-				if ('region' != $key) {
-					$queryString .= '&' . $key . '=' . $value;
-				} else {
-					$queryString .= '&' . 'region' . '=' . $value;
+			
+			// Erwachsenenbildung in Bayern: Wenn auswahl=eb soll weder ein Eingabeformular noch ein Kanal verwendet werden (Abfrage erfolgt direkt in den Evangelischen Terminen).
+			if ( !(($this->etParameters['auswahl'] == 'eb') && ($key == 'ipm')) && !(($this->etParameters['auswahl'] == 'eb') && ($key == 'cha'))) {
+				if ('title' != $key) {
+					if ('region' != $key) {
+						$queryString .= '&' . $key . '=' . $value;
+					} else {
+						$queryString .= '&' . 'region' . '=' . $value;
+					}
 				}
+			} else {
+				// $queryString .= '&' . $key . '=all'; // ipm=all wenn Erwachsenenbildung (auswahl=eb) abgefragt werden soll
 			}
 		}
 		
@@ -158,14 +165,19 @@ class EtQuery {
 			// Dateinamen für den Abruf setzen
 			$filename = $this->etFilename;
 			
+			$host = $this->etHost;
+
 			// Wenn etID übergeben wurde, Detailseite aufrufen
 			if (($_GET ['etID'] != "") && (! $this->noDetail)) {
 				// TODO eigenes CSS an den $queryString anhängen (Detailansicht)
 				$queryString .= '&ID=' . $_GET ['etID'];
 				$filename = ET_DETAILS_MODUL;
+				//$filename='veranstaltung_im_detail' . $_GET['etID'] . 'html';
 			}
 			
-			$host = $this->etHost;
+			Debugging::consoleLog('Querystring: ', $queryString);
+			Debugging::consoleLog('URL: ', $url);
+			
 			// TODO Prüfen, ob etHost mit dem angegebenen Protokoll erreichbar ist, wenn nicht, das andere Protokoll testen
 			$url = $this->etProtocol . $host . '/' . $filename . '?' . $queryString;
 			
@@ -191,6 +203,10 @@ class EtQuery {
 			$stream = 'Error: Plugin "Evangelische Termine": Veranstalter-ID ist nicht gesetzt';
 		}
 		
+		if(DEBUG) {
+			Debugging::writeOutputStream(BASE_PATH . '/etStream.html', $stream );
+		}
+		
 		return $stream;
 	}
 	
@@ -209,6 +225,15 @@ class EtQuery {
 			$stream = str_replace ( '<link rel="stylesheet" type="text/css" href="http://www.evangelische-termine.de/bundles/vket/css/publicintegration.css"  />', '', $stream );
 			$stream = str_replace ( '<link rel="stylesheet" type="text/css" href="https://www.evangelische-termine.de/bundles/vket/css/publicintegration.css"  />', '', $stream );
 		}
+		
+		// Detailansicht des Teasermoduls im Hauptfenster
+		//$etID = substr ( $stream, strpos($stream, 'veranstaltung_im_detail' ) + 23, strpos ( $stream, '.html') - strpos($stream, 'veranstaltung_im_detail') - 23);
+		//$stream = str_replace ( 'href="javascript:;" ', 'href="' . get_permalink ( $post->ID ) . '?etID=' , $stream );
+		//$stream = str_replace ( 'OnClick="ET_openWindow(\'http://www.evangelische-termine.de/veranstaltung_im_detail', '', $stream );
+		// zwischen .html und dem Ende der URL alles ersetzen
+		// .html?PHPSESSID=fvro05sp1he2294iq431do0972&popup=1&css=none','Detail','toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=600,height=650,top=10,left=200');
+		// ggf. über eine Schleife alle Ersetzungen durchführen
+
 		
 		// URLs umschreiben
 		$stream = str_replace ( '/Upload/', $this->etProtocol . $this->etHost . '/Upload/', $stream );
@@ -230,9 +255,15 @@ class EtQuery {
 		$stream = str_replace ( ' align="absmiddle"', '', $stream );
 		$stream = str_replace ( '<a name="veranstaltungen" ></a>', '', $stream );
 		
+		// SSL für die Icons der Barrierefreiheit anpassen
+		if (($this->etProtocol == 'https://') && (strstr($stream, 'http://' . $this->etHost . '/' ))) {
+			$stream = str_replace ( 'http://' . $this->etHost, $this->etProtocol . $this->etHost, $stream);
+		}
+		
 		// Hintergrundbilder in der Detailansicht umschreiben
-		$stream = str_replace ( '<div id="et_detail_header" style="background-image:url(', '<div id="et_detail_header"><img class="et_header_image" src="', $stream );
-		$stream = str_replace ( ') ">', '"/>', $stream );
+		// @deprecated deprecated since version 2.2.2
+		//$stream = str_replace ( '<div id="et_detail_header" style="background-image:url(', '<div id="et_detail_header"><img class="et_header_image" src="', $stream );
+		//$stream = str_replace ( ') ">', '"/>', $stream );
 		
 		// Bild des Ortes in der Detailansicht
 		// Dauerhaft groß anzeigen - Problem: der Defaultzustand wird nicht angezeigt.
@@ -241,6 +272,7 @@ class EtQuery {
 		// TODO Thumbnail abhängig von den Einstellungen im Optionsmenü ein-/ausschalten
 		// $stream = str_replace('id="et_place_image_th"', '"id="et_place_image_th" style="display: none;"', $stream);
 		// $stream = str_replace('id="et_place_image"', '"id="et_place_image" style="display: inline;"', $stream);
+		//$stream = str_replace('name="et_q"', 'name="q"', $stream);
 		
 		return $stream;
 	}
