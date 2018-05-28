@@ -35,6 +35,7 @@ define( 'ET_OPTION_ITEMSPERPAGE', '20' );
 define( 'ET_OPTION_DEST', 'extern' );
 
 define( 'ET_VERANSTALTER_MODUL', 'veranstaltungen-php');
+// define( 'ET_VERANSTALTER_MODUL', 'veranstaltungen' ); // TODO neuen Shortcode entwickeln
 define( 'ET_TEASER_MODUL', 'teaser');
 define( 'ET_DETAILS_MODUL', 'detail-php');
 
