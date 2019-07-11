@@ -1,14 +1,14 @@
 <?php
 /**
  * @package evangtermine
- * @version 2.2.4
+ * @version 2.2.6
  */
 /*
  * Plugin Name: Evangelische Termine
  * Description: Dieses Plugin bindet die Evangelischen Termine (www.evangelische-termine.de) in Wordpress ein.
  * Author: regibaer
- * Version: 2.2.4
- * Tested up to: 5.0
+ * Version: 2.2.6
+ * Tested up to: 5.1
  * Author URI: mailto:rae@de-zeit.de
  * License: GPLv2
  */
@@ -42,7 +42,7 @@ class EvangTermine {
 		if (!defined('BASE_PATH')) {
 			define('BASE_PATH', __DIR__);
 			require_once BASE_PATH . '/autoloader.php';
-			Autoloader::Register();
+			AutoloaderET::Register();
 		}
 		
 		// integrate the options menu if an admin ist logged in
@@ -62,6 +62,7 @@ class EvangTermine {
 		add_shortcode('et_veranstalter', array('ShortcodeVeranstalter', 'etVeranstalter'));
 		
 		// TODO shortcode für das Panelsmodul einbinden
+		add_shortcode('et_panels', array('ShortcodePanels', 'etPanels'));
 		
 		// TODO shortcode für das Modul mit der Übersichtskarte http://www.evangelische-termine.de/map?vid=952&itemsPerPage=100&lat=48.92971763063&lng=10.78857421875&zoom=7&ipm=808®ion=407&vid=all
 		

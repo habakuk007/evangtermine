@@ -3,8 +3,8 @@
 Contributors: regibaer  
 Tags: evangelische, termine, elkb, vernetzte, kirche  
 Requires at least: 3.0  
-Tested up to: 5.0  
-Stable tag: 2.2.4
+Tested up to: 5.1  
+Stable tag: 2.2.6
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html 
 
@@ -26,6 +26,7 @@ Pager aus.
 
 * Shortcode [et_veranstalter @parameter] zur Einbindung der Evangelischen Termine in einem Beitrag oder auf einer Seite
 * Shortcode [et_teaser @parameter] zur Einbindung der Evangelischen Termine in einem Beitrag oder auf einer Seite
+* Shortcode [et_panels @parameter] zur Einbindugn der Evangelischen Termine als Panels
 * Widget "Evangelische Termine" zur Einbindung der Evangelischen Termine in einem Widget-Bereich
 * Option-Page für die Grundeinstellungen des Plugins
 * Überschreiben der Grundeinstellungen über die @parameter bei den Shortcodes und im Widget
@@ -41,6 +42,17 @@ darunter die Terminliste.
 Der Shortcode `et_teaser` ruft das Teaser-Modul auf. Es wird eine Terminliste
 ohne Suchfunktion ausgegeben.  
 `[et_teaser @parameter]`
+
+Der Shortcode `et_panels` ruft das Teaser-Modul auf. Es wird eine Panelansicht
+mit den hinterlegten Bildern ausgegeben.    
+`[et_panels @parameter]`  
+Wenn das Panel mit dem "Mehr"-Link nicht angezeigt werden soll, muss man im CSS folgendes hinterlegen:
+
+```CSS
+#load1 {
+	display: none;
+}
+```
 
 Beschreibung der [@parameter](http://wordpress.org/plugins/evangtermine/other_notes/#Parameter)
 
@@ -139,7 +151,16 @@ Die Beschreibung der Parameter findet sich im [Handbuch der Evangelischen Termin
 5. Ausgabe des Widgets
 
 == Changelog ==
+= 2.2.6 =
+
+* Added shortcode et_panels - Zu Panels siehe https://evangelische-termine.de/Admin/ausgabe#panels
+
+= 2.2.5 =
+
+* Rename class Autoloader in AutoloaderET - Damit kommt es nicht mehr zu Konflikten mit anderen Plugins
+
 = 2.2.3 =
+
 * Icons für die Barrierefreiheit in der Detailansicht werden jetzt über SSL geladen, wenn verfügbar
 
 = 2.2 =
