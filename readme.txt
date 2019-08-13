@@ -3,8 +3,8 @@
 Contributors: regibaer  
 Tags: evangelische, termine, elkb, vernetzte, kirche  
 Requires at least: 3.0  
-Tested up to: 5.1  
-Stable tag: 2.2.6
+Tested up to: 5.2  
+Stable tag: 2.2.7
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html 
 
@@ -151,9 +151,13 @@ Die Beschreibung der Parameter findet sich im [Handbuch der Evangelischen Termin
 5. Ausgabe des Widgets
 
 == Changelog ==
+= 2.2.7 =
+* FIXED: deprecated function create_function erstetzt.
+
 = 2.2.6 =
 
 * Added shortcode et_panels - Zu Panels siehe https://evangelische-termine.de/Admin/ausgabe#panels
+* FIXED: IPv6-Auflösung
 
 = 2.2.5 =
 
@@ -206,7 +210,17 @@ Die Beschreibung der Parameter findet sich im [Handbuch der Evangelischen Termin
 * FIXED: Sessionhandling wurde angepasst. Werte werden jetzt direkt an den Pager übergeben (Ersetzung `__HOST__`)
 
 == Upgrade Notice ==
+
+= 2.2.7 =
+
+* FIXED: deprecated function create_function erstetzt.
+
+= 2.2.6 =
+
+* FIXED: IPv6-Auflösung
+
 = 2.2.3 =
+
 * Icons für die Barrierefreiheit in der Detailansicht werden jetzt über SSL geladen, wenn verfügbar
 
 = 2.2 =
