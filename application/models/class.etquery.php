@@ -220,6 +220,7 @@ class EtQuery {
 	private function filterStream($stream) {
 		// nocss entfernen - verursacht eine Warnung
 		$stream = str_replace ( '<link rel="stylesheet" type="text/css" href="nocss"  />', '', $stream );
+		$stream = str_replace ( '<link href="nocss" media="screen, projection" rel="stylesheet" type="text/css" />', '', $stream );
 		
 		// CSS der Evangelischen Termine entfernen, damit das eigene CSS verwendet werden kann.
 		if (!$this->etLoadCSS) {
