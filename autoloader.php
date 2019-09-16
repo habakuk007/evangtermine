@@ -1,7 +1,7 @@
 <?php
 
 // Klassen automatisch laden
-class Autoloader {
+class AutoloaderET {
 	
 	/**
 	 * Autoloader
@@ -10,7 +10,7 @@ class Autoloader {
 	 * @return boolean
 	 */
 	public static function Register() {
-		return spl_autoload_register(array('Autoloader', 'Load'));
+		return spl_autoload_register(array('AutoloaderET', 'Load'));
 	}
 	
 	/**

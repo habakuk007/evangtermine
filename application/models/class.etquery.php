@@ -176,10 +176,10 @@ class EtQuery {
 			}
 			
 			Debugging::consoleLog('Querystring: ', $queryString);
-			Debugging::consoleLog('URL: ', $url);
 			
 			// TODO Prüfen, ob etHost mit dem angegebenen Protokoll erreichbar ist, wenn nicht, das andere Protokoll testen
 			$url = $this->etProtocol . $host . '/' . $filename . '?' . $queryString;
+			Debugging::consoleLog('URL: ', $url);
 			
 			if (function_exists ( 'curl_init' )) {
 				$sobl = curl_init ( $url );
@@ -187,6 +187,7 @@ class EtQuery {
 				curl_setopt ( $sobl, CURLOPT_USERAGENT, 'EvangTermine' );
 				curl_setopt ( $sobl, CURLOPT_REFERER, $_SERVER ['HTTP_HOST'] . $_SERVER ['PHP_SELF'] );
 				curl_setopt ( $sobl, CURLOPT_CONNECTTIMEOUT, 5 );
+				curl_setopt ( $sobl, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4 );
 				$stream = curl_exec ( $sobl );
 				$sobl_info = curl_getinfo ( $sobl );
 				if ($sobl_info ['http_code'] == '200') {
@@ -219,6 +220,7 @@ class EtQuery {
 	private function filterStream($stream) {
 		// nocss entfernen - verursacht eine Warnung
 		$stream = str_replace ( '<link rel="stylesheet" type="text/css" href="nocss"  />', '', $stream );
+		$stream = str_replace ( '<link href="nocss" media="screen, projection" rel="stylesheet" type="text/css" />', '', $stream );
 		
 		// CSS der Evangelischen Termine entfernen, damit das eigene CSS verwendet werden kann.
 		if (!$this->etLoadCSS) {
