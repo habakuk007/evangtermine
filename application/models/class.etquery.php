@@ -131,6 +131,8 @@ class EtQuery {
 	public function getQuerystring() {
 		$queryString = '';
 		foreach ( $this->etParameters as $key => $value ) {
+			// Query bei den Evangelischen Termine korrekt aufbauen: Leerzeichen durch '+' ersetzen.
+			if ( 'q' == $key ) $value = str_replace (' ', '+', $value );
 			
 			// Erwachsenenbildung in Bayern: Wenn auswahl=eb soll weder ein Eingabeformular noch ein Kanal verwendet werden (Abfrage erfolgt direkt in den Evangelischen Terminen).
 			if ( !(($this->etParameters['auswahl'] == 'eb') && ($key == 'ipm')) && !(($this->etParameters['auswahl'] == 'eb') && ($key == 'cha'))) {
