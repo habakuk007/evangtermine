@@ -48,11 +48,11 @@ mit den hinterlegten Bildern ausgegeben.
 `[et_panels @parameter]`  
 Wenn das Panel mit dem "Mehr"-Link nicht angezeigt werden soll, muss man im CSS folgendes hinterlegen:
 
-```CSS
+`CSS
 #load1 {
 	display: none;
 }
-```
+`
 
 Beschreibung der [@parameter](http://wordpress.org/plugins/evangtermine/other_notes/#Parameter)
 
@@ -133,7 +133,7 @@ all = alle Veranstaltungen). Default: extern.
 
 **until**: Gibt an, ob eine Veranstaltung bis zum Enddatum angezeigt werden soll oder nicht (yes|no). Default: yes.
 
-**q**: über diesen Parameter können Suchbegriffe übergeben werden. Die Begriffe werden durch ein Komma getrennt.
+**q**: über diesen Parameter können Suchbegriffe übergeben werden. Die Begriffe werden durch ein Leerzeichen getrennt.
 
 **auswahl**: Über diesen Parameter können in Bayern Erwachsenenbildungsveranstaltungen abgerufen werden, die entweder über die 
 Eingabemaske `Erwachsenenbildung` oder mit den Kanal `Erwachsenenbildung` angelegt wurden.
