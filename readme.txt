@@ -4,7 +4,7 @@ Contributors: regibaer
 Tags: evangelische, termine, elkb, vernetzte, kirche  
 Requires at least: 3.0  
 Tested up to: 5.3  
-Stable tag: 2.2.9
+Stable tag: 2.2.10
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html 
 
@@ -151,6 +151,9 @@ Die Beschreibung der Parameter findet sich im [Handbuch der Evangelischen Termin
 5. Ausgabe des Widgets
 
 == Changelog ==
+= 2.2.10 =
+* FIXED: cha wurde ausgeblendet, wenn gleichzeitig auswahl=eb gesetzt war.
+
 = 2.2.8 =
 * FIXED: Neuer Link im Stream der Evangelischen Termine wird vom Plugin mit der Option nocss wieder eliminiert.
 
