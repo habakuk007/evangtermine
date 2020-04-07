@@ -3,7 +3,7 @@
 Contributors: regibaer  
 Tags: evangelische, termine, elkb, vernetzte, kirche  
 Requires at least: 3.0  
-Tested up to: 5.3  
+Tested up to: 5.4  
 Stable tag: 2.2.9
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html 
