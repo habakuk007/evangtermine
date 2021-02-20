@@ -8,7 +8,7 @@
  * Description: Dieses Plugin bindet die Evangelischen Termine (www.evangelische-termine.de) in Wordpress ein.
  * Author: regibaer
  * Version: 2.2.10
- * Tested up to: 5.3
+ * Tested up to: 5.6.1
  * Author URI: mailto:rae@dekanat-weilheim.de
  * License: GPLv2
  */
