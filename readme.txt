@@ -4,7 +4,7 @@ Contributors: regibaer
 Tags: evangelische, termine, elkb, vernetzte, kirche  
 Requires at least: 3.0  
 Tested up to: 5.9
-Stable tag: 2.2.14
+Stable tag: 2.2.15
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html 
 
@@ -152,7 +152,7 @@ Die Beschreibung der Parameter findet sich im [Handbuch der Evangelischen Termin
 
 == Changelog ==
 
-= 2.2.13 =
+= 2.2.15 =
 * FIXED: deprecated: Non-static method should be called statically. Plugin sollte jetzt auch mit PHP 8.x laufen.
 
 = 2.2.10 =
@@ -221,7 +221,7 @@ Die Beschreibung der Parameter findet sich im [Handbuch der Evangelischen Termin
 
 == Upgrade Notice ==
 
-= 2.2.13 =
+= 2.2.15 =
 * FIXED: deprecated: Non-static method should be called statically. Plugin sollte jetzt auch mit PHP 8.x laufen.
 
 = 2.2.8 =
