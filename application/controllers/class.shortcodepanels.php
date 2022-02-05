@@ -8,7 +8,7 @@ class ShortcodePanels {
 	 * @param string $content
 	 * @return string
 	 */
-	public function etPanels($attr, $content = null) {
+	public static function etPanels($attr, $content = null) {
 		
 		$etstream = new EtQuery();
 // 		$etstream->setNoDetail(true); // Detailansicht für dieses Modul unterdrücken

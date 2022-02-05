@@ -8,7 +8,7 @@ class ShortcodeVeranstalter {
 	 * @param string $content
 	 * @return string
 	 */
-	public function etVeranstalter($attr, $content = null) {
+	public static function etVeranstalter($attr, $content = null) {
 		// $etURLParameters identifiziert die Parameter der Evangelischen Termine.
 		// Werte, die nicht in diesem Array enthalten sind, werden vor dem Abruf der Evangelischen Termine an die URL angehängt.
 		$etURLParameters =  array(
