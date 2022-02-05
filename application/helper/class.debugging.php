@@ -4,8 +4,8 @@ class Debugging {
 	/**
 	 * consoleLog
 	 *
-	 * @param string $key        	
-	 * @param mixed $data        	
+	 * @param string $key
+	 * @param mixed $data
 	 */
 	public static function consoleLog($description, $data) {
 		if (DEBUG) {
@@ -27,8 +27,8 @@ class Debugging {
 	/**
 	 * writeOutputStream
 	 *
-	 * @param string $filename        	
-	 * @param string $outputStream        	
+	 * @param string $filename
+	 * @param string $outputStream
 	 */
 	public static function writeOutputStream($filename, $outputStream) {
 		if (DEBUG) {
