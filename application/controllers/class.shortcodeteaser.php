@@ -8,7 +8,7 @@ class ShortcodeTeaser {
 	 * @param string $content
 	 * @return string
 	 */
-	public function etTeaser($attr, $content = null) {
+	public static function etTeaser($attr, $content = null) {
 		
 		$etstream = new EtQuery(ET_TEMPLATE_TEASER_SHORTCODE);
 		$etstream->setNoDetail(true); // Detailansicht für dieses Modul unterdrücken

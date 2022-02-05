@@ -1,20 +1,20 @@
 <?php
 /**
  * @package evangtermine
- * @version 2.2.4
+ * @version 2.2.15
  */
 /*
  * Plugin Name: Evangelische Termine
  * Description: Dieses Plugin bindet die Evangelischen Termine (www.evangelische-termine.de) in Wordpress ein.
  * Author: regibaer
- * Version: 2.2.4
- * Tested up to: 5.0
- * Author URI: mailto:rae@de-zeit.de
+ * Version: 2.2.15
+ * Tested up to: 5.7
+ * Author URI: mailto:rae@dekanat-weilheim.de
  * License: GPLv2
  */
 
 /*
- * Copyright (C) 2017 Norbert Räbiger (E-Mail: rae@de-zeit.de)
+ * Copyright (C) 2017 Norbert Räbiger (E-Mail: rae@dekanat-weilheim.de)
  * This program is free software; you can redistribute it and/or modify it under the terms
  * of the GNU General Public License as published by the Free Software Foundation; either
  * version 2 of the License, or (at your option) any later version.
@@ -42,7 +42,7 @@ class EvangTermine {
 		if (!defined('BASE_PATH')) {
 			define('BASE_PATH', __DIR__);
 			require_once BASE_PATH . '/autoloader.php';
-			Autoloader::Register();
+			AutoloaderET::Register();
 		}
 		
 		// integrate the options menu if an admin ist logged in
@@ -62,11 +62,15 @@ class EvangTermine {
 		add_shortcode('et_veranstalter', array('ShortcodeVeranstalter', 'etVeranstalter'));
 		
 		// TODO shortcode für das Panelsmodul einbinden
+		//add_shortcode('et_panels', array('ShortcodePanels', 'etPanels'));
 		
 		// TODO shortcode für das Modul mit der Übersichtskarte http://www.evangelische-termine.de/map?vid=952&itemsPerPage=100&lat=48.92971763063&lng=10.78857421875&zoom=7&ipm=808®ion=407&vid=all
 		
 		// Widget einbinden
-		add_action('widgets_init', create_function('', 'return register_widget(\'EtWidget\');'));
+		function EtWidget_init_widget () {
+			return register_widget('EtWidget');
+		}
+		add_action ('widgets_init', 'EtWidget_init_widget');
 	}
 	
 }
