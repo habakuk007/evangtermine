@@ -62,7 +62,7 @@ class EvangTermine {
 		add_shortcode('et_veranstalter', array('ShortcodeVeranstalter', 'etVeranstalter'));
 		
 		// TODO shortcode für das Panelsmodul einbinden
-		//add_shortcode('et_panels', array('ShortcodePanels', 'etPanels'));
+		add_shortcode('et_panels', array('ShortcodePanels', 'etPanels'));
 		
 		// TODO shortcode für das Modul mit der Übersichtskarte http://www.evangelische-termine.de/map?vid=952&itemsPerPage=100&lat=48.92971763063&lng=10.78857421875&zoom=7&ipm=808®ion=407&vid=all
 		
