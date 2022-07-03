@@ -4,7 +4,7 @@
 class AutoloaderET {
 	
 	/**
-	 * Autoloader
+	 * AutoloaderET
 	 * Registiert die Methode für das automatische Laden der Klassen.
 	 * 
 	 * @return boolean

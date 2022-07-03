@@ -4,7 +4,7 @@ Contributors: regibaer
 Tags: evangelische, termine, elkb, vernetzte, kirche  
 Requires at least: 3.0  
 Tested up to: 6.0
-Stable tag: 2.2.15
+Stable tag: 2.2.16
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html 
 
@@ -26,7 +26,8 @@ Pager aus.
 
 * Shortcode [et_veranstalter @parameter] zur Einbindung der Evangelischen Termine in einem Beitrag oder auf einer Seite
 * Shortcode [et_teaser @parameter] zur Einbindung der Evangelischen Termine in einem Beitrag oder auf einer Seite
-* Shortcode [et_panels @parameter] zur Einbindugn der Evangelischen Termine als Panels
+* Shortcode [et_panels @parameter] zur Einbindung der Evangelischen Termine als Panels
+* Shortcode [et_minical @parameter] zur Einbindung des Mini-Kalenders der Evangelischen Termine
 * Widget "Evangelische Termine" zur Einbindung der Evangelischen Termine in einem Widget-Bereich
 * Option-Page für die Grundeinstellungen des Plugins
 * Überschreiben der Grundeinstellungen über die @parameter bei den Shortcodes und im Widget
@@ -53,6 +54,9 @@ Wenn das Panel mit dem "Mehr"-Link nicht angezeigt werden soll, muss man im CSS 
 	display: none;
 }
 `
+
+Mit dem Shortcode `et_minical` wird der Mini-Kalender aus den Evangelischen Terminen eingebunden.  
+`[et_minical @parameter]`
 
 Beschreibung der [@parameter](http://wordpress.org/plugins/evangtermine/other_notes/#Parameter)
 
@@ -152,6 +156,9 @@ Die Beschreibung der Parameter findet sich im [Handbuch der Evangelischen Termin
 
 == Changelog ==
 
+= 2.2.16 =
+* ADDED: Shortcode et_minical
+
 = 2.2.15 =
 * FIXED: deprecated: Non-static method should be called statically. Plugin sollte jetzt auch mit PHP 8.x laufen.
 
@@ -220,6 +227,9 @@ Die Beschreibung der Parameter findet sich im [Handbuch der Evangelischen Termin
 * FIXED: Sessionhandling wurde angepasst. Werte werden jetzt direkt an den Pager übergeben (Ersetzung `__HOST__`)
 
 == Upgrade Notice ==
+
+= 2.2.16 =
+* ADDED: Shortcode et_minical
 
 = 2.2.15 =
 * FIXED: deprecated: Non-static method should be called statically. Plugin sollte jetzt auch mit PHP 8.x laufen.
