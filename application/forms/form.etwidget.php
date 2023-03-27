@@ -79,3 +79,6 @@
 		<input name="<?php echo $this->get_field_name( 'q' ); ?>" type="text" value="<?php echo esc_attr( $instance['q'] ); ?>" />
 	</p>
 	<input name="<?php echo $this->get_field_name( 'tpl' ); ?>" type="hidden" value="2" />
+	<p>Weitere Parameter (Format param1=value1&amp;param2=value2[&amp;..]):
+		<input name="<?php echo $this->get_field_name( 'additionalParameters' ); ?>" type="text" value="<?php echo esc_attr( $instance['additionalParameters' ] ); ?>" />
+	</p>

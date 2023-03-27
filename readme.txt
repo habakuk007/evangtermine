@@ -3,8 +3,8 @@
 Contributors: regibaer  
 Tags: evangelische, termine, elkb, vernetzte, kirche  
 Requires at least: 3.0  
-Tested up to: 6.1
-Stable tag: 2.3
+Tested up to: 6.2
+Stable tag: 2.3.1
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html 
 
@@ -156,6 +156,9 @@ Die Beschreibung der Parameter findet sich im [Handbuch der Evangelischen Termin
 
 == Changelog ==
 
+= 2.3.1 =
+* ADDED: Feld für weitere Parameter im Widget ergänzt
+
 = 2.3 =
 * ADDED: Shortcode et_minical
 
@@ -227,6 +230,9 @@ Die Beschreibung der Parameter findet sich im [Handbuch der Evangelischen Termin
 * FIXED: Sessionhandling wurde angepasst. Werte werden jetzt direkt an den Pager übergeben (Ersetzung `__HOST__`)
 
 == Upgrade Notice ==
+
+= 2.3.1 =
+* ADDED: Feld für weitere Parameter im Widget ergänzt
 
 = 2.3 =
 * ADDED: Shortcode et_minical
