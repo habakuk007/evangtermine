@@ -3,21 +3,14 @@
 class EtQuery
 {
 
-    private $userAgent = 'Wordpress-Plugin evangtermine 2.0';
-
     private $connectionTimeout = 5;
-
     private $etFilename;
-
     private $etParameters;
 
     // Defaultwerte
     private $etProtocol;
-
     private $etHost;
-
     private $noDetail = false;
-
     private $etLoadCSS = true;
 
     /**
@@ -31,6 +24,7 @@ class EtQuery
         $this->etParameters = array(
             'vid' => get_option('vid'),
             'region' => get_option('region'),
+            'aid' => ET_OPTION_AID,
             'eventtype' => ET_OPTION_EVENTTYPE,
             'highlight' => ET_OPTION_HIGHLIGHT,
             'people' => ET_OPTION_PEOPLE,
@@ -60,8 +54,10 @@ class EtQuery
 
     /**
      * Legt den zu verwendenden Filename in Attribut ab.
+     *
+     * @param string $filename
      */
-    function setFilename($filename)
+    public function setFilename($filename)
     {
         $this->etFilename = $filename;
     }
@@ -159,14 +155,11 @@ class EtQuery
             if ('q' == $key)
                 $value = str_replace(' ', '+', $value);
 
-            // URL-Encodings entfernen
-            $value = str_replace('%', '_', $value);
-
             // Erwachsenenbildung in Bayern: Wenn auswahl=eb soll weder ein Eingabeformular noch ein Kanal verwendet werden (Abfrage erfolgt direkt in den Evangelischen Terminen).
             // if ( !(($this->etParameters['auswahl'] == 'eb') && ($key == 'ipm')) && !(($this->etParameters['auswahl'] == 'eb') && ($key == 'cha'))) {
             if ('title' != $key) {
                 if ('region' != $key) {
-                    if('additionalParameters' != $key) {
+                    if ('additionalParameters' != $key) {
                         $queryString .= '&' . $key . '=' . $value;
                     } else {
                         $queryString .= '&' . $value;
@@ -196,6 +189,8 @@ class EtQuery
      */
     public function retrieveStream($queryString)
     {
+        global $wp;
+
         if ($this->etParameters['vid']) {
             // Dateinamen für den Abruf setzen
             $filename = $this->etFilename;
@@ -204,12 +199,13 @@ class EtQuery
 
             // Wenn etID übergeben wurde, Detailseite aufrufen
             if (array_key_exists('etID', $_GET)) {
-            if (($_GET['etID'] != "") && (! $this->noDetail)) {
-                // TODO eigenes CSS an den $queryString anhängen (Detailansicht)
-                $queryString .= '&ID=' . $_GET['etID'];
-                $filename = ET_DETAILS_MODUL;
-                // $filename='veranstaltung_im_detail' . $_GET['etID'] . 'html';
-            }}
+                if (($_GET['etID'] != "") && (! $this->noDetail)) {
+                    // TODO eigenes CSS an den $queryString anhängen (Detailansicht)
+                    $queryString .= '&ID=' . $_GET['etID'];
+                    $filename = ET_DETAILS_MODUL;
+                    // $filename='veranstaltung_im_detail' . $_GET['etID'] . 'html';
+                }
+            }
 
             Debugging::consoleLog('Querystring: ', $queryString);
 
@@ -217,24 +213,23 @@ class EtQuery
             $url = $this->etProtocol . $host . '/' . $filename . '?' . $queryString;
             Debugging::consoleLog('URL: ', $url);
 
-            if (function_exists('curl_init')) {
-                $sobl = curl_init($url);
-                curl_setopt($sobl, CURLOPT_RETURNTRANSFER, true);
-                curl_setopt($sobl, CURLOPT_USERAGENT, 'EvangTermine');
-                curl_setopt($sobl, CURLOPT_REFERER, $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF']);
-                curl_setopt($sobl, CURLOPT_CONNECTTIMEOUT, 5);
-                curl_setopt($sobl, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
-                $stream = curl_exec($sobl);
-                $sobl_info = curl_getinfo($sobl);
-                if ($sobl_info['http_code'] == '200') {
+            // Abfrage der Evangelischen Termine über die http-Api von Wordpress
+            $response = wp_remote_get($url, array(
+                'timeout' => $this->connectionTimeout,
+                'user-agent' => 'evangtermine/' . ET_VERSION . ' Wordpress-Plugin',
+                'headers' => array(
+                    'Referer' => home_url($wp->request)
+                )
+            ));
+
+            if (! is_wp_error($response) && $response['response']['code'] == 200) {
+                $stream = $response['body'];
+                if ('[{' != substr($stream, 0, 2)) {
                     $stream = $this->filterStream($stream);
-                } else {
-                    // Fehlermeldung $host ist vorübergehend nicht erreichbar
-                    $stream = '<div>Der Veranstaltungskalender ist derzeit nicht verfügbar.</div>';
                 }
             } else {
-                // Fehlermeldung, wenn cURL nicht installiert ist
-                $stream = '<div>Das benötigte PHP-Modul cURL ist nicht installiert.</div>';
+                // Fehlermeldung $host ist vorübergehend nicht erreichbar
+                $stream = '<div>Der Veranstaltungskalender ist derzeit nicht verfügbar.</div>';
             }
         } else {
             $stream = 'Error: Plugin "Evangelische Termine": Veranstalter-ID ist nicht gesetzt';

@@ -4,7 +4,7 @@ Contributors: regibaer
 Tags: evangelische, termine, elkb, vernetzte, kirche  
 Requires at least: 3.0  
 Tested up to: 6.2
-Stable tag: 2.3.1
+Stable tag: 3.0
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html 
 
@@ -14,13 +14,6 @@ Mit dem Plugin "Evangelische Termine" wird die Datenbank der "Evangelischen Term
 
 Mit dem Plugin "Evangelische Termine" wird die Datenbank der "Evangelischen Termine" abgefragt und in Wordpress eingebunden. 
 Über Shortcodes/Makros und über ein Widget wird die Anzeige für einzelne/mehrere Veranstalter oder für eine Region gesteuert.
-
-Das Plugin verwendet cURL (curl.so - http://curl.haxx.se/), um die Daten bei den Evangelischen Terminen anzufordern und abzurufen. 
-Sollte cURL nicht auf dem Server installiert sein, muss der Abruf der Daten umgeschrieben werden.
-
-Das Plugin basiert auf zwei PHP-Skripten von Miklós Geyer von der [Vernetzten Kirche](http://www.vernetzte-kirche.de/). Das erste
-Skript gibt einen Filter, einen Pager und die Liste der Termine aus. Das zweite ruft die Termine ab und gibt sie ohne Filter und
-Pager aus.
 
 = Features =
 
@@ -155,6 +148,10 @@ Die Beschreibung der Parameter findet sich im [Handbuch der Evangelischen Termin
 5. Ausgabe des Widgets
 
 == Changelog ==
+
+= 3.0 =
+* Curl ist nicht mehr erforderlich, stattdessen werden die Evangelischen Termine mithilfe der http-Api von Wordpress abgefragt.
+* FIXED: Sessionhandling im Shortcode et_veranstalter
 
 = 2.3.1 =
 * ADDED: Feld für weitere Parameter im Widget ergänzt

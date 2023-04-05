@@ -1,13 +1,13 @@
 <?php
 /**
  * @package evangtermine
- * @version 2.3.1
+ * @version 3.0
  */
 /*
  * Plugin Name: Evangelische Termine
  * Description: Dieses Plugin bindet die Evangelischen Termine (www.evangelische-termine.de) in Wordpress ein.
  * Author: regibaer
- * Version: 2.3.1
+ * Version: 3.0
  * Tested up to: 6.2
  * Author URI: mailto:mail@oisisi.de
  * License: GPLv2
@@ -25,6 +25,8 @@
  * if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA 02110-1301, USA.
  */
+
+define ('ET_VERSION', '3.0');
 
 define('DEBUG', false);
 
@@ -66,6 +68,9 @@ class evangtermine {
 		
 		// shortcode für den Mini-Kalender
 		add_shortcode('et_minical', array('ShortcodeMinical', 'etMinical'));
+		
+		// shortcode für einen Teaser der die Daten über JSON abruft
+		// add_shortcode('et_teaserjson', array('ShortcodeTeaserJson', 'etTeaserJson'));
 		
 		// TODO shortcode für das Modul mit der Übersichtskarte http://www.evangelische-termine.de/map?vid=952&itemsPerPage=100&lat=48.92971763063&lng=10.78857421875&zoom=7&ipm=808®ion=407&vid=all
 		

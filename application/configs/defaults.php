@@ -24,6 +24,7 @@ if(!defined('ET_DEFAULT_CHARSET')) {
 	define( 'ET_DEFAULT_CHARSET', 'utf8' );
 }
 
+define( 'ET_OPTION_AID', '');
 define( 'ET_OPTION_EVENTTYPE', '' );
 define( 'ET_OPTION_HIGHLIGHT', 'all' );
 define( 'ET_OPTION_PEOPLE', '0' );
@@ -39,6 +40,7 @@ define( 'ET_VERANSTALTER_MODUL', 'veranstaltungen-php');
 define( 'ET_TEASER_MODUL', 'teaser');
 define( 'ET_DETAILS_MODUL', 'detail-php');
 define( 'ET_PANEL_MODUL', 'panels');
+define( 'ET_JSON', 'json');
 
 define( 'ET_TEMPLATE_TEASER_SHORTCODE', '1' );
 define( 'ET_TEMPLATE_TEASER_WIDGET', '2');
