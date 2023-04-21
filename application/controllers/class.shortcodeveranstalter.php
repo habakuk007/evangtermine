@@ -102,6 +102,13 @@ class ShortcodeVeranstalter
             }
         }
         
+        // Parameter für die Suche sichern
+        if (array_key_exists('et_q', $_REQUEST)) {
+            if ($_REQUEST['et_q'] != '') { // ($_REQUEST['et_q'] <> $_REQUEST['q']){
+                $etstream->setEtParameter('q', $_REQUEST['et_q']);
+            }
+        }
+        
         // Querystring erstellen
         $querystring = $etstream->getQuerystring();
 
@@ -129,6 +136,9 @@ class ShortcodeVeranstalter
             'etID',
             'Suche',
             'action',
+            session_name(),
+            '_token',
+            'reset',
             'dest',
             'q'
         );
