@@ -4,7 +4,7 @@ Contributors: regibaer
 Tags: evangelische, termine, elkb, vernetzte, kirche  
 Requires at least: 3.0  
 Tested up to: 6.2
-Stable tag: 3.1
+Stable tag: 3.2
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html 
 
@@ -149,6 +149,12 @@ Die Beschreibung der Parameter findet sich im [Handbuch der Evangelischen Termin
 
 == Changelog ==
 
+= 3.2 =
+* FIXED: jquery wird lokal geladen und nicht von einem CDN abgerufen
+
+= 3.1 =
+* FIXED: et_veranstalter - Suchbegriff wurde nicht mehr übertragen
+
 = 3.0 =
 * Curl ist nicht mehr erforderlich, stattdessen werden die Evangelischen Termine mithilfe der http-Api von Wordpress abgefragt.
 * FIXED: Sessionhandling im Shortcode et_veranstalter
@@ -227,6 +233,16 @@ Die Beschreibung der Parameter findet sich im [Handbuch der Evangelischen Termin
 * FIXED: Sessionhandling wurde angepasst. Werte werden jetzt direkt an den Pager übergeben (Ersetzung `__HOST__`)
 
 == Upgrade Notice ==
+
+= 3.2 =
+* FIXED: jquery wird lokal geladen und nicht von einem CDN abgerufen
+
+= 3.1 =
+* FIXED: et_veranstalter - Suchbegriff wurde nicht mehr übertragen
+
+= 3.0 =
+* Curl ist nicht mehr erforderlich, stattdessen werden die Evangelischen Termine mithilfe der http-Api von Wordpress abgefragt.
+* FIXED: Sessionhandling im Shortcode et_veranstalter
 
 = 2.3.1 =
 * ADDED: Feld für weitere Parameter im Widget ergänzt
