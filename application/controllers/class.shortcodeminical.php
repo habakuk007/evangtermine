@@ -24,8 +24,8 @@ class ShortcodeMinical
         ob_start();
 ?>
 <link rel="stylesheet" href="<?php echo plugin_dir_url( '' ) . 'evangtermine/assets/ui/1.12.1/themes/base/jquery-ui.css'; ?>">
-<link rel="stylesheet" href="//evangelische-termine.de/bundles/vket/css/colorbox.css">
-<script src="//evangelische-termine.de/bundles/vket/js/et_minical.js"></script>
+<link rel="stylesheet" href="<?php echo plugin_dir_url( '' ) . 'evangtermine/assets/styles/colorbox.css'; ?>">
+<script src="<?php echo plugin_dir_url( '' ) . 'evangtermine/assets/scripts/et_minical.js'; ?>"></script>
 
 <!-- Formattierungen für den Tooltip: -->
 <style type="text/css">

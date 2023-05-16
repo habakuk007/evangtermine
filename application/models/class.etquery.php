@@ -253,6 +253,13 @@ class EtQuery
         // nocss entfernen - verursacht eine Warnung
         $stream = str_replace('<link rel="stylesheet" type="text/css" href="nocss"  />', '', $stream);
         $stream = str_replace('<link href="nocss" media="screen, projection" rel="stylesheet" type="text/css" />', '', $stream);
+        
+        // URL für JavaScripts in et_panels anpassen
+        $stream = str_replace('<script type="text/javascript" src="/bundles/vket/js/jquery/jquery.min.js"></script>', '<script type="text/javascript" src="' . plugin_dir_url( '' ) . 'evangtermine/assets/scripts/jquery.min.js' . '"></script>', $stream);
+        $stream = str_replace('<script type="text/javascript" src="/bundles/vket/css/panels/bootstrap3.3.7.min.js"></script>', '<script type="text/javascript" src="' . plugin_dir_url( '' ) . 'evangtermine/assets/scripts/bootstrap3.3.7.min.js' . '"></script>', $stream);
+        $stream = str_replace('<link rel="stylesheet" href="/bundles/vket/css/panels/bootstrap3.3.7.min.css" />', '<link rel="stylesheet" href="' . plugin_dir_url( '' ) . 'evangtermine/assets/styles/bootstrap3.3.7.min.css' . '" />', $stream);
+        $stream = str_replace('<link rel="stylesheet" href="/bundles/vket/css/panels/bootstrap-theme3.3.7.min.css" />', '<link rel="stylesheet" href="' . plugin_dir_url( '' ) . 'evangtermine/assets/styles/bootstrap-theme3.3.7.min.css' . '" />', $stream);
+        $stream = str_replace('<link rel="stylesheet" href="/bundles/vket/css/font-awesome.min.css" />', '<link rel="stylesheet" href="' . plugin_dir_url( '' ) . 'evangtermine/assets/font-awesome-4.7.0/css/font-awesome.min.css' . '" />', $stream);
 
         // CSS der Evangelischen Termine entfernen, damit das eigene CSS verwendet werden kann.
         if (! $this->etLoadCSS) {
@@ -281,7 +288,7 @@ class EtQuery
         $stream = str_replace(' : <span class="et_content_subtitle">', ': <span class="et_content_subtitle">', $stream);
 
         // Google-Maps über SSL abrufen
-        $stream = str_replace('http://maps.googleapis.com', 'https://maps.googleapis.com', $stream);
+        //$stream = str_replace('http://maps.googleapis.com', 'https://maps.googleapis.com', $stream);
 
         // Obsolete Elemente entfernen
         $stream = str_replace(' language="javascript"', '', $stream);

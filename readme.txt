@@ -4,7 +4,7 @@ Contributors: regibaer
 Tags: evangelische, termine, elkb, vernetzte, kirche  
 Requires at least: 3.0  
 Tested up to: 6.2
-Stable tag: 3.2
+Stable tag: 3.3
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html 
 
@@ -149,6 +149,9 @@ Die Beschreibung der Parameter findet sich im [Handbuch der Evangelischen Termin
 
 == Changelog ==
 
+= 3.3 =
+* FIXED: Darstellungsproblem im Modul et_panels
+
 = 3.2 =
 * FIXED: jquery wird lokal geladen und nicht von einem CDN abgerufen
 
@@ -233,6 +236,9 @@ Die Beschreibung der Parameter findet sich im [Handbuch der Evangelischen Termin
 * FIXED: Sessionhandling wurde angepasst. Werte werden jetzt direkt an den Pager übergeben (Ersetzung `__HOST__`)
 
 == Upgrade Notice ==
+
+= 3.3 =
+* FIXED: Darstellungsproblem im Modul et_panels
 
 = 3.2 =
 * FIXED: jquery wird lokal geladen und nicht von einem CDN abgerufen
