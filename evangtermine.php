@@ -8,7 +8,7 @@
  * Description: Dieses Plugin bindet die Evangelischen Termine (www.evangelische-termine.de) in Wordpress ein.
  * Author: regibaer
  * Version: 3.3
- * Tested up to: 6.2
+ * Tested up to: 6.3
  * Author URI: mailto:mail@oisisi.de
  * License: GPLv2
  */

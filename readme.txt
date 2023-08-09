@@ -3,7 +3,7 @@
 Contributors: regibaer  
 Tags: evangelische, termine, elkb, vernetzte, kirche  
 Requires at least: 3.0  
-Tested up to: 6.2
+Tested up to: 6.3
 Stable tag: 3.3
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html 
@@ -11,6 +11,12 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Mit dem Plugin "Evangelische Termine" wird die Datenbank der "Evangelischen Termine" abgefragt und in Wordpress eingebunden. 
 
 == Description ==
+
+ACHTUNG: Dieses Plugin wird ab 8/2023 nicht mehr weiterentwickelt. In den Evangelischen Terminen wurde ein Widget integriert,
+das in allen CMS-Systemen eingesetzt werden kann. Das Widget stellt die Einträge in der Datenbank mit Titelbild und Ort dar.
+Über eine Proxy-Datei, werden die Inhalte geladen und in die Webseite integriert. Damit werden auch Datenschutzprobleme
+umgangen, da die IP-Adressen der User nicht mehr an weitere Dienstleister übermittelt werden.
+Informationen zum Widget finden sich nach Anmeldung in den Evangelischen Terminen unter Information -> Widgets.
 
 Mit dem Plugin "Evangelische Termine" wird die Datenbank der "Evangelischen Termine" abgefragt und in Wordpress eingebunden. 
 Über Shortcodes/Makros und über ein Widget wird die Anzeige für einzelne/mehrere Veranstalter oder für eine Region gesteuert.
