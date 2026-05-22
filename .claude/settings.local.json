@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch(domain:www.cvedetails.com)",
+      "WebFetch(domain:www.wordfence.com)",
+      "WebFetch(domain:www.cve.org)",
+      "WebFetch(domain:nvd.nist.gov)",
+      "Bash(gh auth *)",
+      "Bash(gh repo *)",
+      "Bash(gh issue *)",
+      "Bash(gh label *)"
+    ]
+  }
+}
