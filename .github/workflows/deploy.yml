@@ -1,0 +1,32 @@
+name: Deploy to WordPress.org
+
+# Triggers on any version tag push, e.g. "1.9" or "2.0.0".
+# Tag format: push `git tag 1.9 && git push origin 1.9`
+on:
+  push:
+    tags:
+      - '[0-9]+.[0-9]+'
+      - '[0-9]+.[0-9]+.[0-9]+'
+      - '[0-9]+.[0-9]+.[0-9]+-*'
+
+jobs:
+  deploy:
+    name: Deploy to WordPress.org SVN
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: WordPress Plugin Deploy
+        uses: 10up/action-wordpress-plugin-deploy@stable
+        env:
+          # WordPress.org credentials — add these as repository secrets:
+          #   Settings → Secrets and variables → Actions → New repository secret
+          #   SVN_USERNAME = your WordPress.org username
+          #   SVN_PASSWORD = your WordPress.org password or application password
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+
+          # WordPress.org plugin slug — must match the directory name on wordpress.org/plugins/
+          SLUG: evangtermine
