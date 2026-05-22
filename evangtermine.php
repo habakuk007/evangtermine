@@ -289,7 +289,7 @@ function et_include_css () {
 	} else {
 		$css = plugins_url( 'assets/css/evangtermine.css', EVANGTERMINE_PLUGIN_PATH . 'evangtermine' );
 	}
-	$output = '<link href="' . $css . '" media="screen, projection" rel ="stylesheet" type="text/css" />';
+	$output = '<link href="' . esc_url( $css ) . '" media="screen, projection" rel="stylesheet" type="text/css" />';
 	echo $output;
 }
 

@@ -16,13 +16,13 @@ function et_show_section() {
 // Veranstalter-ID(s): kommagetrennte Liste der Veranstalter-IDs der Evangelischen Termine
 function et_show_vid() {
 	$vid = get_option( 'vid' );
-	echo '<input name="vid" type="text" value="' . $vid . '" />';
+	echo '<input name="vid" type="text" value="' . esc_attr( $vid ) . '" />';
 }
 // Dekanats-ID: Dekanatsnummer
 // Diese ID ist in den Shortcodes/Makros und im Widget nicht überschreibbar.
 function et_show_region() {
 	$region = get_option( 'region' );
-	echo '<input name="region" type="text" value="' . $region . '" />';
+	echo '<input name="region" type="text" value="' . esc_attr( $region ) . '" />';
 }
 
 // Über diesen Schalter wird eingestellt, ob ein Termin bis zum Ablauf angezeigt wird oder mit Beginn
@@ -41,7 +41,7 @@ function et_show_until() {
 // Eigene CSS-Datei. Dadurch werden die CSS-Einstellungen der Evangelischen Termine überschrieben. 
 function et_show_css() {
 	$css = get_option( 'css' );
-	echo '<input name="css" type="text" value="' . $css . '" size="40" />';
+	echo '<input name="css" type="text" value="' . esc_attr( $css ) . '" size="40" />';
 }
 
 // Encoding der Website einstellen
@@ -70,7 +70,7 @@ function et_show_etprotocol() {
 
 function et_show_ethost() {
 	$ethost = get_option( 'ethost' );
-	echo '<input name="ethost" type="text" value="' . $ethost . '" size="40" />';
+	echo '<input name="ethost" type="text" value="' . esc_attr( $ethost ) . '" size="40" />';
 }
 
 // Aufbau der Optionen
