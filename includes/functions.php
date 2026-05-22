@@ -117,8 +117,9 @@ function et_veranstalter( $et_defaults ) {
 		$response = wp_remote_get(
 			$url,
 			array(
-				'timeout'    => 2,
-				'user-agent' => 'Veranstalter-Script 2.0',
+				'timeout'            => 2,
+				'user-agent'         => 'Veranstalter-Script 2.0',
+				'reject_unsafe_urls' => true,
 			)
 		);
 		if ( is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
@@ -191,8 +192,9 @@ function et_teaser( $et_defaults ) {
 		$response = wp_remote_get(
 			$url,
 			array(
-				'timeout'    => 5,
-				'user-agent' => 'TeaserScript',
+				'timeout'            => 5,
+				'user-agent'         => 'TeaserScript',
+				'reject_unsafe_urls' => true,
 			)
 		);
 		if ( is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
