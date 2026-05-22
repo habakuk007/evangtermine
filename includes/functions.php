@@ -34,7 +34,7 @@ function et_veranstalter( $et_defaults ) {
 					$sess->pageID = 1;
 				}
 			}
-			if ( '' === $sess->{ $key } ) {
+			if ( ! isset( $sess->{ $key } ) || '' === $sess->{ $key } ) {
 				$sess->{ $key } = $default;
 			}
 		}
