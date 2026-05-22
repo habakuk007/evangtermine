@@ -28,7 +28,7 @@ readme.txt                ← WordPress.org listing
 |------|-------|
 | PHP prefix | `et_` (functions), `ET_` (constants), `ET_Widget` (class) |
 | Text domain | `evangtermine` |
-| Options prefix | `et_` (e.g. `et_vid`, `et_region`, `et_css`) |
+| Options names | `vid`, `region`, `until`, `css`, `encoding`, `etprotocol`, `ethost` (no prefix — legacy) |
 | External API host | `www.evangelische-termine.de` (configurable via `ET_DEFAULT_HOST`) |
 | API transport | PHP cURL (direct, not WP HTTP API) |
 | Session state | `$_SESSION['session']` object for filter persistence |
@@ -95,6 +95,6 @@ wp plugin check evangtermine
 
 - `ET_DEFAULT_HOST` — external API hostname; users override via settings, not code
 - `ET_DEFAULT_PROTOCOL` — must remain `http://` unless the remote API supports HTTPS
-- Option key names (e.g. `et_vid`, `et_region`) — renaming breaks existing installs
+- Option key names (`vid`, `region`, `until`, `css`, `encoding`, `etprotocol`, `ethost`) — bare names without prefix; renaming breaks existing installs
 - CSS class names prefixed with `.et_` — renaming breaks user custom CSS
 - The `ET_Widget` class name — WordPress serializes it in the database
