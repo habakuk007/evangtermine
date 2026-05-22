@@ -1,0 +1,50 @@
+{
+	"editor.insertSpaces": false,
+	"editor.tabSize": 4,
+	"editor.rulers": [120],
+	"editor.trimAutoWhitespace": true,
+	"files.trimTrailingWhitespace": true,
+	"intelephense.environment.phpVersion": "7.4",
+	"intelephense.stubs": [
+		"wordpress",
+		"Core",
+		"standard",
+		"json",
+		"mbstring",
+		"pcre",
+		"SPL",
+		"curl"
+	],
+	"[php]": {
+		"editor.defaultFormatter": "bmewburn.vscode-intelephense-client"
+	},
+	"[css]": {
+		"editor.tabSize": 4
+	},
+	"[json]": {
+		"editor.tabSize": 2
+	},
+	"search.exclude": {
+		"**/.git": true
+	},
+	"git.autofetch": true,
+	"cSpell.words": [
+		"evangelische",
+		"evangtermine",
+		"Veranstalter",
+		"veranstaltungen",
+		"Dekanats",
+		"teaser",
+		"ABSPATH",
+		"wpdb",
+		"transient",
+		"nonce",
+		"shortcode",
+		"enqueue",
+		"sanitize",
+		"esc_html",
+		"esc_attr",
+		"esc_url",
+		"wp_kses"
+	]
+}
