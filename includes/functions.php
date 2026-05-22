@@ -21,14 +21,20 @@ function et_veranstalter( $et_defaults ) {
 		}
 		
 		// Sessionvariable setzen
-		function et_setsessionvar( $key, $sess, $default = NULL ) {
-			if( '' != $_REQUEST[ $key ] ) {
-				$sess->{ $key } = $_REQUEST[ $key ];
-				if( 'pageID' != $key ) {
+		function et_setsessionvar( $key, $sess, $default = null ) {
+			$numeric_keys = array( 'pageID', 'itemsPerPage', 'people' );
+			$is_set = isset( $_REQUEST[ $key ] ) && '' !== $_REQUEST[ $key ]; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			if ( $is_set ) {
+				if ( in_array( $key, $numeric_keys, true ) ) {
+					$sess->{ $key } = absint( $_REQUEST[ $key ] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+				} else {
+					$sess->{ $key } = sanitize_text_field( wp_unslash( $_REQUEST[ $key ] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+				}
+				if ( 'pageID' !== $key ) {
 					$sess->pageID = 1;
 				}
 			}
-			if( '' == $sess->{ $key } ) {
+			if ( '' === $sess->{ $key } ) {
 				$sess->{ $key } = $default;
 			}
 		}
@@ -46,7 +52,7 @@ function et_veranstalter( $et_defaults ) {
 			$sess->date = '';
 		}
 		
-		if( '1' == $_REQUEST[ 'reset' ] ) {
+		if ( 1 === absint( isset( $_REQUEST['reset'] ) ? $_REQUEST['reset'] : 0 ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			et_resetsessionvars( $session, $et_defaults );
 		} else {
 			et_setsessionvar( 'vid', $session, $et_defaults[ 'vid' ] );
@@ -58,13 +64,16 @@ function et_veranstalter( $et_defaults ) {
 			et_setsessionvar( 'itemsPerPage', $session, $et_defaults[ 'itemsPerPage' ] );
 			et_setsessionvar( 'pageID', $session, '1' );
 			
-			if( '' != $_REQUEST[ 'et_q' ] ) {
-				$session->et_q = $_REQUEST[ 'et_q' ];
-				if( '1' == $_REQUEST[ 'reset' ] ) {
+			$raw_et_q  = isset( $_REQUEST['et_q'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['et_q'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$raw_reset = isset( $_REQUEST['reset'] ) ? absint( $_REQUEST['reset'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$raw_action = isset( $_REQUEST['action'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['action'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			if ( '' !== $raw_et_q ) {
+				$session->et_q = $raw_et_q;
+				if ( 1 === $raw_reset ) {
 					$session->et_q = '';
 				}
 			} else {
-				if( 'search' == $_REQUEST[ 'action' ] ) {
+				if ( 'search' === $raw_action ) {
 					$session->et_q = '';
 				}
 			}
@@ -89,15 +98,16 @@ function et_veranstalter( $et_defaults ) {
 						
 		$et_vars = array( 'vid', 'region', 'aid', 'date', 'highlight', 'eventtype', 'people', 'et_q', 'place',
 					'person', 'ipm', 'cha', 'until', 'itemsPerPage', 'pageID', 'encoding', 'css', 'etID', 'Suche', 'action', session_name(), '_token', 'reset' );
-		foreach( $_REQUEST as $key => $value ) {
-			if( !in_array( $key, $et_vars ) ) {
-				$querystring .= '&' . $key . '=' . $value;
+		foreach ( $_REQUEST as $key => $value ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			if ( ! in_array( $key, $et_vars, true ) ) {
+				$querystring .= '&' . sanitize_key( $key ) . '=' . rawurlencode( sanitize_text_field( wp_unslash( (string) $value ) ) );
 			}
-		} 
-		
-		$filename='veranstaltungen-php';
-		if( $_REQUEST[ 'etID' ] != '' ) {
-			$querystring .= '&ID=' . $_REQUEST[ 'etID' ];
+		}
+
+		$filename = 'veranstaltungen-php';
+		$et_id = isset( $_REQUEST['etID'] ) ? absint( $_REQUEST['etID'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( 0 !== $et_id ) {
+			$querystring .= '&ID=' . $et_id;
 			$filename = 'detail-php';
 		}
 		$protocol = get_option ( 'etprotocol' ) ? get_option ( 'etprotocol' ) : ET_DEFAULT_PROTOCOL;
