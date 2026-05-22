@@ -2,15 +2,24 @@
 	"mcpServers": {
 		"playwright-mcp": {
 			"command": "npx",
-			"args": ["@playwright/mcp@latest"]
+			"args": [
+				"@playwright/mcp@latest"
+			]
 		},
 		"markitdown": {
 			"command": "uvx",
-			"args": ["markitdown-mcp@0.0.1a4"]
+			"args": [
+				"markitdown-mcp@0.0.1a4"
+			]
 		},
 		"context7": {
 			"command": "npx",
-			"args": ["@upstash/context7-mcp@1.0.31"]
+			"args": [
+				"@upstash/context7-mcp@1.0.31"
+			],
+			"env": {
+				"CONTEXT7_API_KEY": "${CONTEXT7_API_KEY}"
+			}
 		},
 		"github-mcp": {
 			"type": "http",
