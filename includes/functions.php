@@ -114,54 +114,51 @@ function et_veranstalter( $et_defaults ) {
 		$host = get_option( 'ethost' ) ? get_option( 'ethost' ) : ET_DEFAULT_HOST;
 		$url = $protocol . $host . '/'. $filename . '?' . $querystring;
 
-		if( function_exists( 'curl_init' ) ) {
-			$sobl = curl_init( $url );
-			curl_setopt( $sobl, CURLOPT_RETURNTRANSFER, true );
-			curl_setopt( $sobl, CURLOPT_USERAGENT, 'Veranstalter-Script 2.0' );
-			curl_setopt( $sobl, CURLOPT_REFERER, $_SERVER[ 'HTTP_HOST' ] . $_SERVER[ 'PHP_SELF' ] );
-			curl_setopt( $sobl, CURLOPT_CONNECTTIMEOUT, 2 );
-			$pagecontent = curl_exec( $sobl );
-			$sobl_info = curl_getinfo( $sobl );
-			if( '200' == $sobl_info['http_code'] ){	
-				$pagecontent = str_replace( '<div id="et_headline"><h1>Veranstaltungen</h1></div>', '', $pagecontent );
-				$pagecontent = str_replace( '<h1>', '<h2>', $pagecontent );
-				$pagecontent = str_replace( '</h1>', '</h2>', $pagecontent );
-				$pagecontent = str_replace( '<h1 id="et_detail_title">', '<h2 id="et_detail_title">', $pagecontent );
-				$pagecontent = str_replace( '/Upload/', 'http://' . $host . '/Upload/', $pagecontent );
-				$pagecontent = str_replace( 'http://_HOST_/?', get_permalink( $post->ID ).'?'.$querystring.'&amp;', $pagecontent ); // 'https://' . $_SERVER[ 'HTTP_HOST' ] . $_SERVER[ 'PHP_SELF' ]
-				$pagecontent = str_replace( '<link rel="stylesheet" type="text/css" href="'. $host .'/bundles/vket/css/publicintegration.css"  />', '', $pagecontent); // Diese Stylesheets liefern im Veranstalter-Script 2.0 weitere CSS-Dateien, die allerdings nicht benötigt werden.
-				$pagecontent = str_replace( '<link rel="stylesheet" type="text/css" href="'. $host .'/bundles/vket/js/jquery/css/smoothness/jquery-ui-1.10.3.custom.min.css"  />', '', $pagecontent); // Diese Stylesheets liefern im Veranstalter-Script 2.0 weitere CSS-Dateien, die allerdings nicht benötigt werden.
-				$pagecontent = str_replace( '<link href="nocss" media="screen, projection" rel="stylesheet" type="text/css" />', '', $pagecontent); // Mit der Angabe nocss wird verhindert, dass das CSS der Evangelischen Termine geladen wird. Durch diese Zeile wird der Code aus dem HTML gelöscht.
-				
-				if( 'veranstaltungen-php' == $filename ) {
-					$pagecontent = str_replace( '<script type="text/javascript" src="' . $host . '/js/e19e663.js"></script>', '', $pagecontent);
-				}
-				if( 'detail-php' == $filename ) {
-					$pagecontent = str_replace( '<script type="text/javascript" src="' . $host . '/js/fa34c0d.js"></script><script language="javascript" type="text/javascript">', '', $pagecontent);
-					$pagecontent = str_replace( '$(function() {', '', $pagecontent);
-					$pagecontent = str_replace( '$(\'#et_place_image_th\').livequery(function(){', '', $pagecontent);
-					$pagecontent = str_replace( '$(this)', '', $pagecontent);
-					$pagecontent = str_replace( '.mouseover(function() {', '', $pagecontent);
-					$pagecontent = str_replace( '$(this).hide();', '', $pagecontent);
-					$pagecontent = str_replace( '$(\'#et_place_image\').slideDown();', '', $pagecontent);
-					$pagecontent = str_replace( '});', '', $pagecontent); 
-					$pagecontent = str_replace( '$(\'#et_place_image\').livequery(function(){', '', $pagecontent);
-					$pagecontent = str_replace( '$(this)', '', $pagecontent); 
-					$pagecontent = str_replace( '.mouseout(function() {', '', $pagecontent); 
-					$pagecontent = str_replace( '$(this).slideUp();', '', $pagecontent);
-					$pagecontent = str_replace( '$(\'#et_place_image_th\').show();', '', $pagecontent);
-					$pagecontent = str_replace( 'function ET_openWindow(etURL,windowName,features) { window.open(etURL,windowName,features);}', '', $pagecontent);
-					$pagecontent = str_replace( '</script>', '', $pagecontent);
-					$pagecontent = str_replace( '.hide();', '', $pagecontent);
-					$pagecontent = str_replace( '.slideUp();', '', $pagecontent);
-				}
-				$content = $pagecontent;
-			} else {
-				$content = 'Der Terminkalender ist derzeit nicht erreichbar!';
-			}
-			curl_close( $sobl );
+		$response = wp_remote_get(
+			$url,
+			array(
+				'timeout'            => 2,
+				'user-agent'         => 'Veranstalter-Script 2.0',
+				'reject_unsafe_urls' => true,
+			)
+		);
+		if ( is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
+			$content = 'Der Terminkalender ist derzeit nicht erreichbar!';
 		} else {
-			$content = "Das Plugin benötigt das PHP-Modul curl.";
+			$pagecontent = wp_remote_retrieve_body( $response );
+			$pagecontent = str_replace( '<div id="et_headline"><h1>Veranstaltungen</h1></div>', '', $pagecontent );
+			$pagecontent = str_replace( '<h1>', '<h2>', $pagecontent );
+			$pagecontent = str_replace( '</h1>', '</h2>', $pagecontent );
+			$pagecontent = str_replace( '<h1 id="et_detail_title">', '<h2 id="et_detail_title">', $pagecontent );
+			$pagecontent = str_replace( '/Upload/', 'http://' . $host . '/Upload/', $pagecontent );
+			$pagecontent = str_replace( 'http://_HOST_/?', get_permalink( $post->ID ) . '?' . $querystring . '&amp;', $pagecontent );
+			$pagecontent = str_replace( '<link rel="stylesheet" type="text/css" href="' . $host . '/bundles/vket/css/publicintegration.css"  />', '', $pagecontent );
+			$pagecontent = str_replace( '<link rel="stylesheet" type="text/css" href="' . $host . '/bundles/vket/js/jquery/css/smoothness/jquery-ui-1.10.3.custom.min.css"  />', '', $pagecontent );
+			$pagecontent = str_replace( '<link href="nocss" media="screen, projection" rel="stylesheet" type="text/css" />', '', $pagecontent );
+
+			if ( 'veranstaltungen-php' === $filename ) {
+				$pagecontent = str_replace( '<script type="text/javascript" src="' . $host . '/js/e19e663.js"></script>', '', $pagecontent );
+			}
+			if ( 'detail-php' === $filename ) {
+				$pagecontent = str_replace( '<script type="text/javascript" src="' . $host . '/js/fa34c0d.js"></script><script language="javascript" type="text/javascript">', '', $pagecontent );
+				$pagecontent = str_replace( '$(function() {', '', $pagecontent );
+				$pagecontent = str_replace( '$(\'#et_place_image_th\').livequery(function(){', '', $pagecontent );
+				$pagecontent = str_replace( '$(this)', '', $pagecontent );
+				$pagecontent = str_replace( '.mouseover(function() {', '', $pagecontent );
+				$pagecontent = str_replace( '$(this).hide();', '', $pagecontent );
+				$pagecontent = str_replace( '$(\'#et_place_image\').slideDown();', '', $pagecontent );
+				$pagecontent = str_replace( '});', '', $pagecontent );
+				$pagecontent = str_replace( '$(\'#et_place_image\').livequery(function(){', '', $pagecontent );
+				$pagecontent = str_replace( '$(this)', '', $pagecontent );
+				$pagecontent = str_replace( '.mouseout(function() {', '', $pagecontent );
+				$pagecontent = str_replace( '$(this).slideUp();', '', $pagecontent );
+				$pagecontent = str_replace( '$(\'#et_place_image_th\').show();', '', $pagecontent );
+				$pagecontent = str_replace( 'function ET_openWindow(etURL,windowName,features) { window.open(etURL,windowName,features);}', '', $pagecontent );
+				$pagecontent = str_replace( '</script>', '', $pagecontent );
+				$pagecontent = str_replace( '.hide();', '', $pagecontent );
+				$pagecontent = str_replace( '.slideUp();', '', $pagecontent );
+			}
+			$content = $pagecontent;
 		}
 	} else {
 		$content = 'Veranstalter-ID ist nicht definiert. Einstellungen -> Evangelische Termine';
@@ -192,24 +189,21 @@ function et_teaser( $et_defaults ) {
 		$host = get_option( 'ethost' ) ? get_option( 'ethost' ) : ET_DEFAULT_HOST;
 		$url = $protocol . $host . '/teaser?' . $querystring;
 
-		if( function_exists( 'curl_init' ) ) {
-			$sobl = curl_init( $url );
-			curl_setopt( $sobl, CURLOPT_RETURNTRANSFER, true );
-			curl_setopt( $sobl, CURLOPT_USERAGENT, 'TeaserScript' );
-			curl_setopt( $sobl, CURLOPT_REFERER, $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'] );
-			curl_setopt( $sobl, CURLOPT_CONNECTTIMEOUT, 5 );
-			$pagecontent = curl_exec( $sobl );
-			$sobl_info = curl_getinfo( $sobl );
-			if( '200' == $sobl_info['http_code'] ){
-				$pagecontent = str_replace( '<link href="nocss" media="screen, projection" rel="stylesheet" type="text/css" />', '', $pagecontent ); // Mit der Angabe nocss wird verhindert, dass das CSS der Evangelischen Termine geladen wird. Durch diese Zeile wird der Code aus dem HTML gelöscht.
-				$pagecontent = str_replace( 'PHPSESSID', 'PHPSESSIDunused', $pagecontent ); // CSS-Fehler beim erstmaligen Aufruf einer Detailseite in einem neuen Fenster wird verhindert.
-				$content = $pagecontent;
-			} else {
-				$content = 'Der Terminkalender ist derzeit nicht erreichbar!';
-			}
-			curl_close( $sobl );
+		$response = wp_remote_get(
+			$url,
+			array(
+				'timeout'            => 5,
+				'user-agent'         => 'TeaserScript',
+				'reject_unsafe_urls' => true,
+			)
+		);
+		if ( is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
+			$content = 'Der Terminkalender ist derzeit nicht erreichbar!';
 		} else {
-			$content = "Das Plugin benöt das PHP-Modul curl.";
+			$pagecontent = wp_remote_retrieve_body( $response );
+			$pagecontent = str_replace( '<link href="nocss" media="screen, projection" rel="stylesheet" type="text/css" />', '', $pagecontent );
+			$pagecontent = str_replace( 'PHPSESSID', 'PHPSESSIDunused', $pagecontent );
+			$content = $pagecontent;
 		}
 	} else {
 		$content = 'Veranstalter-ID ist nicht definiert. Einstellungen -> Evangelische Termine';
