@@ -22,7 +22,11 @@ class EtWidget extends WP_Widget {
 		$etstream->setEtParameters($instance);
 
 		$etstream->setEtParameter('title', 'Nächste Veranstaltungen');
-		$instance = $etstream->getEtParameters();
+		// Felder, die nicht in den Grundeinstellungen vorkommen, vorbelegen (sonst "Undefined array key" ab PHP 8)
+		$instance = wp_parse_args($etstream->getEtParameters(), array(
+			'auswahl'              => '',
+			'additionalParameters' => ''
+		));
 
 		// Formular einbinden
 		// TODO evtl. eigene Klasse für das Formular entwickeln
@@ -51,8 +55,13 @@ class EtWidget extends WP_Widget {
 		// $args in Variablen umwandeln ($before_widget, $after_widget, $before_title, $after_title)
 		// => https://codex.wordpress.org/Function_Reference/the_widget
 		// => https://developer.wordpress.org/themes/functionality/widgets/
-		extract($args); 
-		
+		$args = wp_parse_args($args, array(
+			'before_widget' => '',
+			'after_widget'  => '',
+			'before_title'  => '',
+			'after_title'   => ''
+		));
+
 		$etstream = new EtQuery(ET_TEMPLATE_TEASER_WIDGET);
 		$etstream->setNoDetail(true); // Detailansicht für dieses Modul unterdrücken
 		if(get_option ('css') != '') {
@@ -61,13 +70,9 @@ class EtWidget extends WP_Widget {
 		
 		$etstream->setEtParameters($instance);
 		
-		$title	= apply_filters('widget_title', $instance['title']);
-		
-		// Titel aus dem Array entfernen (wird für den Abruf nicht benötigt)
-		if(array_key_exists('title', $instance)) {
-			unset($instance['title']);
-		}
-		
+		// Der Titel wird beim Aufbau des Querystrings übersprungen (EtQuery::getQuerystring) und hier nur ausgegeben.
+		$title	= apply_filters('widget_title', isset($instance['title']) ? $instance['title'] : '');
+
 		$queryString = $etstream->getQuerystring();
 		$content = $etstream->retrieveStream($queryString);
 		
@@ -76,14 +81,14 @@ class EtWidget extends WP_Widget {
 		$content = $view->buildView($content);
 		
 		// $content in den Widget-Code einpacken und ausgeben
-		$output = $before_widget;
-		
+		$output = $args['before_widget'];
+
 		if(!empty($title)) {
-			$output .= $before_title . $title . $after_title;
+			$output .= $args['before_title'] . $title . $args['after_title'];
 		}
-				
+
 		$output .= $content;
-		$output .= $after_widget;
+		$output .= $args['after_widget'];
 		
 		echo $output;
 	}

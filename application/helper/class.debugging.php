@@ -11,13 +11,12 @@ class Debugging {
 		if (DEBUG) {
 			$output = '';
 			
-			// TODO Array-Ausgabe mit $output = print_r($data, true)
 			if (is_array ( $data )) {
 				foreach ( $data as $key => $value ) {
-					$output .= $key . ' => ' . $value . '\n';
+					$output .= $key . ' => ' . ( is_scalar( $value ) ? $value : wp_json_encode( $value ) ) . "\n";
 				}
 			} else {
-				$output = $data;
+				$output = is_scalar( $data ) ? (string) $data : wp_json_encode( $data );
 			}
 			
 			// Nur Debug-Ausgabe: als JSON-String ausgeben, damit Werte aus dem Request das Script nicht verlassen können.
