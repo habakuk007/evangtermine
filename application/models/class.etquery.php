@@ -39,6 +39,12 @@ class EtQuery
             'encoding' => get_option('encoding') ? get_option('encoding') : ET_DEFAULT_CHARSET
         );
 
+        // Der Teaser im Inhaltsbereich (et_teaser) erhält das Standard-CSS der Evangelischen Termine, solange in den Einstellungen
+        // kein eigenes CSS hinterlegt ist. Sonst wäre er (anders als et_veranstalter) komplett ungestaltet.
+        if (ET_TEMPLATE_TEASER_SHORTCODE === (string) $tpl && '' === (string) get_option('css')) {
+            unset($this->etParameters['css']);
+        }
+
         // Protokoll für den Abruf der Evangelischen Termine übernehmen und Default-Host setzen
         $this->etProtocol = get_option('etprotocol') ? get_option('etprotocol') : ET_DEFAULT_PROTOCOL;
         $this->etHost = get_option('ethost') ? get_option('ethost') : ET_DEFAULT_HOST;
@@ -274,24 +280,34 @@ class EtQuery
                 return '<div>Der Veranstaltungskalender ist derzeit nicht verfügbar.</div>';
             }
 
-            // Abfrage der Evangelischen Termine über die http-Api von Wordpress
-            $response = wp_remote_get($url, array(
-                'timeout' => $this->connectionTimeout,
-                'reject_unsafe_urls' => true, // lehnt Ziele im lokalen Netz, Loopback und ungewöhnliche Ports ab
-                'user-agent' => 'evangtermine/' . ET_VERSION . ' Wordpress-Plugin',
-                'headers' => array(
-                    'Referer' => home_url($wp->request)
-                )
-            ));
+            // Kurzer Cache für die Teaser-Ausgabe (Widget und et_teaser), damit nicht jeder Seitenaufruf die Evangelischen Termine abfragt.
+            $cacheTtl = $this->getCacheTtl();
+            $cacheKey = $this->getCacheKey($url, $filename, $cacheTtl);
+            $stream = false === $cacheKey ? false : get_transient($cacheKey);
 
-            if (! is_wp_error($response) && 200 === (int) wp_remote_retrieve_response_code($response)) {
-                $stream = wp_remote_retrieve_body($response);
-                if ('[{' != substr($stream, 0, 2)) {
-                    $stream = $this->filterStream($stream);
+            if (false === $stream || ! is_string($stream)) {
+                // Abfrage der Evangelischen Termine über die http-Api von Wordpress
+                $response = wp_remote_get($url, array(
+                    'timeout' => $this->connectionTimeout,
+                    'reject_unsafe_urls' => true, // lehnt Ziele im lokalen Netz, Loopback und ungewöhnliche Ports ab
+                    'user-agent' => 'evangtermine/' . ET_VERSION . ' Wordpress-Plugin',
+                    'headers' => array(
+                        'Referer' => home_url($wp->request)
+                    )
+                ));
+
+                if (! is_wp_error($response) && 200 === (int) wp_remote_retrieve_response_code($response)) {
+                    $stream = wp_remote_retrieve_body($response);
+                    if ('[{' != substr($stream, 0, 2)) {
+                        $stream = $this->filterStream($stream);
+                    }
+                    if (false !== $cacheKey && '' !== $stream) {
+                        set_transient($cacheKey, $stream, $cacheTtl);
+                    }
+                } else {
+                    // Fehlermeldung $host ist vorübergehend nicht erreichbar (wird nicht zwischengespeichert)
+                    $stream = '<div>Der Veranstaltungskalender ist derzeit nicht verfügbar.</div>';
                 }
-            } else {
-                // Fehlermeldung $host ist vorübergehend nicht erreichbar
-                $stream = '<div>Der Veranstaltungskalender ist derzeit nicht verfügbar.</div>';
             }
         } else {
             $stream = 'Error: Plugin "Evangelische Termine": Veranstalter-ID ist nicht gesetzt';
@@ -302,6 +318,43 @@ class EtQuery
         }
 
         return $stream;
+    }
+
+    /**
+     * Lebensdauer des Caches in Sekunden (Standard: 5 Minuten). Über den Filter 'evangtermine_cache_ttl' änderbar;
+     * 0 schaltet den Cache ab.
+     *
+     * @return int
+     */
+    private function getCacheTtl()
+    {
+        $ttl = (int) apply_filters('evangtermine_cache_ttl', 5 * MINUTE_IN_SECONDS);
+        return max(0, $ttl);
+    }
+
+    /**
+     * Liefert den Cache-Schlüssel für den Abruf oder false, wenn dieser Abruf nicht zwischengespeichert wird.
+     * Nur die Teaser-Ausgabe (Widget, et_teaser) wird gecacht, nicht die interaktiven Module (Suche, Seitenwechsel, Detailansicht).
+     * Der Schlüssel enthält alles, was die Ausgabe verändert: die komplette Abruf-URL (Protokoll, Host, Parameter), die Plugin-Version,
+     * ob das Fremd-CSS entfernt wird und die aktuelle Seite (die Links im Stream werden auf deren Permalink umgeschrieben).
+     *
+     * @param string $url      Abruf-URL
+     * @param string $filename Aufgerufenes Modul
+     * @param int    $ttl      Lebensdauer des Caches in Sekunden (0 = kein Cache)
+     * @return string|false
+     */
+    private function getCacheKey($url, $filename, $ttl)
+    {
+        if (ET_TEASER_MODUL !== $filename || 0 === $ttl) {
+            return false;
+        }
+        $variant = array(
+            ET_VERSION,
+            $url,
+            $this->etLoadCSS ? 1 : 0,
+            (string) get_permalink()
+        );
+        return 'et_stream_' . md5(wp_json_encode($variant));
     }
 
     /**
