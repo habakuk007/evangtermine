@@ -53,6 +53,63 @@ class EtQuery
     }
 
     /**
+     * Entfernt alle Zeichen aus einem Parameternamen, die dort nicht vorkommen dürfen (Groß-/Kleinschreibung bleibt erhalten).
+     *
+     * @param mixed $name
+     * @return string
+     */
+    public static function cleanParameterName($name)
+    {
+        return preg_replace('/[^A-Za-z0-9_.\-]/', '', (string) $name);
+    }
+
+    /**
+     * Prüft, ob ein Host (optional mit Port) als Ziel für den Abruf zulässig ist. IP-Adressen dürfen weder privat noch
+     * reserviert sein; bei Namen wird das Ergebnis der DNS-Auflösung auf reservierte Bereiche geprüft (Loopback, 0.0.0.0/8,
+     * Link-Local wie die Cloud-Metadaten-Adresse 169.254.169.254). Die privaten Bereiche bei Namen deckt reject_unsafe_urls
+     * von WordPress beim Abruf selbst ab; das gilt aber nicht für 169.254.0.0/16.
+     * Ein Name, der sich nicht auflösen lässt (oder wenn gethostbynamel() nicht verfügbar ist), wird nicht blockiert:
+     * der Abruf scheitert dann von selbst.
+     *
+     * @param string $host
+     * @return boolean
+     */
+    public static function isSafeHost($host)
+    {
+        static $cache = array();
+
+        $host = strtolower(trim((string) $host));
+        $host = preg_replace('/:[0-9]{1,5}$/', '', $host);
+        if ('' === $host || 'localhost' === $host || '.localhost' === substr($host, -10)) {
+            return false;
+        }
+        if (isset($cache[$host])) {
+            return $cache[$host];
+        }
+
+        if (false !== filter_var($host, FILTER_VALIDATE_IP)) {
+            $ips = array($host);
+            $flags = FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE;
+        } else {
+            $ips = function_exists('gethostbynamel') ? gethostbynamel($host) : false;
+            $flags = FILTER_FLAG_NO_RES_RANGE;
+        }
+
+        $safe = true;
+        if (! empty($ips)) {
+            foreach ($ips as $ip) {
+                if (false === filter_var($ip, FILTER_VALIDATE_IP, $flags)) {
+                    $safe = false;
+                    break;
+                }
+            }
+        }
+
+        $cache[$host] = $safe;
+        return $safe;
+    }
+
+    /**
      * Legt den zu verwendenden Filename in Attribut ab.
      *
      * @param string $filename
@@ -151,26 +208,26 @@ class EtQuery
     {
         $queryString = '';
         foreach ($this->etParameters as $key => $value) {
-            // Query bei den Evangelischen Termine korrekt aufbauen: Leerzeichen durch '+' ersetzen.
-            if ('q' == $key)
-                $value = str_replace(' ', '+', $value);
-
-            // Erwachsenenbildung in Bayern: Wenn auswahl=eb soll weder ein Eingabeformular noch ein Kanal verwendet werden (Abfrage erfolgt direkt in den Evangelischen Terminen).
-            // if ( !(($this->etParameters['auswahl'] == 'eb') && ($key == 'ipm')) && !(($this->etParameters['auswahl'] == 'eb') && ($key == 'cha'))) {
-            if ('title' != $key) {
-                if ('region' != $key) {
-                    if ('additionalParameters' != $key) {
-                        $queryString .= '&' . $key . '=' . $value;
-                    } else {
-                        $queryString .= '&' . $value;
-                    }
-                } else {
-                    $queryString .= '&' . 'region' . '=' . $value;
-                }
+            if ('title' === $key || ! is_scalar($value)) {
+                continue;
             }
-            // } else {
-            // $queryString .= '&' . $key . '=all'; // ipm=all wenn Erwachsenenbildung (auswahl=eb) abgefragt werden soll
-            // }
+
+            if ('additionalParameters' === $key) {
+                // Weitere Parameter als fertiger Teil-Querystring (z.B. "foo=1&bar=2"): nur URL-taugliche Zeichen zulassen.
+                $additional = ltrim(preg_replace('/[^A-Za-z0-9_=&%.,+:~\-]/', '', (string) $value), '&');
+                if ('' !== $additional) {
+                    $queryString .= '&' . $additional;
+                }
+                continue;
+            }
+
+            $cleanKey = self::cleanParameterName($key);
+            if ('' === $cleanKey) {
+                continue;
+            }
+
+            // Werte werden URL-kodiert (Leerzeichen werden dabei zu '+', wie es die Evangelischen Termine für die Suche erwarten).
+            $queryString .= '&' . $cleanKey . '=' . urlencode((string) $value);
         }
 
         // erstes Zeichen des Querystrings entfernen ('&').
@@ -198,13 +255,12 @@ class EtQuery
             $host = $this->etHost;
 
             // Wenn etID übergeben wurde, Detailseite aufrufen
-            if (array_key_exists('etID', $_GET)) {
-                if (($_GET['etID'] != "") && (! $this->noDetail)) {
-                    // TODO eigenes CSS an den $queryString anhängen (Detailansicht)
-                    $queryString .= '&ID=' . $_GET['etID'];
-                    $filename = ET_DETAILS_MODUL;
-                    // $filename='veranstaltung_im_detail' . $_GET['etID'] . 'html';
-                }
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- öffentlicher Parameter, kein Formular mit Nonce
+            $etID = isset($_GET['etID']) && is_scalar($_GET['etID']) ? absint($_GET['etID']) : 0;
+            if ($etID > 0 && ! $this->noDetail) {
+                // TODO eigenes CSS an den $queryString anhängen (Detailansicht)
+                $queryString .= '&ID=' . $etID;
+                $filename = ET_DETAILS_MODUL;
             }
 
             Debugging::consoleLog('Querystring: ', $queryString);
@@ -213,9 +269,15 @@ class EtQuery
             $url = $this->etProtocol . $host . '/' . $filename . '?' . $queryString;
             Debugging::consoleLog('URL: ', $url);
 
+            // Ziel prüfen (Host aus den Einstellungen): keine lokalen/privaten Adressen
+            if (! self::isSafeHost($host)) {
+                return '<div>Der Veranstaltungskalender ist derzeit nicht verfügbar.</div>';
+            }
+
             // Abfrage der Evangelischen Termine über die http-Api von Wordpress
             $response = wp_remote_get($url, array(
                 'timeout' => $this->connectionTimeout,
+                'reject_unsafe_urls' => true, // lehnt Ziele im lokalen Netz, Loopback und ungewöhnliche Ports ab
                 'user-agent' => 'evangtermine/' . ET_VERSION . ' Wordpress-Plugin',
                 'headers' => array(
                     'Referer' => home_url($wp->request)
@@ -277,7 +339,7 @@ class EtQuery
 
         // URLs umschreiben
         $stream = str_replace('/Upload/', $this->etProtocol . $this->etHost . '/Upload/', $stream);
-        $stream = str_replace('http://_HOST_/?', get_permalink() . '?' . $this->getQuerystring() . '&amp;', $stream);
+        $stream = str_replace('http://_HOST_/?', esc_attr(get_permalink() . '?' . $this->getQuerystring()) . '&amp;', $stream);
 
         // Überschrift "Veranstaltungen" entfernen und <h1>-Überschrift der Evangelischen Termine in ein <h2> umwandeln
         $stream = str_replace('<div id="et_headline"><h1>Veranstaltungen</h1></div>', '', $stream);

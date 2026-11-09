@@ -1,0 +1,22 @@
+# Files and folders that must not end up in the WordPress.org release (used by 10up/action-wordpress-plugin-deploy).
+.agents
+.claude
+.git
+.github
+.gitattributes
+.gitignore
+.mcp.json
+.vscode
+AGENTS.md
+CLAUDE.md
+HANDOVER.md
+opencode.json
+node_modules
+vendor
+composer.json
+composer.lock
+phpcs.xml
+phpcs.xml.dist
+phpunit.xml
+phpunit.xml.dist
+tests
