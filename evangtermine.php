@@ -1,14 +1,16 @@
 <?php
 /**
  * @package evangtermine
- * @version 3.3
+ * @version 3.4
  */
 /*
  * Plugin Name: Evangelische Termine
  * Description: Dieses Plugin bindet die Evangelischen Termine (www.evangelische-termine.de) in Wordpress ein.
  * Author: regibaer
- * Version: 3.3
- * Tested up to: 6.3
+ * Version: 3.4
+ * Requires at least: 5.0
+ * Requires PHP: 7.4
+ * Tested up to: 7.1
  * Author URI: mailto:mail@oisisi.de
  * License: GPLv2
  */
@@ -26,7 +28,7 @@
  * Boston, MA 02110-1301, USA.
  */
 
-define ('ET_VERSION', '3.3');
+define ('ET_VERSION', '3.4');
 
 define('DEBUG', false);
 

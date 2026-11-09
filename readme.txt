@@ -2,19 +2,20 @@
 
 Contributors: regibaer  
 Tags: evangelische, termine, elkb, vernetzte, kirche  
-Requires at least: 3.0  
-Tested up to: 6.3
-Stable tag: 3.3
-License: GPLv2 or later  
+Requires at least: 5.0
+Tested up to: 7.1
+Requires PHP: 7.4
+Stable tag: 3.4
+License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html 
 
 Mit dem Plugin "Evangelische Termine" wird die Datenbank der "Evangelischen Termine" abgefragt und in Wordpress eingebunden. 
 
 == Description ==
 
-ACHTUNG: Dieses Plugin wird ab 8/2023 nicht mehr weiterentwickelt. In den Evangelischen Terminen wurde ein Widget integriert,
-das in allen CMS-Systemen eingesetzt werden kann. Das Widget stellt die Einträge in der Datenbank mit Titelbild und Ort dar.
-Über eine Proxy-Datei, werden die Inhalte geladen und in die Webseite integriert. Damit werden auch Datenschutzprobleme
+Hinweis: Das Plugin wird weiter gepflegt (Sicherheits- und Kompatibilitätsupdates). Zusätzlich gibt es in den Evangelischen Terminen
+ein Widget, das in allen CMS-Systemen eingesetzt werden kann. Es stellt die Einträge in der Datenbank mit Titelbild und Ort dar.
+Über eine Proxy-Datei werden die Inhalte geladen und in die Webseite integriert. Damit werden auch Datenschutzprobleme
 umgangen, da die IP-Adressen der User nicht mehr an weitere Dienstleister übermittelt werden.
 Informationen zum Widget finden sich nach Anmeldung in den Evangelischen Terminen unter Information -> Widgets.
 
@@ -59,6 +60,28 @@ Mit dem Shortcode `et_minical` wird der Mini-Kalender aus den Evangelischen Term
 
 Beschreibung der [@parameter](http://wordpress.org/plugins/evangtermine/other_notes/#Parameter)
 
+== Externer Dienst / External service ==
+
+Dieses Plugin ruft die Termine live von einem externen Dienst ab: den Evangelischen Terminen
+([www.evangelische-termine.de](https://www.evangelische-termine.de)). Der Host kann in den Einstellungen geändert werden
+(z. B. für andere Landeskirchen).
+
+* **Wann:** bei jeder Ausgabe der Shortcodes `[et_veranstalter]`, `[et_teaser]`, `[et_panels]` und des Widgets (die Ausgabe von
+  `[et_teaser]` und des Widgets wird 5 Minuten zwischengespeichert, siehe unten). `[et_minical]` lädt Daten über JavaScript
+  direkt aus dem Browser der Besucher von evangelische-termine.de (feste Adresse, unabhängig von der Einstellung "Host"; die
+  Detailansicht wird beim Klick in einem iframe von dort geladen).
+* **Was wird gesendet:** die Abfrageparameter (Veranstalter-ID, Dekanats-ID, Filter, Suchbegriff und Seitenzahl von Besuchern,
+  Detail-ID einer Veranstaltung) sowie die Adresse der aufrufenden Seite als Referer und die Plugin-Version im User-Agent.
+  Der Abruf erfolgt serverseitig; die IP-Adresse der Besucher wird nicht übermittelt (bei `[et_minical]` schon, da der Browser
+  selbst anfragt).
+* **Datenschutz / privacy policy:** [https://www.evangelische-termine.de/datenschutz](https://www.evangelische-termine.de/datenschutz)
+
+This plugin fetches event data from an external service, www.evangelische-termine.de (configurable host). The request is made
+server-side and contains the query parameters (organizer/region IDs, filters, a visitor's search term, page number, event ID),
+the URL of the requesting page as Referer and the plugin version in the User-Agent. Visitors' IP addresses are not sent
+(except for `[et_minical]`, which loads its data from the visitor's browser). The output of `[et_teaser]` and the widget is
+cached for 5 minutes; use the filter `evangtermine_cache_ttl` to change the lifetime (0 disables the cache).
+
 == Installation ==
 
 * `evangtermine.zip` in das `/wp-content/plugins/` Verzeichnis hochladen und dort entpacken.
@@ -97,7 +120,7 @@ ausgewählt werden. Die Daten der Evangelischen Termine werden dann
 entsprechend angepasst (utf8 oder latin1). Default: utf8.
 
 **Protokoll**: Auswahl des Protokolls (http:// | https://). Wenn das Protokoll nicht ausgewählt wird,
-verwendet das Plugin das Protokoll über das die Website betrieben wird ($_SERVER['REQUEST_SCHEME']).
+ruft das Plugin die Evangelischen Termine verschlüsselt über https:// ab.
 
 **Host**: Der Server, auf dem die Kalenderdaten gehostet werden.
 Beispiel: www.evangelische-termine.de
@@ -154,6 +177,14 @@ Die Beschreibung der Parameter findet sich im [Handbuch der Evangelischen Termin
 5. Ausgabe des Widgets
 
 == Changelog ==
+
+= 3.4 =
+* SECURITY: Cross-Site-Scripting und weitere Sicherheitslücken behoben (u. a. CVE-2025-28960): Request-Parameter werden bereinigt und URL-kodiert, Optionen und Ausgaben werden escaped, der Abruf-Host wird auf lokale/private Adressen geprüft.
+* CHANGED: Die Evangelischen Termine werden standardmäßig über https:// abgerufen.
+* CHANGED: Die Ausgabe von et_teaser und des Widgets wird 5 Minuten zwischengespeichert (Filter `evangtermine_cache_ttl`, 0 schaltet den Cache ab).
+* FIXED: et_teaser wird mit dem Standard-CSS der Evangelischen Termine ausgeliefert, solange keine eigene CSS-Datei hinterlegt ist.
+* FIXED: Kompatibilität mit PHP 8.0 bis 8.5 (Undefined array key im Widget-Formular und Widget, Abruf-Statuscode über die WordPress-API).
+* Neu: `Requires PHP: 7.4`, Hinweis zum externen Dienst.
 
 = 3.3 =
 * FIXED: Darstellungsproblem im Modul et_panels
@@ -242,6 +273,9 @@ Die Beschreibung der Parameter findet sich im [Handbuch der Evangelischen Termin
 * FIXED: Sessionhandling wurde angepasst. Werte werden jetzt direkt an den Pager übergeben (Ersetzung `__HOST__`)
 
 == Upgrade Notice ==
+
+= 3.4 =
+Sicherheitsupdate (CVE-2025-28960) und PHP-8-Kompatibilität. Bitte unbedingt aktualisieren. Neu: 5 Minuten Cache für Teaser und Widget.
 
 = 3.3 =
 * FIXED: Darstellungsproblem im Modul et_panels
