@@ -134,6 +134,31 @@ function et_sanitize_etprotocol( $value ) {
 	return et_sanitize_choice( $value, array( '', 'https://', 'http://' ), '' );
 }
 
+/**
+ * Prüft den Host des Kalenderbetreibers: nur ein Hostname (optional mit Port), kein Protokoll, kein Pfad,
+ * und das Ziel muss von WordPress als sicher eingestuft werden (keine privaten oder lokalen Adressen).
+ * Bei einem ungültigen Wert bleibt der bisherige Wert erhalten.
+ *
+ * @param mixed $value Eingegebener Wert.
+ * @return string
+ */
+function et_sanitize_ethost( $value ) {
+	$value = strtolower( trim( sanitize_text_field( (string) $value ) ) );
+	if ( '' === $value ) {
+		return '';
+	}
+	$previous = (string) get_option( 'ethost' );
+	if ( ! preg_match( '/^[a-z0-9]([a-z0-9.-]*[a-z0-9])?(:[0-9]{1,5})?$/', $value ) ) {
+		add_settings_error( 'ethost', 'et_ethost_invalid', 'Der Host darf nur aus einem Domainnamen bestehen (ohne http://, ohne Pfad). Der bisherige Wert wurde beibehalten.' );
+		return $previous;
+	}
+	if ( ! wp_http_validate_url( 'https://' . $value . '/' ) ) {
+		add_settings_error( 'ethost', 'et_ethost_unsafe', 'Dieser Host ist nicht erlaubt (lokale oder private Adresse bzw. nicht erreichbarer Port). Der bisherige Wert wurde beibehalten.' );
+		return $previous;
+	}
+	return $value;
+}
+
 // Optionsseite initialisieren
 function et_admin_init() {
 	add_settings_section( 'et_section', 'Grundeinstellungen', 'et_show_section', 'et_menu_slug' );
@@ -152,7 +177,7 @@ function et_admin_init() {
 	register_setting( 'et_group', 'css', array( 'sanitize_callback' => 'et_sanitize_css' ) );
 	register_setting( 'et_group', 'encoding', array( 'sanitize_callback' => 'et_sanitize_encoding' ) );
 	register_setting( 'et_group', 'etprotocol', array( 'sanitize_callback' => 'et_sanitize_etprotocol' ) );
-	register_setting( 'et_group', 'ethost', array( 'sanitize_callback' => 'sanitize_text_field' ) );
+	register_setting( 'et_group', 'ethost', array( 'sanitize_callback' => 'et_sanitize_ethost' ) );
 }
 add_action( 'admin_init', 'et_admin_init' );
 	

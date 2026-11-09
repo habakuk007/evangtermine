@@ -226,6 +226,7 @@ class EtQuery
             // Abfrage der Evangelischen Termine über die http-Api von Wordpress
             $response = wp_remote_get($url, array(
                 'timeout' => $this->connectionTimeout,
+                'reject_unsafe_urls' => true, // lehnt Ziele im lokalen Netz, Loopback und ungewöhnliche Ports ab
                 'user-agent' => 'evangtermine/' . ET_VERSION . ' Wordpress-Plugin',
                 'headers' => array(
                     'Referer' => home_url($wp->request)

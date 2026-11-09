@@ -94,7 +94,7 @@ wp plugin check evangtermine
 ## Important: Do Not Change
 
 - `ET_DEFAULT_HOST` — external API hostname; users override via settings, not code
-- `ET_DEFAULT_PROTOCOL` — must remain `http://` unless the remote API supports HTTPS
+- `ET_DEFAULT_PROTOCOL` — default is `https://` (overridable by the `etprotocol` option); never default to plain HTTP
 - Option key names (`vid`, `region`, `until`, `css`, `encoding`, `etprotocol`, `ethost`) — bare names without prefix; renaming breaks existing installs
 - CSS class names prefixed with `.et_` — renaming breaks user custom CSS
 - The `ET_Widget` class name — WordPress serializes it in the database

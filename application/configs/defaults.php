@@ -8,12 +8,10 @@ if(!defined('ET_DEFAULT_HOST')) {
 	define( 'ET_DEFAULT_HOST', 'www.evangelische-termine.de' );
 }
 
-// Über das REQUEST_SCHEME wird das zu verwendende Protokoll gesetzt. Der Aufruf der Evangelischen Termine
-// über https funktioniert nicht, wenn die Website ohne SSL läuft.
-if($_SERVER['REQUEST_SCHEME'] == 'https') {
+// Der Abruf der Evangelischen Termine erfolgt serverseitig und standardmäßig verschlüsselt (https), unabhängig davon,
+// ob die eigene Website SSL verwendet. In den Einstellungen kann das Protokoll bei Bedarf überschrieben werden.
+if(!defined('ET_DEFAULT_PROTOCOL')) {
 	define( 'ET_DEFAULT_PROTOCOL', 'https://');
-} else {
-	define( 'ET_DEFAULT_PROTOCOL', 'http://');
 }
 
 if(!defined('ET_OPTION_UNTIL')) {
