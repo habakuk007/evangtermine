@@ -157,7 +157,7 @@ class EtQuery
      */
     public function getEtParameter($key)
     {
-        return $this->etParameters[$key];
+        return isset($this->etParameters[$key]) ? $this->etParameters[$key] : '';
     }
 
     /**
@@ -284,8 +284,8 @@ class EtQuery
                 )
             ));
 
-            if (! is_wp_error($response) && $response['response']['code'] == 200) {
-                $stream = $response['body'];
+            if (! is_wp_error($response) && 200 === (int) wp_remote_retrieve_response_code($response)) {
+                $stream = wp_remote_retrieve_body($response);
                 if ('[{' != substr($stream, 0, 2)) {
                     $stream = $this->filterStream($stream);
                 }
