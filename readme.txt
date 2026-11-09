@@ -13,11 +13,7 @@ Mit dem Plugin "Evangelische Termine" wird die Datenbank der "Evangelischen Term
 
 == Description ==
 
-Das Plugin wird weiter gepflegt (Sicherheits- und Kompatibilitätsupdates). Ursprünglich entwickelt von Norbert Räbiger (WordPress.org: regibaer).
-Die Evangelischen Termine bieten außerdem ein Widget an, das in beliebigen CMS-Systemen eingesetzt werden kann
-(nach Anmeldung unter Information -> Widgets).
-
-Mit dem Plugin "Evangelische Termine" wird die Datenbank der "Evangelischen Termine" abgefragt und in Wordpress eingebunden. 
+Mit dem Plugin "Evangelische Termine" wird die Datenbank der "Evangelischen Termine" (https://www.evangelische-termine.de/) abgefragt und in Wordpress eingebunden. 
 Über Shortcodes/Makros und über ein Widget wird die Anzeige für einzelne/mehrere Veranstalter oder für eine Region gesteuert.
 
 = Features =
@@ -165,6 +161,16 @@ Eingabemaske `Erwachsenenbildung` oder mit den Kanal `Erwachsenenbildung` angele
 = Widget =
 
 Die Beschreibung der Parameter findet sich im [Handbuch der Evangelischen Termine](http://handbuch.evangelische-termine.de/Ausgabe-Parameter/).
+
+= Alternativen = 
+
+Die Evangelischen Termine bieten als Alternative ein Widget an, das in beliebigen CMS-Systemen eingesetzt werden kann
+(nach Anmeldung auf https://www.evangelische-termine.de/ unter Information -> Widgets zu finden).
+
+= Autor = 
+
+Ursprünglich entwickelt von Norbert Räbiger (https://profiles.wordpress.org/regibaer).
+
 
 == Screenshots ==
 
