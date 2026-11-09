@@ -6,16 +6,17 @@
 /*
  * Plugin Name: Evangelische Termine
  * Description: Dieses Plugin bindet die Evangelischen Termine (www.evangelische-termine.de) in Wordpress ein.
- * Author: regibaer
+ * Author: habakuk
  * Version: 3.4
  * Requires at least: 5.0
  * Requires PHP: 7.4
  * Tested up to: 7.1
- * Author URI: mailto:mail@oisisi.de
+ * Author URI: https://profiles.wordpress.org/habakuk/
  * License: GPLv2 or later
  */
 
 /*
+ * Originally developed by Norbert Räbiger.
  * Copyright (C) 2017-2022 Norbert Räbiger (E-Mail: mail@oisisi.de)
  * This program is free software; you can redistribute it and/or modify it under the terms
  * of the GNU General Public License as published by the Free Software Foundation; either

@@ -1,6 +1,6 @@
 === Evangelische Termine ===
 
-Contributors: habakuk, regibaer  
+Contributors: habakuk  
 Tags: evangelische, termine, elkb, vernetzte, kirche  
 Requires at least: 5.0
 Tested up to: 7.1
@@ -13,7 +13,7 @@ Mit dem Plugin "Evangelische Termine" wird die Datenbank der "Evangelischen Term
 
 == Description ==
 
-Das Plugin wird weiter gepflegt (Sicherheits- und Kompatibilitätsupdates).
+Das Plugin wird weiter gepflegt (Sicherheits- und Kompatibilitätsupdates). Ursprünglich entwickelt von Norbert Räbiger.
 Die Evangelischen Termine bieten außerdem ein Widget an, das in beliebigen CMS-Systemen eingesetzt werden kann
 (nach Anmeldung unter Information -> Widgets).
 
