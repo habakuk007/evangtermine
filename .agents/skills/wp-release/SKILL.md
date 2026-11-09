@@ -17,7 +17,7 @@ Complete release workflow: version bump → changelog → commit → tag → Git
 
 - `gh` CLI authenticated (`gh auth status`)
 - Clean working tree (`git status`)
-- All changes committed and on `master`
+- All changes committed; features are merged into `develop`, the release PR `develop` -> `master` is merged and you are on the updated `master` (tags are only created on `master`)
 
 ## Workflow
 

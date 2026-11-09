@@ -27,6 +27,13 @@ assets/                     <- bundled Bootstrap, jQuery, Font Awesome, CSS
 readme.txt                  <- WordPress.org listing
 ```
 
+## Branches and Releases
+
+- `master` = released state (what is on WordPress.org). Protected: only via PR, CI must pass. Version tags are created on `master` and trigger the deploy workflow.
+- `develop` = integration branch for further development. Protected like `master`.
+- Work in short-lived branches (`fix/<issue>-<topic>`, `feat/<issue>-<topic>`, `chore/<issue>-<topic>`) and open PRs **against `develop`**.
+- Release: PR `develop` -> `master`, then tag the merge commit (see `/wp-release`). Urgent security fixes may go to `master` first and are merged back into `develop`.
+
 ## Key Conventions
 
 | Item | Value |
