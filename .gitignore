@@ -1,2 +1,6 @@
 # Claude Code local user overrides (machine-specific, not shared)
 .claude/settings.local.json
+
+# Composer (dev tooling only)
+/vendor/
+/composer.lock
