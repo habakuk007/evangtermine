@@ -13,11 +13,9 @@ Mit dem Plugin "Evangelische Termine" wird die Datenbank der "Evangelischen Term
 
 == Description ==
 
-Hinweis: Das Plugin wird weiter gepflegt (Sicherheits- und Kompatibilitätsupdates). Zusätzlich gibt es in den Evangelischen Terminen
-ein Widget, das in allen CMS-Systemen eingesetzt werden kann. Es stellt die Einträge in der Datenbank mit Titelbild und Ort dar.
-Über eine Proxy-Datei werden die Inhalte geladen und in die Webseite integriert. Damit werden auch Datenschutzprobleme
-umgangen, da die IP-Adressen der User nicht mehr an weitere Dienstleister übermittelt werden.
-Informationen zum Widget finden sich nach Anmeldung in den Evangelischen Terminen unter Information -> Widgets.
+Das Plugin wird weiter gepflegt (Sicherheits- und Kompatibilitätsupdates).
+Die Evangelischen Termine bieten außerdem ein Widget an, das in beliebigen CMS-Systemen eingesetzt werden kann
+(nach Anmeldung unter Information -> Widgets).
 
 Mit dem Plugin "Evangelische Termine" wird die Datenbank der "Evangelischen Termine" abgefragt und in Wordpress eingebunden. 
 Über Shortcodes/Makros und über ein Widget wird die Anzeige für einzelne/mehrere Veranstalter oder für eine Region gesteuert.

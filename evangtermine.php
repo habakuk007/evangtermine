@@ -12,7 +12,7 @@
  * Requires PHP: 7.4
  * Tested up to: 7.1
  * Author URI: mailto:mail@oisisi.de
- * License: GPLv2
+ * License: GPLv2 or later
  */
 
 /*
