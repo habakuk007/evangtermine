@@ -3,7 +3,8 @@
 class EtQuery
 {
 
-    private $connectionTimeout = 5;
+    // Timeout für den Abruf in Sekunden. Eine Suche dauert bei den Evangelischen Terminen oft länger als 5 Sekunden.
+    private $connectionTimeout = 15;
     private $etFilename;
     private $etParameters;
 
@@ -288,7 +289,7 @@ class EtQuery
             if (false === $stream || ! is_string($stream)) {
                 // Abfrage der Evangelischen Termine über die http-Api von Wordpress
                 $response = wp_remote_get($url, array(
-                    'timeout' => $this->connectionTimeout,
+                    'timeout' => $this->getConnectionTimeout(),
                     'reject_unsafe_urls' => true, // lehnt Ziele im lokalen Netz, Loopback und ungewöhnliche Ports ab
                     'user-agent' => 'evangtermine/' . ET_VERSION . ' Wordpress-Plugin',
                     'headers' => array(
@@ -318,6 +319,18 @@ class EtQuery
         }
 
         return $stream;
+    }
+
+    /**
+     * Timeout für den Abruf in Sekunden (Standard: 15). Über den Filter 'evangtermine_http_timeout' änderbar;
+     * der Wert wird auf 1 bis 30 Sekunden begrenzt.
+     *
+     * @return int
+     */
+    private function getConnectionTimeout()
+    {
+        $timeout = (int) apply_filters('evangtermine_http_timeout', $this->connectionTimeout);
+        return min(30, max(1, $timeout));
     }
 
     /**

@@ -186,6 +186,7 @@ Ursprünglich entwickelt von Norbert Räbiger (https://profiles.wordpress.org/re
 * SECURITY: Cross-Site-Scripting und weitere Sicherheitslücken behoben (u. a. CVE-2025-28960): Request-Parameter werden bereinigt und URL-kodiert, Optionen und Ausgaben werden escaped, der Abruf-Host wird auf lokale/private Adressen geprüft.
 * CHANGED: Die Evangelischen Termine werden standardmäßig über https:// abgerufen.
 * CHANGED: Die Ausgabe von et_teaser und des Widgets wird 5 Minuten zwischengespeichert (Filter `evangtermine_cache_ttl`, 0 schaltet den Cache ab).
+* FIXED: Die Suche in et_veranstalter lief häufig in einen Timeout ("Der Veranstaltungskalender ist derzeit nicht verfügbar"). Der Abruf wartet jetzt bis zu 15 statt 5 Sekunden (Filter `evangtermine_http_timeout`).
 * FIXED: et_teaser wird mit dem Standard-CSS der Evangelischen Termine ausgeliefert, solange keine eigene CSS-Datei hinterlegt ist.
 * FIXED: Kompatibilität mit PHP 8.0 bis 8.5 (Undefined array key im Widget-Formular und Widget, Abruf-Statuscode über die WordPress-API).
 * Neu: `Requires PHP: 7.4`, Hinweis zum externen Dienst.
