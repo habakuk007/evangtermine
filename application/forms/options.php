@@ -81,11 +81,11 @@ function et_show_ethost() {
 // Aufbau der Optionen
 function et_options() {
 	if( !current_user_can( 'manage_options' ) ) {
-		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+		wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', 'evangtermine' ) );
 	}
 	?>
 <div class="wrap">
-	<h2><?php _e('Evangelische Termine'); ?></h2>
+	<h2><?php esc_html_e( 'Evangelische Termine', 'evangtermine' ); ?></h2>
 	<form method="post" action="options.php">
 		<?php settings_fields( 'et_group' ); ?>
 		<?php do_settings_sections( 'et_menu_slug' ); ?>
