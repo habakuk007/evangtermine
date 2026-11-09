@@ -3,6 +3,35 @@
 class ShortcodeVeranstalter
 {
     /**
+     * Parameter, die als ganze Zahl behandelt werden.
+     *
+     * @var array
+     */
+    private static $numericKeys = array('pageID', 'itemsPerPage', 'people');
+
+    /**
+     * Liefert den bereinigten Wert eines Request-Parameters (GET oder POST, nie Cookies) oder null, wenn er fehlt.
+     * Die Werte werden nicht escaped, sondern erst beim Aufbau der URL (urlencode) bzw. der Ausgabe.
+     *
+     * @param string $key Name des Parameters
+     * @return string|null
+     */
+    public static function getRequestValue($key)
+    {
+        // phpcs:disable WordPress.Security.NonceVerification.Recommended -- öffentliche Filter-Parameter, kein Formular mit Nonce
+        $source = array_merge($_GET, $_POST);
+        // phpcs:enable
+        if (! isset($source[$key]) || ! is_scalar($source[$key])) {
+            return null;
+        }
+        $value = sanitize_text_field(wp_unslash((string) $source[$key]));
+        if (in_array($key, self::$numericKeys, true)) {
+            $value = (string) absint($value);
+        }
+        return $value;
+    }
+
+    /**
      * Setzt die Session-Werte
      * 
      * @param string $key Ausgabe-Parameter (vgl. http://handbuch.evangelische-termine.de/anzeige-im-internet/ausgabe-parameter)
@@ -12,8 +41,9 @@ class ShortcodeVeranstalter
      */
     public static function setSessionVar($key, $sess, $etparam, $default = NULL)
     {
-        if (array_key_exists($key, $_REQUEST) && $_REQUEST[$key] != "") {
-            $sess->{$key} = esc_html($_REQUEST[$key]); // Session-Werte setzen
+        $requestValue = self::getRequestValue($key);
+        if (null !== $requestValue && '' !== $requestValue) {
+            $sess->{$key} = $requestValue; // Session-Werte setzen
             $etparam->setEtParameter($key, $sess->{$key}); // Parameter für die Evangelischen Termine setzen
             if ($key != 'pageID') {
                 $sess->pageID = 1;
@@ -77,7 +107,7 @@ class ShortcodeVeranstalter
         // Wenn im Filter der Evangelischen Termine 'Zurücksetzen' geklickt wurde, werden die Standardwerte,
         // die in EtQuery::__construct() gesetzt werden, nicht verändert.
         // Sonst werden die Werte auf $_REQUEST gesetzt.
-        if (isset($_REQUEST['reset']) && $_REQUEST['reset'] == '1') {
+        if ('1' === self::getRequestValue('reset')) {
             ShortcodeVeranstalter::resetSessionVars($session, $etstream);
         } else {
             ShortcodeVeranstalter::setSessionVar('vid', $session, $etstream, $etstream->getEtParameter('vid'));
@@ -90,23 +120,20 @@ class ShortcodeVeranstalter
             ShortcodeVeranstalter::setSessionVar('itemsPerPage', $session, $etstream, $etstream->getEtParameter('itemsPerPage'));
             ShortcodeVeranstalter::setSessionVar('pageID', $session, $etstream, '1');
                         
-            if (isset($_REQUEST['et_q']) && $_REQUEST['et_q'] != '') {
-                $session->et_q = $_REQUEST['et_q'];
-                if (isset($_REQUEST['reset']) && $_REQUEST['reset'] == '1') {
-                    $session->et_q = '';
-                }
+            $searchTerm = self::getRequestValue('et_q');
+            if (null !== $searchTerm && '' !== $searchTerm) {
+                $session->et_q = $searchTerm;
             } else {
-                if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'search') {
+                if ('search' === self::getRequestValue('action')) {
                     $session->et_q = '';
                 }
             }
         }
-        
+
         // Parameter für die Suche sichern
-        if (array_key_exists('et_q', $_REQUEST)) {
-            if ($_REQUEST['et_q'] != '') { // ($_REQUEST['et_q'] <> $_REQUEST['q']){
-                $etstream->setEtParameter('q', $_REQUEST['et_q']);
-            }
+        $searchTerm = self::getRequestValue('et_q');
+        if (null !== $searchTerm && '' !== $searchTerm) {
+            $etstream->setEtParameter('q', $searchTerm);
         }
         
         // Querystring erstellen
@@ -142,11 +169,21 @@ class ShortcodeVeranstalter
             'dest',
             'q'
         );
-        foreach ($_REQUEST as $key => $val) {
-            if (! in_array($key, $etURLParameters)) {
-                $querystring .= '&' . $key . '=' . esc_html($val);
-                Debugging::consoleLog($key . ': ', esc_html($val));
+        // GET und POST (keine Cookies): Namen und Werte werden bereinigt, die Werte URL-kodiert.
+        // phpcs:disable WordPress.Security.NonceVerification.Recommended -- öffentliche Filter-Parameter, kein Formular mit Nonce
+        $requestKeys = array_keys(array_merge($_GET, $_POST));
+        // phpcs:enable
+        foreach ($requestKeys as $key) {
+            $cleanKey = EtQuery::cleanParameterName($key);
+            if ('' === $cleanKey || in_array($cleanKey, $etURLParameters, true)) {
+                continue;
             }
+            $val = self::getRequestValue($key);
+            if (null === $val) {
+                continue; // Arrays und andere Nicht-Skalare werden nicht weitergegeben
+            }
+            $querystring .= '&' . $cleanKey . '=' . urlencode($val);
+            Debugging::consoleLog($cleanKey . ': ', $val);
         }
 
         // Daten von den Evangelischen Terminen abrufen
