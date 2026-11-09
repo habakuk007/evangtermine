@@ -13,7 +13,7 @@ Mit dem Plugin "Evangelische Termine" wird die Datenbank der "Evangelischen Term
 
 == Description ==
 
-Das Plugin wird weiter gepflegt (Sicherheits- und Kompatibilitätsupdates). Ursprünglich entwickelt von Norbert Räbiger.
+Das Plugin wird weiter gepflegt (Sicherheits- und Kompatibilitätsupdates). Ursprünglich entwickelt von Norbert Räbiger (WordPress.org: regibaer).
 Die Evangelischen Termine bieten außerdem ein Widget an, das in beliebigen CMS-Systemen eingesetzt werden kann
 (nach Anmeldung unter Information -> Widgets).
 
