@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: [master, develop]
+  pull_request:
+    branches: [master, develop]
+
+jobs:
+  # ── PHP Syntax Check ─────────────────────────────────────────────
+  php-syntax:
+    name: PHP Syntax (PHP ${{ matrix.php }})
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        php: ['7.4', '8.0', '8.1', '8.2', '8.3']
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP ${{ matrix.php }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          tools: phpcs
+          coverage: none
+
+      - name: Check PHP syntax
+        run: find . -name "*.php" -not -path "./.git/*" -not -path "./assets/*" -exec php -l {} \;
+
+      # Not blocking until issue #13 (PHPCS violations) is done.
+      - name: Run PHPCS (WordPress Coding Standards)
+        continue-on-error: true
+        run: |
+          composer global config --no-plugins allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
+          composer global require --dev \
+            dealerdirect/phpcodesniffer-composer-installer \
+            wp-coding-standards/wpcs
+          phpcs --standard=WordPress --extensions=php evangtermine.php autoloader.php application/

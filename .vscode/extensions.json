@@ -1,0 +1,12 @@
+{
+	"recommendations": [
+		"bmewburn.vscode-intelephense-client",
+		"wordpresstoolbox.wordpress-toolbox",
+		"EditorConfig.EditorConfig",
+		"eamodio.gitlens",
+		"GitHub.copilot",
+		"GitHub.copilot-chat",
+		"streetsidesoftware.code-spell-checker"
+	],
+	"unwantedRecommendations": []
+}
