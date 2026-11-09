@@ -64,6 +64,52 @@ class EtQuery
     }
 
     /**
+     * Prüft, ob ein Host (optional mit Port) als Ziel für den Abruf zulässig ist. IP-Adressen dürfen weder privat noch
+     * reserviert sein; bei Namen wird das Ergebnis der DNS-Auflösung auf reservierte Bereiche geprüft (Loopback, 0.0.0.0/8,
+     * Link-Local wie die Cloud-Metadaten-Adresse 169.254.169.254). Die privaten Bereiche bei Namen deckt reject_unsafe_urls
+     * von WordPress beim Abruf selbst ab; das gilt aber nicht für 169.254.0.0/16.
+     * Ein Name, der sich nicht auflösen lässt (oder wenn gethostbynamel() nicht verfügbar ist), wird nicht blockiert:
+     * der Abruf scheitert dann von selbst.
+     *
+     * @param string $host
+     * @return boolean
+     */
+    public static function isSafeHost($host)
+    {
+        static $cache = array();
+
+        $host = strtolower(trim((string) $host));
+        $host = preg_replace('/:[0-9]{1,5}$/', '', $host);
+        if ('' === $host || 'localhost' === $host || '.localhost' === substr($host, -10)) {
+            return false;
+        }
+        if (isset($cache[$host])) {
+            return $cache[$host];
+        }
+
+        if (false !== filter_var($host, FILTER_VALIDATE_IP)) {
+            $ips = array($host);
+            $flags = FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE;
+        } else {
+            $ips = function_exists('gethostbynamel') ? gethostbynamel($host) : false;
+            $flags = FILTER_FLAG_NO_RES_RANGE;
+        }
+
+        $safe = true;
+        if (! empty($ips)) {
+            foreach ($ips as $ip) {
+                if (false === filter_var($ip, FILTER_VALIDATE_IP, $flags)) {
+                    $safe = false;
+                    break;
+                }
+            }
+        }
+
+        $cache[$host] = $safe;
+        return $safe;
+    }
+
+    /**
      * Legt den zu verwendenden Filename in Attribut ab.
      *
      * @param string $filename
@@ -222,6 +268,11 @@ class EtQuery
             // TODO Prüfen, ob etHost mit dem angegebenen Protokoll erreichbar ist, wenn nicht, das andere Protokoll testen
             $url = $this->etProtocol . $host . '/' . $filename . '?' . $queryString;
             Debugging::consoleLog('URL: ', $url);
+
+            // Ziel prüfen (Host aus den Einstellungen): keine lokalen/privaten Adressen
+            if (! self::isSafeHost($host)) {
+                return '<div>Der Veranstaltungskalender ist derzeit nicht verfügbar.</div>';
+            }
 
             // Abfrage der Evangelischen Termine über die http-Api von Wordpress
             $response = wp_remote_get($url, array(

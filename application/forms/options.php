@@ -152,7 +152,7 @@ function et_sanitize_ethost( $value ) {
 		add_settings_error( 'ethost', 'et_ethost_invalid', 'Der Host darf nur aus einem Domainnamen bestehen (ohne http://, ohne Pfad). Der bisherige Wert wurde beibehalten.' );
 		return $previous;
 	}
-	if ( ! wp_http_validate_url( 'https://' . $value . '/' ) ) {
+	if ( ! wp_http_validate_url( 'https://' . $value . '/' ) || ! EtQuery::isSafeHost( $value ) ) {
 		add_settings_error( 'ethost', 'et_ethost_unsafe', 'Dieser Host ist nicht erlaubt (lokale oder private Adresse bzw. nicht erreichbarer Port). Der bisherige Wert wurde beibehalten.' );
 		return $previous;
 	}
