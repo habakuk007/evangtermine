@@ -60,7 +60,7 @@ function et_show_encoding() {
 
 /*
  * Protokoll und Host des jeweiligen Kalenderbetreibers
- * Wird nicht mehr benötigt. In den defaults wird das Protokoll über das REQUEST_SCHEME gesetzt.
+ * Optional: Ist das Feld leer, wird ET_DEFAULT_PROTOCOL (https://) verwendet.
  */
 function et_show_etprotocol() {
 	$etprotocol = get_option( 'etprotocol' );

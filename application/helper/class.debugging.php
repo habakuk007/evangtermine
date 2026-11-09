@@ -20,7 +20,8 @@ class Debugging {
 				$output = $data;
 			}
 			
-			echo '<script>console.log(\'' . $description . ': ' . $output . '\');</script>' . PHP_EOL;
+			// Nur Debug-Ausgabe: als JSON-String ausgeben, damit Werte aus dem Request das Script nicht verlassen können.
+			echo '<script>console.log(' . wp_json_encode( $description . ': ' . $output, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT ) . ');</script>' . PHP_EOL;
 		}
 	}
 	
