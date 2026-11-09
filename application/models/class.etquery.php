@@ -281,7 +281,8 @@ class EtQuery
             }
 
             // Kurzer Cache für die Teaser-Ausgabe (Widget und et_teaser), damit nicht jeder Seitenaufruf die Evangelischen Termine abfragt.
-            $cacheKey = $this->getCacheKey($url, $filename);
+            $cacheTtl = $this->getCacheTtl();
+            $cacheKey = $this->getCacheKey($url, $filename, $cacheTtl);
             $stream = false === $cacheKey ? false : get_transient($cacheKey);
 
             if (false === $stream || ! is_string($stream)) {
@@ -301,7 +302,7 @@ class EtQuery
                         $stream = $this->filterStream($stream);
                     }
                     if (false !== $cacheKey && '' !== $stream) {
-                        set_transient($cacheKey, $stream, $this->getCacheTtl());
+                        set_transient($cacheKey, $stream, $cacheTtl);
                     }
                 } else {
                     // Fehlermeldung $host ist vorübergehend nicht erreichbar (wird nicht zwischengespeichert)
@@ -339,11 +340,12 @@ class EtQuery
      *
      * @param string $url      Abruf-URL
      * @param string $filename Aufgerufenes Modul
+     * @param int    $ttl      Lebensdauer des Caches in Sekunden (0 = kein Cache)
      * @return string|false
      */
-    private function getCacheKey($url, $filename)
+    private function getCacheKey($url, $filename, $ttl)
     {
-        if (ET_TEASER_MODUL !== $filename || 0 === $this->getCacheTtl()) {
+        if (ET_TEASER_MODUL !== $filename || 0 === $ttl) {
             return false;
         }
         $variant = array(
