@@ -18,13 +18,13 @@ function et_show_section() {
 // Veranstalter-ID(s): kommagetrennte Liste der Veranstalter-IDs der Evangelischen Termine
 function et_show_vid() {
 	$vid = get_option( 'vid' );
-	echo '<input name="vid" type="text" value="' . $vid . '" />';
+	echo '<input name="vid" type="text" value="' . esc_attr( $vid ) . '" />';
 }
 // Dekanats-ID: Dekanatsnummer
 // Diese ID ist in den Shortcodes/Makros und im Widget nicht überschreibbar.
 function et_show_region() {
 	$region = get_option( 'region' );
-	echo '<input name="region" type="text" value="' . $region . '" />';
+	echo '<input name="region" type="text" value="' . esc_attr( $region ) . '" />';
 }
 
 // Über diesen Schalter wird eingestellt, ob ein Termin bis zum Ablauf angezeigt wird oder mit Beginn
@@ -34,8 +34,8 @@ function et_show_until() {
 	$items = array ( 'yes', 'no' );
 	echo '<select id="et_option_until" name="until">';
 	foreach ( $items as $item ) {
-		$selected = ( $until == $item ) ? 'selected="selected"' : '';
-		echo '<option value="' . $item . '" ' . $selected . '>' . $item . '</option>';
+		$selected = ( $until === $item ) ? 'selected="selected"' : '';
+		echo '<option value="' . esc_attr( $item ) . '" ' . $selected . '>' . esc_html( $item ) . '</option>';
 	}
 	echo '</select>';
 }
@@ -43,7 +43,7 @@ function et_show_until() {
 // Eigene CSS-Datei. Dadurch werden die CSS-Einstellungen der Evangelischen Termine überschrieben.
 function et_show_css() {
 	$css = get_option( 'css' );
-	echo '<input name="css" type="text" value="' . $css . '" size="40" />';
+	echo '<input name="css" type="text" value="' . esc_attr( $css ) . '" size="40" />';
 }
 
 // Encoding der Website einstellen
@@ -52,8 +52,8 @@ function et_show_encoding() {
 	$items = array ( 'utf8', 'latin1' );
 	echo '<select id="et_option_encoding" name="encoding">';
 	foreach ( $items as $item ) {
-		$selected = ( $encoding == $item ) ? 'selected="selected"' : '';
-		echo '<option value="' . $item . '" ' . $selected . '>' . $item . '</option>';
+		$selected = ( $encoding === $item ) ? 'selected="selected"' : '';
+		echo '<option value="' . esc_attr( $item ) . '" ' . $selected . '>' . esc_html( $item ) . '</option>';
 	}
 	echo '</select>';
 }
@@ -67,15 +67,15 @@ function et_show_etprotocol() {
 	$items = array( '', 'https://', 'http://' );
 	echo '<select id="et_option_protocol" name="etprotocol">';
 	foreach( $items as $item ) {
-		$selected = ( $etprotocol == $item ) ? 'selected="selected"' : '';
-		echo '<option value="' . $item . '" ' . $selected . '>' . $item . '</option>';
+		$selected = ( $etprotocol === $item ) ? 'selected="selected"' : '';
+		echo '<option value="' . esc_attr( $item ) . '" ' . $selected . '>' . esc_html( $item ) . '</option>';
 	}
 	echo '</select>';
 }
 
 function et_show_ethost() {
 	$ethost = get_option( 'ethost' );
-	echo '<input name="ethost" type="text" value="' . $ethost . '" size="40" />';
+	echo '<input name="ethost" type="text" value="' . esc_attr( $ethost ) . '" size="40" />';
 }
 
 // Aufbau der Optionen
@@ -95,6 +95,45 @@ function et_options() {
 <?php
 }
 
+/**
+ * Bereinigt die Eingabe für das Feld "CSS-Datei": leer, "nocss" oder eine URL.
+ *
+ * @param mixed $value Eingegebener Wert.
+ * @return string
+ */
+function et_sanitize_css( $value ) {
+	$value = trim( sanitize_text_field( (string) $value ) );
+	if ( '' === $value || 'nocss' === $value ) {
+		return $value;
+	}
+	return esc_url_raw( $value );
+}
+
+/**
+ * Lässt nur einen der erlaubten Werte zu, sonst den Standardwert.
+ *
+ * @param mixed  $value   Eingegebener Wert.
+ * @param array  $allowed Erlaubte Werte.
+ * @param string $default Standardwert.
+ * @return string
+ */
+function et_sanitize_choice( $value, $allowed, $default ) {
+	$value = is_scalar( $value ) ? (string) $value : '';
+	return in_array( $value, $allowed, true ) ? $value : $default;
+}
+
+function et_sanitize_until( $value ) {
+	return et_sanitize_choice( $value, array( 'yes', 'no' ), 'yes' );
+}
+
+function et_sanitize_encoding( $value ) {
+	return et_sanitize_choice( $value, array( 'utf8', 'latin1' ), 'utf8' );
+}
+
+function et_sanitize_etprotocol( $value ) {
+	return et_sanitize_choice( $value, array( '', 'https://', 'http://' ), '' );
+}
+
 // Optionsseite initialisieren
 function et_admin_init() {
 	add_settings_section( 'et_section', 'Grundeinstellungen', 'et_show_section', 'et_menu_slug' );
@@ -107,13 +146,13 @@ function et_admin_init() {
 	add_settings_field( 'etprotocol', 'Protokoll<br/>(wenn das Feld leer ist, wird das Protokoll vom Plugin ermittelt): ', 'et_show_etprotocol', 'et_menu_slug', 'et_section' );
 	add_settings_field( 'ethost', 'Host und Domain des Kalenderbetreibers<br/>(Default: ' . ET_DEFAULT_HOST . '): ', 'et_show_ethost', 'et_menu_slug', 'et_section' );
 		
-	register_setting( 'et_group', 'vid' );
-	register_setting( 'et_group', 'region' );
-	register_setting( 'et_group', 'until' );
-	register_setting( 'et_group', 'css' );
-	register_setting( 'et_group', 'encoding' );
-	register_setting( 'et_group', 'etprotocol' );
-	register_setting( 'et_group', 'ethost' );
+	register_setting( 'et_group', 'vid', array( 'sanitize_callback' => 'sanitize_text_field' ) );
+	register_setting( 'et_group', 'region', array( 'sanitize_callback' => 'sanitize_text_field' ) );
+	register_setting( 'et_group', 'until', array( 'sanitize_callback' => 'et_sanitize_until' ) );
+	register_setting( 'et_group', 'css', array( 'sanitize_callback' => 'et_sanitize_css' ) );
+	register_setting( 'et_group', 'encoding', array( 'sanitize_callback' => 'et_sanitize_encoding' ) );
+	register_setting( 'et_group', 'etprotocol', array( 'sanitize_callback' => 'et_sanitize_etprotocol' ) );
+	register_setting( 'et_group', 'ethost', array( 'sanitize_callback' => 'sanitize_text_field' ) );
 }
 add_action( 'admin_init', 'et_admin_init' );
 	

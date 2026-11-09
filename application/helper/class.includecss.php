@@ -10,8 +10,8 @@ class IncludeCSS {
 		if (get_option ( 'css' ) && (get_option( 'css' ) != 'nocss')) {
 			$css = get_option ( 'css' );
 			// TODO evtl. media="all", damit auch für den Druck ein ordentliches CSS erstellt werden kann
-			$output = '<link href="' . $css . '" media="screen, projection" rel ="stylesheet" type="text/css" />';
-			echo $output;
+			$output = '<link href="' . esc_url( $css ) . '" media="screen, projection" rel="stylesheet" type="text/css" />';
+			echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $css is escaped with esc_url() above.
 		} 
 	}
 }

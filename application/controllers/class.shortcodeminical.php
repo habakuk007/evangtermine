@@ -23,9 +23,9 @@ class ShortcodeMinical
         // Ausgabe vorbereiten
         ob_start();
 ?>
-<link rel="stylesheet" href="<?php echo plugin_dir_url( '' ) . 'evangtermine/assets/ui/1.12.1/themes/base/jquery-ui.css'; ?>">
-<link rel="stylesheet" href="<?php echo plugin_dir_url( '' ) . 'evangtermine/assets/styles/colorbox.css'; ?>">
-<script src="<?php echo plugin_dir_url( '' ) . 'evangtermine/assets/scripts/et_minical.js'; ?>"></script>
+<link rel="stylesheet" href="<?php echo esc_url( plugin_dir_url( '' ) . 'evangtermine/assets/ui/1.12.1/themes/base/jquery-ui.css' ); ?>">
+<link rel="stylesheet" href="<?php echo esc_url( plugin_dir_url( '' ) . 'evangtermine/assets/styles/colorbox.css' ); ?>">
+<script src="<?php echo esc_url( plugin_dir_url( '' ) . 'evangtermine/assets/scripts/et_minical.js' ); ?>"></script>
 
 <!-- Formattierungen für den Tooltip: -->
 <style type="text/css">
@@ -59,13 +59,7 @@ class ShortcodeMinical
 </style>
 <script>
     /* Weitere Parameter können eingefügt werden */
-    var parameter = {
-<?php
-        foreach ($etparameters as $key => $value) {
-            print ($key . " : '" . $value ."',");
-        }
-?>
-    };
+    var parameter = <?php echo wp_json_encode( $etparameters, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT ); ?>;
     var host = 'evangelische-termine.de';
 </script>
     
