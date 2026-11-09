@@ -1,6 +1,6 @@
 === Evangelische Termine ===
 
-Contributors: regibaer  
+Contributors: habakuk, regibaer  
 Tags: evangelische, termine, elkb, vernetzte, kirche  
 Requires at least: 5.0
 Tested up to: 7.1
