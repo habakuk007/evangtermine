@@ -34,8 +34,7 @@ function et_show_until() {
 	$items = array ( 'yes', 'no' );
 	echo '<select id="et_option_until" name="until">';
 	foreach ( $items as $item ) {
-		$selected = ( $until === $item ) ? 'selected="selected"' : '';
-		echo '<option value="' . esc_attr( $item ) . '" ' . $selected . '>' . esc_html( $item ) . '</option>';
+		echo '<option value="' . esc_attr( $item ) . '"' . selected( $until, $item, false ) . '>' . esc_html( $item ) . '</option>';
 	}
 	echo '</select>';
 }
@@ -52,8 +51,7 @@ function et_show_encoding() {
 	$items = array ( 'utf8', 'latin1' );
 	echo '<select id="et_option_encoding" name="encoding">';
 	foreach ( $items as $item ) {
-		$selected = ( $encoding === $item ) ? 'selected="selected"' : '';
-		echo '<option value="' . esc_attr( $item ) . '" ' . $selected . '>' . esc_html( $item ) . '</option>';
+		echo '<option value="' . esc_attr( $item ) . '"' . selected( $encoding, $item, false ) . '>' . esc_html( $item ) . '</option>';
 	}
 	echo '</select>';
 }
@@ -67,8 +65,7 @@ function et_show_etprotocol() {
 	$items = array( '', 'https://', 'http://' );
 	echo '<select id="et_option_protocol" name="etprotocol">';
 	foreach( $items as $item ) {
-		$selected = ( $etprotocol === $item ) ? 'selected="selected"' : '';
-		echo '<option value="' . esc_attr( $item ) . '" ' . $selected . '>' . esc_html( $item ) . '</option>';
+		echo '<option value="' . esc_attr( $item ) . '"' . selected( $etprotocol, $item, false ) . '>' . esc_html( $item ) . '</option>';
 	}
 	echo '</select>';
 }

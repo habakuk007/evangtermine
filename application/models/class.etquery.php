@@ -383,7 +383,9 @@ class EtQuery
         $stream = str_replace('<link href="nocss" media="screen, projection" rel="stylesheet" type="text/css" />', '', $stream);
         
         // URL für JavaScripts in et_panels anpassen
-        $stream = str_replace('<script type="text/javascript" src="/bundles/vket/js/jquery/jquery.min.js"></script>', '<script type="text/javascript" src="' . plugin_dir_url( '' ) . 'evangtermine/assets/scripts/jquery.min.js' . '"></script>', $stream);
+        // jQuery wird aus dem WordPress-Core geladen. Der Core liefert jQuery im noConflict-Modus aus, die Skripte der
+        // Evangelischen Termine erwarten aber $ als globale Variable.
+        $stream = str_replace('<script type="text/javascript" src="/bundles/vket/js/jquery/jquery.min.js"></script>', '<script type="text/javascript" src="' . esc_url(includes_url('js/jquery/jquery.min.js')) . '"></script><script type="text/javascript">window.$ = window.$ || window.jQuery;</script>', $stream);
         $stream = str_replace('<script type="text/javascript" src="/bundles/vket/css/panels/bootstrap3.3.7.min.js"></script>', '<script type="text/javascript" src="' . plugin_dir_url( '' ) . 'evangtermine/assets/scripts/bootstrap3.3.7.min.js' . '"></script>', $stream);
         $stream = str_replace('<link rel="stylesheet" href="/bundles/vket/css/panels/bootstrap3.3.7.min.css" />', '<link rel="stylesheet" href="' . plugin_dir_url( '' ) . 'evangtermine/assets/styles/bootstrap3.3.7.min.css' . '" />', $stream);
         $stream = str_replace('<link rel="stylesheet" href="/bundles/vket/css/panels/bootstrap-theme3.3.7.min.css" />', '<link rel="stylesheet" href="' . plugin_dir_url( '' ) . 'evangtermine/assets/styles/bootstrap-theme3.3.7.min.css' . '" />', $stream);

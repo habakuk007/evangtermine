@@ -1,5 +1,6 @@
 # Files and folders that must not end up in the WordPress.org release (used by 10up/action-wordpress-plugin-deploy).
 .agents
+.distignore
 .claude
 .git
 .github
