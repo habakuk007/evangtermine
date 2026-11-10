@@ -13,9 +13,19 @@
 #   gh-bot.sh comment <pr-number> "<text>"
 #   gh-bot.sh list
 
+# Git's bash.exe started from PowerShell/cmd has no /usr/bin on PATH (cygpath, tr, base64 missing).
+PATH="/usr/bin:$PATH"
+
 REPO="habakuk007/evangtermine"
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-GET_TOKEN="$(cygpath -w "$DIR/get-token.ps1")"
+# Windows path for powershell.exe: Git Bash has cygpath, WSL has wslpath.
+winpath() {
+  if command -v cygpath >/dev/null 2>&1; then cygpath -w "$1"
+  elif command -v wslpath >/dev/null 2>&1; then wslpath -w "$1"
+  else printf '%s' "$1"
+  fi
+}
+GET_TOKEN="$(winpath "$DIR/get-token.ps1")"
 
 usage() {
   cat >&2 <<'EOF'
