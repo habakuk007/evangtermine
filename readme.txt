@@ -167,6 +167,15 @@ Die Beschreibung der Parameter findet sich im [Handbuch der Evangelischen Termin
 Die Evangelischen Termine bieten als Alternative ein Widget an, das in beliebigen CMS-Systemen eingesetzt werden kann
 (nach Anmeldung auf https://www.evangelische-termine.de/ unter Information -> Widgets zu finden).
 
+= Mitgelieferte Bibliotheken / bundled libraries = 
+
+* Bootstrap 3.3.7 (MIT), https://getbootstrap.com/ - für `[et_panels]`
+* Font Awesome 4.7.0 (Schrift: SIL OFL 1.1, CSS: MIT), https://fontawesome.com/v4/ - für `[et_panels]`
+* jQuery 1.12.4 und jQuery UI 1.12.1 (MIT), https://jquery.com/ und https://jqueryui.com/ - in `assets/scripts/et_minical.js` für `[et_minical]`
+* Colorbox 1.6.4 (MIT), https://www.jacklmoore.com/colorbox/ - in `assets/scripts/et_minical.js` für `[et_minical]`
+
+`[et_veranstalter]`, `[et_teaser]` und `[et_panels]` verwenden das jQuery, das WordPress mitliefert.
+
 = Autor = 
 
 Ursprünglich entwickelt von Norbert Räbiger (https://profiles.wordpress.org/regibaer).
@@ -184,6 +193,7 @@ Ursprünglich entwickelt von Norbert Räbiger (https://profiles.wordpress.org/re
 
 = 3.4 =
 * SECURITY: Cross-Site-Scripting und weitere Sicherheitslücken behoben (u. a. CVE-2025-28960): Request-Parameter werden bereinigt und URL-kodiert, Optionen und Ausgaben werden escaped, der Abruf-Host wird auf lokale/private Adressen geprüft.
+* CHANGED: jQuery wird aus WordPress geladen, die mitgelieferte Kopie wurde entfernt.
 * CHANGED: Die Evangelischen Termine werden standardmäßig über https:// abgerufen.
 * CHANGED: Die Ausgabe von et_teaser und des Widgets wird 5 Minuten zwischengespeichert (Filter `evangtermine_cache_ttl`, 0 schaltet den Cache ab).
 * FIXED: et_teaser wird mit dem Standard-CSS der Evangelischen Termine ausgeliefert, solange keine eigene CSS-Datei hinterlegt ist.

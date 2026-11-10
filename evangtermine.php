@@ -10,7 +10,6 @@
  * Version: 3.4
  * Requires at least: 5.0
  * Requires PHP: 7.4
- * Tested up to: 7.1
  * Author URI: https://profiles.wordpress.org/habakuk/
  * License: GPLv2 or later
  */

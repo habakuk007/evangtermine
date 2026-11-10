@@ -5,6 +5,10 @@
  * Design -> Widgets -> Evangelische Termine
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 ?>
 	<p>Titel: 
 		<input name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $instance['title'] ); ?>" />
