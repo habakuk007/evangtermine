@@ -5,7 +5,7 @@
  */
 /*
  * Plugin Name: Evangelische Termine
- * Description: Dieses Plugin bindet die Evangelischen Termine (www.evangelische-termine.de) in Wordpress ein.
+ * Description: Shows the events of the German Protestant event calendar "Evangelische Termine" (www.evangelische-termine.de) with shortcodes and a widget.
  * Author: habakuk
  * Version: 3.4
  * Requires at least: 5.0
