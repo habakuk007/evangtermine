@@ -107,6 +107,7 @@ Each skill has a corresponding Claude Code slash command in `.claude/commands/`.
 | Skill | Claude Command | Purpose |
 |-------|---------------|---------|
 | [gh/SKILL.md](.agents/skills/gh/SKILL.md) | `/gh` | GitHub CLI: issues, PRs, releases, labels |
+| [gh-bot/SKILL.md](.agents/skills/gh-bot/SKILL.md) | `/gh-bot` | Open PRs and PR comments as the bot identity `habakuk-ai`; commits and pushes stay `habakuk007` |
 | [php-lint/SKILL.md](.agents/skills/php-lint/SKILL.md) | `/php-lint` | PHPCS/PHPCBF for WordPress Coding Standard |
 | [wp-release/SKILL.md](.agents/skills/wp-release/SKILL.md) | `/wp-release` | Full plugin release workflow (version bump → tag → GitHub release) |
 | [grill-me/SKILL.md](.agents/skills/grill-me/SKILL.md) | `/grill-me` | Stress-test a plan through relentless questions |
