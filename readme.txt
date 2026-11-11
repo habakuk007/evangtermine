@@ -57,7 +57,7 @@ This plugin fetches the events live from an external service: Evangelische Termi
 
 * **When:** every time `[et_veranstalter]`, `[et_teaser]`, `[et_panels]` or the widget is shown. The output of `[et_teaser]` and of the widget is cached for 5 minutes. `[et_minical]` loads its data with JavaScript from the visitor's browser, from the host in the settings; a click on an event loads the detail view from there in an iframe.
 * **What is sent:** the query parameters (organiser ID, region ID, filters, a visitor's search term and page number, the ID of an event), the URL of the requesting page as Referer and the plugin version in the User-Agent. The request is made by your server, so the IP addresses of your visitors are not sent. `[et_minical]` is the exception, because the visitor's browser sends the request itself.
-* **Returned content:** the HTML delivered by the service is shown on your site as it is. It can reference further files on www.evangelische-termine.de (styles, scripts, images), which the visitor's browser then loads from there.
+* **Returned content:** the HTML delivered by the service is shown on your site as it is. Scripts and libraries (jQuery, jQuery UI, Bootstrap, Font Awesome) are loaded from WordPress and from this plugin, not from the service. The visitor's browser still loads from the service: its default stylesheet for `[et_veranstalter]`, the detail view and `[et_teaser]` (not if you set your own CSS file in the settings) and the images of events, which are stored at the service's hosting provider (currently `et-live.obsv3.de-global-1.spacenet.cloud`).
 * **Privacy policy of the service:** [https://www.evangelische-termine.de/datenschutz](https://www.evangelische-termine.de/datenschutz)
 
 == Installation ==
@@ -158,10 +158,10 @@ The widget form offers the same parameters, plus a field for additional paramete
 
 * Bootstrap 3.3.7 (MIT), https://getbootstrap.com/ - used by `[et_panels]`
 * Font Awesome 4.7.0 (font: SIL OFL 1.1, CSS: MIT), https://fontawesome.com/v4/ - used by `[et_panels]`
-* jQuery UI 1.12.1 base theme, stylesheet and icons only (MIT), https://jqueryui.com/ - used by `[et_minical]`
+* jQuery UI 1.12.1 base theme, stylesheet and icons only (MIT), https://jqueryui.com/ - used by `[et_minical]` and the date filter of `[et_veranstalter]`
 * Colorbox 1.6.4 (MIT), https://www.jacklmoore.com/colorbox/ - used by `[et_minical]`
 
-`[et_panels]` and `[et_minical]` use the jQuery that ships with WordPress; `[et_minical]` also uses its jQuery UI and moment.
+`[et_veranstalter]`, `[et_panels]` and `[et_minical]` use the jQuery that ships with WordPress; `[et_veranstalter]` also uses its date picker, `[et_minical]` its jQuery UI and moment.
 
 = Alternative =
 
@@ -189,6 +189,7 @@ Originally developed by Norbert Räbiger (https://profiles.wordpress.org/regibae
 * Changed: jQuery is loaded from WordPress; the bundled copy was removed.
 * Changed: `[et_minical]` uses jQuery, jQuery UI and moment from WordPress instead of its own copies (jQuery 1.12.4), and its styles and scripts are enqueued the WordPress way. The own CSS file from the settings is enqueued as well.
 * Fixed: `[et_minical]` uses the host from the settings instead of a fixed address, and texts from the calendar are escaped in its tooltip.
+* Fixed: `[et_veranstalter]` and the detail view no longer load jQuery, jQuery UI and a script from the calendar host in the visitor's browser; they use jQuery and the date picker from WordPress and files of the plugin.
 * Fixed: the search in `[et_veranstalter]` often ran into a timeout ("Der Veranstaltungskalender ist derzeit nicht verfügbar"). The request now waits up to 15 instead of 5 seconds (filter `evangtermine_http_timeout`).
 * Fixed: `[et_teaser]` is delivered with the default styles of Evangelische Termine as long as no own CSS file is set.
 * Fixed: compatibility with PHP 8.0 to 8.5 (undefined array keys in the widget and its form, HTTP status through the WordPress API).

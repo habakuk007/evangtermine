@@ -3,6 +3,9 @@
 class EtQuery
 {
 
+    // Regex-Teil: Anfang der Adresse einer Datei aus /bundles/vket/ der Evangelischen Termine, mit oder ohne Protokoll und Host.
+    const REMOTE_BUNDLE_PREFIX = '(?:(?:https?:)?//[a-z0-9.:-]+)?/bundles/vket/';
+
     // Timeout für den Abruf in Sekunden. Eine Suche dauert bei den Evangelischen Terminen oft länger als 5 Sekunden.
     private $connectionTimeout = 15;
     private $etFilename;
@@ -330,11 +333,62 @@ class EtQuery
             $stream = 'Error: Plugin "Evangelische Termine": Veranstalter-ID ist nicht gesetzt';
         }
 
+        if (is_string($stream) && '[{' !== substr($stream, 0, 2)) {
+            $stream = $this->localizeLibraries($stream);
+        }
+
         if (DEBUG) {
             Debugging::writeOutputStream(BASE_PATH . '/etStream.html', $stream);
         }
 
         return $stream;
+    }
+
+    /**
+     * Ersetzt die Skripte, die das HTML der Evangelischen Termine vom Host des Kalenders nachlädt (jQuery, jQuery UI und
+     * common.js), durch jQuery und den Datepicker aus WordPress und das Skript assets/scripts/et_calendar.js des Plugins.
+     * Die Skripte werden an der Stelle des ersten ersetzten Tags ausgegeben, weil die Inline-Skripte im HTML des Kalenders
+     * sie sofort verwenden. Was WordPress auf der Seite schon ausgegeben hat, wird nicht noch einmal geladen.
+     * Läuft nach dem Cache, weil das Ergebnis davon abhängt, was auf der aktuellen Seite schon geladen ist.
+     *
+     * @param string $stream
+     * @return string
+     */
+    private function localizeLibraries($stream)
+    {
+        $pattern = '#<script\b[^>]*\bsrc=(["\'])' . self::REMOTE_BUNDLE_PREFIX . 'js/(jquery/jquery\.min\.js|jquery/jquery-ui\.min\.js|common\.js)(?:\?[^"\']*)?\1[^>]*>\s*</script>#i';
+        if (! preg_match_all($pattern, $stream, $matches)) {
+            return $stream;
+        }
+
+        if (! wp_script_is('evangtermine-calendar', 'registered')) {
+            wp_register_script(
+                'evangtermine-calendar',
+                plugins_url('assets/scripts/et_calendar.js', BASE_PATH . '/evangtermine.php'),
+                array('jquery'),
+                ET_VERSION,
+                false
+            );
+        }
+        $handles = array('evangtermine-calendar');
+        if (in_array('jquery/jquery-ui.min.js', array_map('strtolower', $matches[2]), true)) {
+            $handles[] = 'jquery-ui-datepicker';
+        }
+
+        ob_start();
+        wp_scripts()->do_items($handles);
+        $tags = ob_get_clean();
+
+        $first = true;
+        $result = preg_replace_callback($pattern, function ($match) use (&$first, $tags) {
+            if ($first) {
+                $first = false;
+                return $tags;
+            }
+            return '';
+        }, $stream);
+
+        return null === $result ? $stream : $result;
     }
 
     /**
@@ -398,14 +452,24 @@ class EtQuery
         $stream = str_replace('<link rel="stylesheet" type="text/css" href="nocss"  />', '', $stream);
         $stream = str_replace('<link href="nocss" media="screen, projection" rel="stylesheet" type="text/css" />', '', $stream);
         
-        // URL für JavaScripts in et_panels anpassen
-        // jQuery wird aus dem WordPress-Core geladen. Der Core liefert jQuery im noConflict-Modus aus, die Skripte der
-        // Evangelischen Termine erwarten aber $ als globale Variable.
-        $stream = str_replace('<script type="text/javascript" src="/bundles/vket/js/jquery/jquery.min.js"></script>', '<script type="text/javascript" src="' . esc_url(includes_url('js/jquery/jquery.min.js')) . '"></script><script type="text/javascript">window.$ = window.$ || window.jQuery;</script>', $stream);
-        $stream = str_replace('<script type="text/javascript" src="/bundles/vket/css/panels/bootstrap3.3.7.min.js"></script>', '<script type="text/javascript" src="' . plugin_dir_url( '' ) . 'evangtermine/assets/scripts/bootstrap3.3.7.min.js' . '"></script>', $stream);
-        $stream = str_replace('<link rel="stylesheet" href="/bundles/vket/css/panels/bootstrap3.3.7.min.css" />', '<link rel="stylesheet" href="' . plugin_dir_url( '' ) . 'evangtermine/assets/styles/bootstrap3.3.7.min.css' . '" />', $stream);
-        $stream = str_replace('<link rel="stylesheet" href="/bundles/vket/css/panels/bootstrap-theme3.3.7.min.css" />', '<link rel="stylesheet" href="' . plugin_dir_url( '' ) . 'evangtermine/assets/styles/bootstrap-theme3.3.7.min.css' . '" />', $stream);
-        $stream = str_replace('<link rel="stylesheet" href="/bundles/vket/css/font-awesome.min.css" />', '<link rel="stylesheet" href="' . plugin_dir_url( '' ) . 'evangtermine/assets/font-awesome-4.7.0/css/font-awesome.min.css' . '" />', $stream);
+        // Bootstrap, Font Awesome und das Stylesheet von jQuery UI aus dem Plugin laden statt vom Host der Evangelischen Termine.
+        // Die Adressen kommen je nach Modul relativ (/bundles/...), absolut (https://host/bundles/...) oder
+        // protokoll-relativ (//host/bundles/...), mit oder ohne Versionsparameter (?v=...); ersetzt wird deshalb über den Pfad.
+        $assetsUrl = plugins_url('assets/', BASE_PATH . '/evangtermine.php');
+        $bundled = array(
+            'css/panels/bootstrap3.3.7.min.js' => 'scripts/bootstrap3.3.7.min.js',
+            'css/panels/bootstrap3.3.7.min.css' => 'styles/bootstrap3.3.7.min.css',
+            'css/panels/bootstrap-theme3.3.7.min.css' => 'styles/bootstrap-theme3.3.7.min.css',
+            'css/font-awesome.min.css' => 'font-awesome-4.7.0/css/font-awesome.min.css',
+            'css/jquery-ui.min.css' => 'ui/1.12.1/themes/base/jquery-ui.css'
+        );
+        foreach ($bundled as $remotePath => $localPath) {
+            $stream = preg_replace(
+                '#\b(src|href)=(["\'])' . self::REMOTE_BUNDLE_PREFIX . preg_quote($remotePath, '#') . '(?:\?[^"\']*)?\2#i',
+                '$1="' . esc_url($assetsUrl . $localPath) . '"',
+                $stream
+            );
+        }
 
         // CSS der Evangelischen Termine entfernen, damit das eigene CSS verwendet werden kann.
         if (! $this->etLoadCSS) {
