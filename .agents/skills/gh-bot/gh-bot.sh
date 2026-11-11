@@ -11,6 +11,7 @@
 #   gh-bot.sh check
 #   gh-bot.sh pr <branch> "<title>" ["<body>"]   # hotfix/* -> master; else develop
 #   gh-bot.sh comment <pr-number> "<text>"
+#   gh-bot.sh comment <pr-number> --body-file <path>
 #   gh-bot.sh list
 
 # Git's bash.exe started from PowerShell/cmd has no /usr/bin on PATH (cygpath, tr, base64 missing).
@@ -33,6 +34,7 @@ Usage:
   gh-bot.sh check                                verify the bot token
   gh-bot.sh pr <branch> "<title>" ["<body>"]     open a PR as the bot (hotfix/* -> master; else develop)
   gh-bot.sh comment <pr-number> "<text>"         comment on a PR as the bot
+  gh-bot.sh comment <pr-number> --body-file <path>  comment on a PR as the bot (body from a file)
   gh-bot.sh list                                 list open PRs
 EOF
   exit 64
@@ -81,8 +83,16 @@ cmd_pr() {
 }
 
 cmd_comment() {
-  [ $# -eq 2 ] && [ -n "$1" ] && [ -n "$2" ] || usage
+  [ -n "$1" ] || usage
   case "$1" in *[!0-9]*) usage ;; esac
+  # comment <pr> --body-file <path>  -> body read from a file (avoids arg mangling)
+  if [ $# -eq 3 ] && [ "$2" = "--body-file" ]; then
+    [ -f "$3" ] || { printf 'ERROR: --body-file: %s not found\n' "$3" >&2; exit 64; }
+    bot_gh pr comment "$1" --repo "$REPO" --body-file "$3"
+    return
+  fi
+  # comment <pr> "<text>"  -> body passed as an argument
+  [ $# -eq 2 ] && [ -n "$2" ] || usage
   bot_gh pr comment "$1" --repo "$REPO" --body "$2"
 }
 
