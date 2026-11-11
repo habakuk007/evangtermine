@@ -5,12 +5,11 @@
  */
 /*
  * Plugin Name: Evangelische Termine
- * Description: Dieses Plugin bindet die Evangelischen Termine (www.evangelische-termine.de) in Wordpress ein.
+ * Description: Shows the events of the German Protestant event calendar "Evangelische Termine" (www.evangelische-termine.de) with shortcodes and a widget.
  * Author: habakuk
  * Version: 3.4
  * Requires at least: 5.0
  * Requires PHP: 7.4
- * Tested up to: 7.1
  * Author URI: https://profiles.wordpress.org/habakuk/
  * License: GPLv2 or later
  */
@@ -57,8 +56,11 @@ class evangtermine {
 		// Options-Seite über das Backend-Menü Plugins aufrufen
 		add_filter ('plugin_action_links_' . plugin_basename(__FILE__), array('PluginOptionsPage', 'etPluginActions'));
 
-		// CSS der Evangelischen Termine im Kopfbereich der Ausgabeseite integrieren
-		add_action ('wp_head', array('IncludeCSS', 'etIncludeCSS'));
+		// Eigene CSS-Datei aus den Einstellungen einbinden (nach den Stylesheets des Themes)
+		add_action ('wp_enqueue_scripts', array('IncludeCSS', 'etIncludeCSS'), 20);
+
+		// Skripte und Stylesheets des Mini-Kalenders registrieren
+		add_action ('wp_enqueue_scripts', array('ShortcodeMinical', 'registerAssets'));
 		
 		// shortcode für den Teaser einbinden
 		add_shortcode('et_teaser', array('ShortcodeTeaser', 'etTeaser'));

@@ -7,7 +7,7 @@ from [www.evangelische-termine.de](https://www.evangelische-termine.de) into any
 It provides shortcodes and a sidebar widget; the event HTML is fetched live from the remote host
 with the WordPress HTTP API (`wp_remote_get()`).
 
-The codebase is object-oriented PHP with an autoloader, no build tools, no Composer dependencies
+The codebase is object-oriented PHP with an autoloader, no build tools, no runtime Composer dependencies (Composer is dev tooling only)
 and no npm. The plugin was closed on WordPress.org (security issue); the goal is to fix issues
 #1–#6, support PHP 8 and get it re-opened.
 
@@ -57,11 +57,17 @@ This plugin has no build system. For local development:
 # Lint PHP syntax
 find . -name "*.php" -not -path "./.git/*" -not -path "./assets/*" -exec php -l {} \;
 
-# WordPress Coding Standard (requires PHPCS + WPCS)
-phpcs --standard=WordPress --extensions=php evangtermine.php autoloader.php application/
+# Install the dev tooling (PHPCS, WPCS, PHPCompatibilityWP) - dev only, not part of the release
+composer install
 
-# Fix auto-fixable issues
-phpcbf --standard=WordPress --extensions=php evangtermine.php autoloader.php application/
+# PHP compatibility check for PHP 7.4+ (blocking in CI)
+composer lint:compat
+
+# WordPress Coding Standard, full ruleset from phpcs.xml (not blocking in CI until issue #13)
+composer lint:php
+
+# Auto-fix
+composer fix:php
 
 # Generate .pot translation file (requires WP-CLI)
 wp i18n make-pot . languages/evangtermine.pot

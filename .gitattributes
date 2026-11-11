@@ -1,2 +1,16 @@
-# Shell scripts must keep LF line endings (bash fails on CRLF, also on Windows checkouts).
-*.sh text eol=lf
+# LF line endings for all text files in the repository
+# (mirrors .editorconfig end_of_line = lf).
+* text=auto eol=lf
+
+# Binary files: never normalize
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.gif   binary
+*.ico   binary
+*.woff  binary
+*.woff2 binary
+*.ttf   binary
+*.otf   binary
+*.eot   binary
+*.zip   binary

@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<ruleset name="Evangelische Termine">
+	<description>WordPress Coding Standards and PHP compatibility for the plugin Evangelische Termine.</description>
+
+	<file>evangtermine.php</file>
+	<file>autoloader.php</file>
+	<file>application</file>
+
+	<arg name="extensions" value="php"/>
+	<arg value="sp"/>
+
+	<!-- Bundled third-party libraries (Bootstrap, jQuery, Font Awesome). -->
+	<exclude-pattern>*/assets/*</exclude-pattern>
+	<exclude-pattern>*/vendor/*</exclude-pattern>
+
+	<!-- WordPress Coding Standards -->
+	<rule ref="WordPress"/>
+
+	<!-- PHP 7.4+ compatibility (matches "Requires PHP: 7.4") -->
+	<rule ref="PHPCompatibilityWP"/>
+	<config name="testVersion" value="7.4-"/>
+
+	<!-- Matches "Requires at least: 5.0" -->
+	<config name="minimum_wp_version" value="5.0"/>
+
+	<!-- Text domain -->
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" type="array">
+				<element value="evangtermine"/>
+			</property>
+		</properties>
+	</rule>
+</ruleset>

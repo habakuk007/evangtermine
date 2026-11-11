@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-**Evangelische Termine** (v3.3) — WordPress plugin that embeds the Protestant events calendar from [www.evangelische-termine.de](https://www.evangelische-termine.de) via shortcodes and a sidebar widget. The event HTML is fetched live from the remote host with the WordPress HTTP API (`wp_remote_get()`) and injected into the page. There is no build system, no Composer and no npm.
+**Evangelische Termine** (v3.3) — WordPress plugin that embeds the Protestant events calendar from [www.evangelische-termine.de](https://www.evangelische-termine.de) via shortcodes and a sidebar widget. The event HTML is fetched live from the remote host with the WordPress HTTP API (`wp_remote_get()`) and injected into the page. There is no build system and no npm; Composer is used for dev tooling only (PHPCS), the plugin has no runtime dependencies.
 
 The plugin was closed on WordPress.org on 2025-05-01 (security issue). The git history was imported from the WordPress.org SVN; the work here is to fix the security issues (issues #1–#6), make it PHP 8 compatible and get it re-opened. See `HANDOVER.md` for the current state if present.
 
@@ -14,11 +14,17 @@ The plugin was closed on WordPress.org on 2025-05-01 (security issue). The git h
 # Lint PHP syntax
 find . -name "*.php" -not -path "./.git/*" -not -path "./assets/*" -exec php -l {} \;
 
-# WordPress Coding Standard (requires PHPCS + WPCS)
-phpcs --standard=WordPress --extensions=php evangtermine.php autoloader.php application/
+# Install the dev tooling (PHPCS, WPCS, PHPCompatibilityWP) - dev only, not part of the release
+composer install
+
+# PHP compatibility check for PHP 7.4+ (blocking in CI)
+composer lint:compat
+
+# WordPress Coding Standard, full ruleset from phpcs.xml (not blocking in CI until issue #13)
+composer lint:php
 
 # Auto-fix
-phpcbf --standard=WordPress --extensions=php evangtermine.php autoloader.php application/
+composer fix:php
 
 # Generate translations (requires WP-CLI)
 wp i18n make-pot . languages/evangtermine.pot

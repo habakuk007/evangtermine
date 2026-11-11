@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [master, develop]
 
+permissions:
+  contents: read
+
 jobs:
   # ── PHP Syntax Check ─────────────────────────────────────────────
   php-syntax:
@@ -24,18 +27,35 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          tools: phpcs
           coverage: none
 
       - name: Check PHP syntax
         run: find . -name "*.php" -not -path "./.git/*" -not -path "./assets/*" -exec php -l {} \;
 
+  # ── PHPCS: PHP compatibility (blocking) and coding standards ─────
+  phpcs:
+    name: PHPCS
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          tools: composer
+          coverage: none
+
+      - name: Install dev dependencies
+        run: composer install --no-interaction --no-progress
+
+      # Blocking: the code must stay compatible with PHP 7.4 and newer.
+      - name: PHP compatibility (PHPCompatibilityWP, PHP 7.4+)
+        run: composer lint:compat
+
       # Not blocking until issue #13 (PHPCS violations) is done.
-      - name: Run PHPCS (WordPress Coding Standards)
+      - name: WordPress Coding Standards (phpcs.xml)
         continue-on-error: true
-        run: |
-          composer global config --no-plugins allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
-          composer global require --dev \
-            dealerdirect/phpcodesniffer-composer-installer \
-            wp-coding-standards/wpcs
-          phpcs --standard=WordPress --extensions=php evangtermine.php autoloader.php application/
+        run: composer lint:php
