@@ -104,13 +104,15 @@ try {
             $r2 = Invoke-WebRequest -UseBasicParsing -Uri "https://api.github.com/repos/$Repo" -Headers $h
             $canPush = [bool](($r2.Content | ConvertFrom-Json).permissions.push)
         } catch {
-            $status = 403   # token is valid but cannot see the repository
+            # token is valid but cannot read the repository (403 or 404, as GitHub reports it)
+            $status = if ($_.Exception.Response) { [int]$_.Exception.Response.StatusCode } else { 403 }
         }
     } catch {
         if ($_.Exception.Response) { $status = [int]$_.Exception.Response.StatusCode } else { $status = 0 }
     }
 } finally {
     $token = $null
+    $h = $null
     [Array]::Clear($bytes, 0, $bytes.Length)
 }
 

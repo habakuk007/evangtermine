@@ -38,8 +38,12 @@ EOF
   exit 64
 }
 
+# Prints one stored value; returns get-token.ps1's exit code (a pipe through tr would mask it).
 get_value() {
-  powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$GET_TOKEN" -Value "$1" | tr -d '\r'
+  local out rc
+  out="$(powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$GET_TOKEN" -Value "$1")"; rc=$?
+  printf '%s' "${out//$'\r'/}"
+  return "$rc"
 }
 
 # Runs get-token.ps1 -Value Check; exits with its code on failure, passes WARNING output through.
@@ -59,7 +63,8 @@ preflight() {
 bot_gh() {
   local token rc
   token="$(get_value Token)" || return 1
-  GH_TOKEN="$token" GITHUB_TOKEN= gh "$@"
+  [ -n "$token" ] || { echo "ERROR: empty bot token" >&2; return 1; }
+  GH_TOKEN="$token" env -u GITHUB_TOKEN gh "$@"
   rc=$?
   unset token
   return $rc
