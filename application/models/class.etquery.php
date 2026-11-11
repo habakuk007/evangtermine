@@ -356,7 +356,7 @@ class EtQuery
      */
     private function localizeLibraries($stream)
     {
-        $pattern = '#<script\b[^>]*\bsrc=(["\'])' . self::REMOTE_BUNDLE_PREFIX . 'js/(jquery/jquery\.min\.js|jquery/jquery-ui\.min\.js|common\.js)\1[^>]*>\s*</script>#i';
+        $pattern = '#<script\b[^>]*\bsrc=(["\'])' . self::REMOTE_BUNDLE_PREFIX . 'js/(jquery/jquery\.min\.js|jquery/jquery-ui\.min\.js|common\.js)(?:\?[^"\']*)?\1[^>]*>\s*</script>#i';
         if (! preg_match_all($pattern, $stream, $matches)) {
             return $stream;
         }
@@ -454,7 +454,7 @@ class EtQuery
         
         // Bootstrap, Font Awesome und das Stylesheet von jQuery UI aus dem Plugin laden statt vom Host der Evangelischen Termine.
         // Die Adressen kommen je nach Modul relativ (/bundles/...), absolut (https://host/bundles/...) oder
-        // protokoll-relativ (//host/bundles/...); ersetzt wird deshalb über den Pfad.
+        // protokoll-relativ (//host/bundles/...), mit oder ohne Versionsparameter (?v=...); ersetzt wird deshalb über den Pfad.
         $assetsUrl = plugins_url('assets/', BASE_PATH . '/evangtermine.php');
         $bundled = array(
             'css/panels/bootstrap3.3.7.min.js' => 'scripts/bootstrap3.3.7.min.js',
@@ -465,7 +465,7 @@ class EtQuery
         );
         foreach ($bundled as $remotePath => $localPath) {
             $stream = preg_replace(
-                '#\b(src|href)=(["\'])' . self::REMOTE_BUNDLE_PREFIX . preg_quote($remotePath, '#') . '\2#i',
+                '#\b(src|href)=(["\'])' . self::REMOTE_BUNDLE_PREFIX . preg_quote($remotePath, '#') . '(?:\?[^"\']*)?\2#i',
                 '$1="' . esc_url($assetsUrl . $localPath) . '"',
                 $stream
             );
