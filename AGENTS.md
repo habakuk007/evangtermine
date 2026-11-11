@@ -8,11 +8,17 @@ Project guide for all AI agents (OpenCode, Claude Code, GitHub Copilot, VS Code)
 # Lint PHP syntax
 find . -name "*.php" -not -path "./.git/*" -not -path "./assets/*" -exec php -l {} \;
 
-# WordPress Coding Standard (requires PHPCS + WPCS)
-phpcs --standard=WordPress --extensions=php evangtermine.php autoloader.php application/
+# Install the dev tooling (PHPCS, WPCS, PHPCompatibilityWP) - dev only, not part of the release
+composer install
 
-# Auto-fix style issues
-phpcbf --standard=WordPress --extensions=php evangtermine.php autoloader.php application/
+# PHP compatibility check for PHP 7.4+ (blocking in CI)
+composer lint:compat
+
+# WordPress Coding Standard, full ruleset from phpcs.xml (not blocking in CI until issue #13)
+composer lint:php
+
+# Auto-fix
+composer fix:php
 
 # Validate readme.txt
 # Open https://wordpress.org/plugins/developers/readme-validator/ and paste contents
@@ -24,7 +30,7 @@ wp i18n make-pot . languages/evangtermine.pot
 wp plugin check evangtermine
 ```
 
-No build system, no npm, no Composer.
+No build system, no npm. Composer is used for dev tooling only (PHPCS); the plugin has no runtime dependencies.
 
 ## Project Structure
 

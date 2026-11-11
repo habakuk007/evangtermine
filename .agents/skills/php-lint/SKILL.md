@@ -5,7 +5,12 @@ description: Run PHPCS and PHPCBF to lint and auto-fix PHP files against the Wor
 
 # PHP Lint — PHPCS / PHPCBF for WordPress
 
-Lint and auto-fix PHP files against the WordPress Coding Standard (WPCS).
+Lint and auto-fix PHP files against the WordPress Coding Standard (WPCS) and check PHP compatibility (PHPCompatibilityWP, PHP 7.4+).
+
+The configuration lives in the repository:
+
+- `composer.json` — dev tooling only (PHPCS, WPCS, PHPCompatibilityWP) and the scripts `lint:php`, `lint:compat`, `fix:php`. Not part of the release.
+- `phpcs.xml` — ruleset `WordPress` + `PHPCompatibilityWP`, `testVersion` `7.4-`, text domain `evangtermine`. Scans `evangtermine.php`, `autoloader.php` and `application/`; `assets/` and `vendor/` are excluded.
 
 ## When to Use
 
@@ -13,88 +18,101 @@ Lint and auto-fix PHP files against the WordPress Coding Standard (WPCS).
 - Checking if code passes WordPress.org plugin review requirements
 - Auto-fixing whitespace, alignment, and formatting issues
 - Verifying a file is WPCS-compliant
+- Checking that code still runs on PHP 7.4 and newer
 
 ## Prerequisites
 
-PHPCS + WPCS must be installed. Check first:
+Install the dev tooling once (creates `vendor/`, which is git-ignored):
 
 ```bash
-phpcs --version
-phpcs -i   # should list "WordPress" in installed standards
+composer install
 ```
 
-If missing, install globally:
+Check the installation:
 
 ```bash
-# Via Composer (recommended — install in project)
-composer require --dev \
-  dealerdirect/phpcodesniffer-composer-installer \
-  wp-coding-standards/wpcs \
-  phpcompatibility/php-compatibility
-
-# Or globally
-composer global require wp-coding-standards/wpcs
-phpcs --config-set installed_paths ~/.composer/vendor/wp-coding-standards/wpcs/
+vendor/bin/phpcs --version
+vendor/bin/phpcs -i   # should list "WordPress" and "PHPCompatibilityWP"
 ```
+
+Use the project's `vendor/bin/phpcs`, not a globally installed `phpcs` — a global install may lack PHPCompatibilityWP or have other versions.
 
 ## Workflows
 
-### Lint a file or directory
+### PHP compatibility (blocking in CI)
 
 ```bash
-# Single file
-phpcs --standard=WordPress evangtermine.php
+composer lint:compat
+```
 
-# All plugin PHP files
-phpcs --standard=WordPress --extensions=php evangtermine.php autoloader.php application/
+Runs only the PHPCompatibilityWP sniffs for PHP 7.4+. This must pass; CI fails otherwise (job `PHPCS`).
 
-# With progress indicator and summary
-phpcs -p --standard=WordPress --report=summary evangtermine.php autoloader.php application/
+### Coding standard, whole plugin
 
-# Show source rule names (useful for understanding violations)
-phpcs --standard=WordPress -s evangtermine.php
+```bash
+# Full ruleset from phpcs.xml
+composer lint:php
+
+# Summary per file only
+composer lint:php -- --report=summary
+```
+
+Not blocking in CI until issue #13 (existing violations) is done. New and changed code should still be clean.
+
+### Lint a single file or directory
+
+Paths on the command line replace the file list from `phpcs.xml`; the ruleset still applies.
+
+```bash
+vendor/bin/phpcs evangtermine.php
+vendor/bin/phpcs application/models/
 ```
 
 ### Auto-fix fixable violations
 
 ```bash
-# Fix a single file
-phpcbf --standard=WordPress evangtermine.php
+# All plugin PHP files
+composer fix:php
 
-# Fix all plugin PHP files
-phpcbf --standard=WordPress --extensions=php evangtermine.php autoloader.php application/
+# A single file
+vendor/bin/phpcbf evangtermine.php
 ```
 
-PHPCBF fixes whitespace, alignment, bracket placement, and most formatting issues. It **cannot** fix logic issues like missing escaping or nonces — those require manual fixes.
+PHPCBF fixes whitespace, alignment, bracket placement, and most formatting issues. It **cannot** fix logic issues like missing escaping or nonces — those require manual fixes. Review the diff afterwards and keep mass auto-fixes in their own commit.
 
 ### Lint only specific rules
 
 ```bash
 # Check only security-related sniffs
-phpcs --standard=WordPress --sniffs=WordPress.Security.EscapeOutput,WordPress.Security.NonceVerification evangtermine.php
+vendor/bin/phpcs --sniffs=WordPress.Security.EscapeOutput,WordPress.Security.NonceVerification,WordPress.Security.ValidatedSanitizedInput
 ```
 
-### Generate a full HTML report
+### Write a report file
 
 ```bash
-phpcs --standard=WordPress --report=full --report-file=phpcs-report.txt evangtermine.php autoloader.php application/
+vendor/bin/phpcs --report=full --report-file=phpcs-report.txt
 ```
+
+Do not commit the report file.
 
 ## Common Violations in This Plugin
 
-| Violation | File | Fix |
-|-----------|------|-----|
-| Missing `esc_html()` / `esc_attr()` | `application/forms/options.php`, `class.includecss.php` | Wrap outputs in escaping functions |
-| Direct use of `$_REQUEST` | `class.shortcodeveranstalter.php` | Use `$_POST` or `$_GET` explicitly, sanitize and `wp_unslash()` |
-| Unescaped output | `class.includecss.php` | `esc_url()` / `esc_attr()` |
-| Missing nonce verification | `application/forms/options.php` | Add `check_admin_referer()` |
-| Unescaped `echo` | `application/forms/options.php` | Use `esc_html()`, `esc_attr()`, `esc_url()` |
+Current state (issue #13): about 1900 errors, roughly 1600 of them auto-fixable. See the distribution with `vendor/bin/phpcs --report=source`.
+
+| Violation | Sniff | Fix |
+|-----------|-------|-----|
+| Spaces instead of tabs, spacing inside parentheses, trailing whitespace | `Generic.WhiteSpace.*`, `PEAR.Functions.FunctionCallSignature.*`, `WordPress.WhiteSpace.*` | `composer fix:php` |
+| Missing or incomplete doc comments | `Squiz.Commenting.*` | Write them by hand |
+| camelCase variables, properties and methods; file names `class.<name>.php` | `WordPress.NamingConventions.*`, `WordPress.Files.FileName` | Do **not** rename public names or files: the autoloader, `EtWidget` and the "Do Not Change" list in `CLAUDE.md` depend on them. Exclude in `phpcs.xml` or ignore with a reason instead |
+| Unescaped output | `WordPress.Security.EscapeOutput` | `esc_html()`, `esc_attr()`, `esc_url()`. The remote event HTML is returned unfiltered by design — ignore that spot with a `phpcs:ignore` comment that says why |
+| Request data without nonce check or sanitizing | `WordPress.Security.NonceVerification`, `WordPress.Security.ValidatedSanitizedInput` | `wp_unslash()` + sanitize; a nonce where a form changes state. Public GET filters need an explained ignore |
 
 ## Troubleshooting
 
 | Problem | Solution |
 |---------|----------|
-| `ERROR: the "WordPress" coding standard is not installed` | Run `phpcs -i` and install WPCS (see Prerequisites) |
-| `phpcs: command not found` | Install via Composer or check PATH |
-| Hundreds of violations | Run `phpcbf` first to fix auto-fixable ones, then review remainder |
-| `Squiz.PHP.CommentedOutCode` false positives | Add `// phpcs:ignore` inline if intentional |
+| `ERROR: the "WordPress" coding standard is not installed` | Run `composer install`; use `vendor/bin/phpcs`, not a global `phpcs` |
+| `ERROR: Referenced sniff "PHPCompatibilityWP" does not exist` | Same: `composer install`, then `vendor/bin/phpcs -i` |
+| `phpcs: command not found` | Run `composer install` and call `vendor/bin/phpcs` or the Composer scripts |
+| Hundreds of violations | Known state, see issue #13. Run `composer fix:php` for the auto-fixable ones, then review the remainder |
+| `Squiz.PHP.CommentedOutCode` false positives | Add `// phpcs:ignore` with the sniff name inline if intentional |
