@@ -83,6 +83,7 @@ cmd_pr() {
 }
 
 cmd_comment() {
+  [ -n "$1" ] || usage
   case "$1" in *[!0-9]*) usage ;; esac
   # comment <pr> --body-file <path>  -> body read from a file (avoids arg mangling)
   if [ $# -eq 3 ] && [ "$2" = "--body-file" ]; then
