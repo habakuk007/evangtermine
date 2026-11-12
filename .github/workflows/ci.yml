@@ -21,16 +21,79 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Setup PHP ${{ matrix.php }}
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # 2.40.0
         with:
           php-version: ${{ matrix.php }}
           coverage: none
 
       - name: Check PHP syntax
         run: find . -name "*.php" -not -path "./.git/*" -not -path "./assets/*" -exec php -l {} \;
+
+  # ── Release files: what the deploy workflow would ship ───────────
+  # Builds the file set the same way as 10up/action-wordpress-plugin-deploy
+  # (rsync with .distignore as the exclude list), lists it and fails if
+  # development or tooling files are in it. Needs no secrets and no SVN.
+  release-files:
+    name: Release files
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Build the release file set
+        run: |
+          if [ ! -f .distignore ]; then
+            echo "::error::.distignore is missing. The deploy action would fall back to .gitattributes."
+            exit 1
+          fi
+          mkdir -p "${RUNNER_TEMP}/release/evangtermine"
+          # Same command as in deploy.sh of the 10up action.
+          rsync -rc --exclude-from="${GITHUB_WORKSPACE}/.distignore" "${GITHUB_WORKSPACE}/" "${RUNNER_TEMP}/release/evangtermine/" --delete --delete-excluded
+
+      - name: List the release files
+        working-directory: ${{ runner.temp }}/release
+        run: |
+          find evangtermine -type f | sort
+          echo "Files: $(find evangtermine -type f | wc -l), size: $(du -sh evangtermine | cut -f1)"
+
+      - name: Check that no tooling files are in the release
+        working-directory: ${{ runner.temp }}/release/evangtermine
+        run: |
+          status=0
+
+          # Must not be shipped, at any depth: hidden files and folders,
+          # dependency folders, tests, tool configuration, Markdown documents.
+          unwanted="$(find . -mindepth 1 \( \
+            -name '.*' -o -name 'vendor' -o -name 'node_modules' -o -name 'tests' \
+            -o -name 'composer.json' -o -name 'composer.lock' \
+            -o -name 'package.json' -o -name 'package-lock.json' \
+            -o -name 'phpcs.xml*' -o -name 'phpunit.xml*' -o -name 'opencode.json' \
+            -o -name '*.md' -o -name '*.zip' -o -name '*.log' \
+            \) -print | sort)"
+          if [ -n "${unwanted}" ]; then
+            echo "::error::Tooling files are in the release file set. Add them to .distignore."
+            echo "${unwanted}"
+            status=1
+          fi
+
+          # Must be shipped.
+          for required in evangtermine.php readme.txt uninstall.php autoloader.php application assets; do
+            if [ ! -e "${required}" ]; then
+              echo "::error::${required} is missing in the release file set."
+              status=1
+            fi
+          done
+
+          if [ "${status}" -eq 0 ]; then
+            echo "The release file set is clean."
+          fi
+          exit "${status}"
 
   # ── PHPCS: PHP compatibility (blocking) and coding standards ─────
   phpcs:
@@ -39,10 +102,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # 2.40.0
         with:
           php-version: '8.3'
           tools: composer
