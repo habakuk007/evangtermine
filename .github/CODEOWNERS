@@ -1,0 +1,10 @@
+# Files that control the deployment and the AI tooling always need a review by the maintainer.
+# The last matching line wins. See
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+/.github/workflows/ @habakuk007
+/.github/CODEOWNERS @habakuk007
+/.distignore        @habakuk007
+/.agents/           @habakuk007
+/CLAUDE.md          @habakuk007
+/AGENTS.md          @habakuk007
