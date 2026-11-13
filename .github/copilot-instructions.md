@@ -44,7 +44,7 @@ readme.txt                  <- WordPress.org listing
 | Options names | `vid`, `region`, `until`, `css`, `encoding`, `etprotocol`, `ethost` (no prefix — legacy) |
 | External API host | `www.evangelische-termine.de` (configurable via option `ethost`) |
 | API transport | WordPress HTTP API (`wp_remote_get()`) |
-| Session state | `$_SESSION['etsession']` object for filter persistence |
+| Filter state | In the URL only (request value -> `EtQuery::setEtParameter()`), no PHP session |
 | Capability | `manage_options` (admin settings page) |
 | Shortcodes | `[et_veranstalter]`, `[et_teaser]`, `[et_panels]`, `[et_minical]` |
 | Widget | `EtWidget` class |
