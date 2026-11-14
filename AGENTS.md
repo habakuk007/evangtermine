@@ -138,7 +138,7 @@ All instructions live in `.agents/instructions/` (source of truth).
 | Server | Transport | Command / URL |
 |--------|-----------|---------------|
 | playwright-mcp | stdio | `npx @playwright/mcp@latest` |
-| markitdown | stdio | `uvx markitdown-mcp@0.0.1a4` |
+| markitdown | stdio | `uvx --python 3.13 markitdown-mcp@0.0.1a8` |
 | context7 | stdio | `npx @upstash/context7-mcp@1.0.31` |
 | github-mcp | http | `https://api.githubcopilot.com/mcp/` |
 | microsoft-docs | http | `https://learn.microsoft.com/api/mcp` |
