@@ -23,19 +23,5 @@ class Debugging {
 			echo '<script>console.log(' . wp_json_encode( $description . ': ' . $output, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT ) . ');</script>' . PHP_EOL;
 		}
 	}
-	
-	/**
-	 * writeOutputStream
-	 *
-	 * @param string $filename
-	 * @param string $outputStream
-	 */
-	public static function writeOutputStream($filename, $outputStream) {
-		if (DEBUG) {
-			$fb = fopen ( $filename, "w+" );
-			fwrite ( $fb, $outputStream );
-			fclose ( $fb );
-		}
-	}
 }
 ?>
