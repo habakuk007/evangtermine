@@ -56,7 +56,7 @@ assets/                                  ← bundled Bootstrap 3.3.7, jQuery, Fo
 
 **Data flow:** shortcode/widget attributes → `EtQuery::setEtParameters()` → request values (`$_REQUEST`, `$_GET['etID']`) are merged in → `EtQuery::getQuerystring()` → `EtQuery::retrieveStream()` (`wp_remote_get` to `{etprotocol}{ethost}/{veranstaltungen-php|detail-php|teaser|…}`) → `filterStream()` string-replace post-processing → `EtView::buildView()`.
 
-**Filter state:** `ShortcodeVeranstalter` stores the user's filters in `$_SESSION['etsession']` (stdClass) to keep them across pagination. The code does not call `session_start()` itself.
+**Filter state:** the user's filters travel in the URL only, the plugin does not use a PHP session. `ShortcodeVeranstalter` reads the filter values from the request (`getRequestValue()`) and passes them to `EtQuery::setEtParameter()`; `filterStream()` rewrites the links in the remote HTML to the permalink plus the current query string. `reset=1` returns to the shortcode defaults.
 
 **Settings:** `application/forms/options.php` registers seven options (`vid`, `region`, `until`, `css`, `encoding`, `etprotocol`, `ethost`) in the group `et_group`. Shortcode attributes override them per call.
 
