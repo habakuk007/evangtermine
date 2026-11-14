@@ -27,6 +27,12 @@ module.exports = async ( config ) => {
 		await context.dispose();
 		throw new Error( `The test site at ${ baseURL } is not ready: the plugin or the test helper (tests/e2e/mock) is not loaded.` );
 	}
+	// A version matrix is useless if the site does not run the requested PHP version.
+	const wantedPhp = process.env.ET_E2E_PHP;
+	if ( wantedPhp && ! info.php.startsWith( `${ wantedPhp }.` ) ) {
+		await context.dispose();
+		throw new Error( `The test site runs PHP ${ info.php }, but ET_E2E_PHP asks for ${ wantedPhp }. Is another test site running on this port?` );
+	}
 	await context.storageState( { path: config.projects[ 0 ].use.storageState } );
 	await context.dispose();
 	console.log( `Test site: WordPress ${ info.wp }, PHP ${ info.php }, Evangelische Termine ${ info.plugin }` );

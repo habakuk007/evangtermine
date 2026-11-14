@@ -1,4 +1,5 @@
 // Playwright configuration for the end-to-end tests. See tests/e2e/README.md.
+const fs = require( 'fs' );
 const path = require( 'path' );
 const { defineConfig, devices } = require( '@playwright/test' );
 
@@ -7,6 +8,16 @@ const port = process.env.ET_E2E_PORT || '8881';
 const php = process.env.ET_E2E_PHP || '8.3';
 const wp = process.env.ET_E2E_WP || 'latest';
 const baseURL = `http://127.0.0.1:${ port }`;
+
+// Folder for files that the tests create (not in Git).
+const tmpDir = path.join( __dirname, '.tmp' );
+
+// Playground CLI 3.1 ignores --php and --wp when the blueprint is a file: only "preferredVersions" in the
+// blueprint counts. So the tests start Playground with a copy of blueprint.json that has the wanted versions.
+const blueprint = JSON.parse( fs.readFileSync( path.join( __dirname, 'blueprint.json' ), 'utf8' ) );
+blueprint.preferredVersions = { php, wp };
+fs.mkdirSync( tmpDir, { recursive: true } );
+fs.writeFileSync( path.join( tmpDir, 'blueprint.json' ), JSON.stringify( blueprint, null, '	' ) );
 
 module.exports = defineConfig( {
 	testDir: path.join( __dirname, 'specs' ),
@@ -27,7 +38,7 @@ module.exports = defineConfig( {
 	use: {
 		baseURL,
 		// Login cookies of the administrator, written by global-setup.js.
-		storageState: path.join( __dirname, '.auth', 'state.json' ),
+		storageState: path.join( tmpDir, 'state.json' ),
 		trace: 'retain-on-failure',
 		screenshot: 'only-on-failure',
 	},
@@ -46,7 +57,7 @@ module.exports = defineConfig( {
 		},
 	],
 	webServer: {
-		command: `npx wp-playground-cli server --auto-mount --login --port=${ port } --php=${ php } --wp=${ wp } --blueprint=tests/e2e/blueprint.json`,
+		command: `npx wp-playground-cli server --auto-mount --login --port=${ port } --php=${ php } --wp=${ wp } --blueprint=tests/e2e/.tmp/blueprint.json`,
 		cwd: path.join( __dirname, '..', '..' ),
 		// A static file: pages of WordPress redirect to the automatic login, which the check of Playwright cannot follow.
 		url: `${ baseURL }/wp-includes/images/blank.gif`,

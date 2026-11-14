@@ -68,7 +68,9 @@ ET_E2E_PHP=7.4 ET_E2E_WP=6.8 npm run test:e2e
 | `ET_E2E_WP` | `latest` | WordPress version of Playground |
 | `ET_E2E_PORT` | `8881` | Port of the test site |
 
-The variables are used only when the tests start Playground themselves, not when a test site is already running.
+The variables are used only when the tests start Playground themselves, not when a test site is already running. The tests stop with an error if the running site has another PHP version than `ET_E2E_PHP`.
+
+Playground CLI 3.1 ignores `--php` and `--wp` when the blueprint is a file; only `preferredVersions` in the blueprint counts. So `playwright.config.js` writes a copy of `blueprint.json` with the wanted versions to `tests/e2e/.tmp/` and starts Playground with this copy. `npm run playground` uses `blueprint.json` itself (PHP 8.3, latest WordPress).
 
 ## Files
 

@@ -11,4 +11,4 @@
 # Playwright output
 /tests/e2e/test-results/
 /tests/e2e/playwright-report/
-/tests/e2e/.auth/
+/tests/e2e/.tmp/
