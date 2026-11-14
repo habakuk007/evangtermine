@@ -59,3 +59,49 @@ jobs:
       - name: WordPress Coding Standards (phpcs.xml)
         continue-on-error: true
         run: composer lint:php
+
+  # ── End-to-end tests: WordPress Playground + Playwright (issue #24) ──
+  # The calendar host is mocked (tests/e2e/mock), so this job does not need www.evangelische-termine.de.
+  e2e:
+    name: E2E (PHP ${{ matrix.php }}, WP ${{ matrix.wp }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['7.4', '8.0', '8.1', '8.2', '8.3', '8.4', '8.5']
+        wp: ['latest']
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Setup Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24'
+          cache: npm
+
+      - name: Install dev dependencies
+        run: npm ci
+
+      - name: Install the browser for Playwright
+        run: npx playwright install --with-deps chromium
+
+      - name: Run the E2E tests
+        run: npm run test:e2e
+        env:
+          ET_E2E_PHP: ${{ matrix.php }}
+          ET_E2E_WP: ${{ matrix.wp }}
+
+      - name: Upload the Playwright report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: playwright-report-php${{ matrix.php }}-wp${{ matrix.wp }}
+          path: |
+            tests/e2e/playwright-report/
+            tests/e2e/test-results/
+          retention-days: 14
+          if-no-files-found: ignore

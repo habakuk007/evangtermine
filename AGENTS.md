@@ -20,6 +20,18 @@ composer lint:php
 # Auto-fix
 composer fix:php
 
+# Install the E2E tooling (Playwright, WordPress Playground) - dev only, not part of the release
+npm ci && npx playwright install chromium
+
+# E2E tests in a real WordPress (WordPress Playground) with a mocked calendar host, see tests/e2e/README.md
+npm run test:e2e
+
+# Optional E2E checks against the real www.evangelische-termine.de (not run in CI)
+npm run test:e2e:live
+
+# Start the test site for manual testing: http://127.0.0.1:8881
+npm run playground
+
 # Validate readme.txt
 # Open https://wordpress.org/plugins/developers/readme-validator/ and paste contents
 
@@ -30,7 +42,7 @@ wp i18n make-pot . languages/evangtermine.pot
 wp plugin check evangtermine
 ```
 
-No build system, no npm. Composer is used for dev tooling only (PHPCS); the plugin has no runtime dependencies.
+No build system. Composer (PHPCS) and npm (end-to-end tests) are used for dev tooling only; the plugin has no runtime dependencies.
 
 ## Project Structure
 
@@ -45,6 +57,7 @@ application/
   helper/                 <- IncludeCSS (wp_head), Debugging
   forms/                  <- options.php (Settings API, et_group), widget form
 assets/                   <- bundled Bootstrap 3.3.7, jQuery, Font Awesome 4.7.0, CSS
+tests/e2e/                <- Playwright tests against WordPress Playground (not in the release)
 readme.txt                <- WordPress.org plugin listing
 ```
 
