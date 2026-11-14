@@ -189,6 +189,7 @@ Originally developed by Norbert Räbiger (https://profiles.wordpress.org/regibae
 * Changed: the output of `[et_teaser]` and of the widget is cached for 5 minutes (filter `evangtermine_cache_ttl`, 0 switches the cache off).
 * Changed: jQuery is loaded from WordPress; the bundled copy was removed.
 * Changed: `[et_minical]` uses jQuery, jQuery UI and moment from WordPress instead of its own copies (jQuery 1.12.4), and its styles and scripts are enqueued the WordPress way. The own CSS file from the settings is enqueued as well.
+* Changed: `[et_veranstalter]` no longer uses the PHP session. The filters are passed in the URL, as before; the display does not change.
 * Fixed: `[et_minical]` uses the host from the settings instead of a fixed address, and texts from the calendar are escaped in its tooltip.
 * Fixed: `[et_veranstalter]` and the detail view no longer load jQuery, jQuery UI and a script from the calendar host in the visitor's browser; they use jQuery and the date picker from WordPress and files of the plugin.
 * Fixed: the search in `[et_veranstalter]` often ran into a timeout ("Der Veranstaltungskalender ist derzeit nicht verfügbar"). The request now waits up to 15 instead of 5 seconds (filter `evangtermine_http_timeout`).
