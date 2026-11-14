@@ -471,10 +471,10 @@ class EtQuery
 
         // CSS der Evangelischen Termine entfernen, damit das eigene CSS verwendet werden kann.
         if (! $this->etLoadCSS) {
-            // phpcs:disable WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet -- Suchmuster: die Tags werden aus dem empfangenen HTML entfernt, nicht ausgegeben
+            // phpcs:disable WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet, PluginCheck.CodeAnalysis.Offloading.OffloadedContent -- Suchmuster: die Tags werden aus dem empfangenen HTML entfernt, nicht ausgegeben
             $stream = str_replace('<link rel="stylesheet" type="text/css" href="http://www.evangelische-termine.de/bundles/vket/css/publicintegration.css"  />', '', $stream);
             $stream = str_replace('<link rel="stylesheet" type="text/css" href="https://www.evangelische-termine.de/bundles/vket/css/publicintegration.css"  />', '', $stream);
-            // phpcs:enable WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
+            // phpcs:enable WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet, PluginCheck.CodeAnalysis.Offloading.OffloadedContent
         }
 
         // Detailansicht des Teasermoduls im Hauptfenster
