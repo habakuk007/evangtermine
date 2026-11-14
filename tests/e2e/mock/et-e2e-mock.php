@@ -185,6 +185,49 @@ function et_e2e_maybe_start_session() {
 add_action( 'init', 'et_e2e_maybe_start_session', 1 );
 
 /**
+ * Puts the widget of the plugin into the footer sidebar of Twenty Twenty-One if it is not there.
+ *
+ * The blueprint does this once. But in some starts of Playground (2 of 7 jobs in the first CI run) the sidebar had
+ * the default widgets of WordPress again afterwards. The likely reason: WordPress checks the sidebars after the
+ * change of the theme at a moment when the plugin is not active yet, and removes the widget it does not know.
+ */
+function et_e2e_place_widget() {
+	if ( ! class_exists( 'EtWidget' ) || get_option( 'theme_switched' ) ) {
+		return;
+	}
+	$sidebars = get_option( 'sidebars_widgets' );
+	$sidebars = is_array( $sidebars ) ? $sidebars : array();
+	if ( isset( $sidebars['sidebar-1'] ) && array( 'etwidget-2' ) === $sidebars['sidebar-1'] ) {
+		return;
+	}
+
+	$instances = get_option( 'widget_etwidget' );
+	if ( ! is_array( $instances ) || ! isset( $instances[2] ) ) {
+		update_option(
+			'widget_etwidget',
+			array(
+				2              => array(
+					'title'        => 'Nächste Veranstaltungen',
+					'vid'          => 'all',
+					'region'       => '407',
+					'itemsPerPage' => '3',
+					'tpl'          => '2',
+				),
+				'_multiwidget' => 1,
+			)
+		);
+	}
+	foreach ( $sidebars as $name => $widgets ) {
+		if ( is_array( $widgets ) ) {
+			$sidebars[ $name ] = array_values( array_diff( $widgets, array( 'etwidget-2' ) ) );
+		}
+	}
+	$sidebars['sidebar-1'] = array( 'etwidget-2' );
+	wp_set_sidebars_widgets( $sidebars );
+}
+add_action( 'init', 'et_e2e_place_widget', 100 );
+
+/**
  * Deletes the cached teaser output of the plugin (transients "et_stream_*").
  */
 function et_e2e_clear_cache() {
@@ -280,11 +323,6 @@ function et_e2e_control() {
 		case 'config':
 			update_option( ET_E2E_CONFIG, array_merge( et_e2e_config(), $input ), false );
 			et_e2e_send( et_e2e_config() );
-			break;
-
-		case 'options':
-			et_e2e_set_options( $input );
-			et_e2e_send( true );
 			break;
 
 		case 'state':
