@@ -32,47 +32,6 @@ class ShortcodeVeranstalter
     }
 
     /**
-     * Setzt die Session-Werte
-     * 
-     * @param string $key Ausgabe-Parameter (vgl. http://handbuch.evangelische-termine.de/anzeige-im-internet/ausgabe-parameter)
-     * @param object $sess Object für die Session-Werte des Plugins
-     * @param object $etparam Object EtQuery
-     * @param string $default Default-Werte, wenn der Wert nicht in $sess enthalten ist
-     */
-    public static function setSessionVar($key, $sess, $etparam, $default = NULL)
-    {
-        $requestValue = self::getRequestValue($key);
-        if (null !== $requestValue && '' !== $requestValue) {
-            $sess->{$key} = $requestValue; // Session-Werte setzen
-            $etparam->setEtParameter($key, $sess->{$key}); // Parameter für die Evangelischen Termine setzen
-            if ($key != 'pageID') {
-                $sess->pageID = 1;
-            }
-        }
-        if (empty($sess->{$key})) {
-            $sess->{$key} = $default;
-        }
-    }
-    
-    /**
-     * Setzt die Werte in $sess auf die Werte zurück, die im Shortcode angegeben wurden oder von der Options-Page stammen.
-     * 
-     * @param object $sess Object für die Session-Werte des Plugins
-     * @param object $defaults Default-Werte aus dem Shortcode oder der Options-Page
-     */
-    public static function resetSessionVars($sess, $defaults)
-    {
-        $sess->vid = $defaults->getEtParameter('vid');
-        $sess->eventtype = $defaults->getEtParameter('eventtype');
-        $sess->highlight = $defaults->getEtParameter('highlight');
-        $sess->people = $defaults->getEtParameter('people');
-        $sess->pageID = 1;
-        $sess->et_q = '';
-        $sess->itemsPerPage = $defaults->getEtParameter('itemsPerPage');
-        $sess->date = '';
-    }
- 
-    /**
      * Verarbeitet die Attribute aus dem Shortcode et_veranstalter und gibt die Daten aus den Evangelischen Terminen aus.
      *
      * @param array $attr
@@ -82,19 +41,6 @@ class ShortcodeVeranstalter
     public static function etVeranstalter($attr, $content = null)
     { 
 
-        // Session-Handling starten
-        // Wordpress startet anscheinend immer eine Session, deshalb wird session_start() nicht benötigt
-        //if ( !session_id() ) {
-        //    session_start();
-        //}
-        if ( !isset ( $_SESSION['etsession'] ) ) {
-            $session = new stdClass;
-            $_SESSION['etsession'] = $session;
-
-        } else {
-            $session = $_SESSION['etsession'];
-        }
-        
         // @TODO Default-Werte festlegen und an EtQuery übermitteln
         $etstream = new EtQuery();
         if (get_option('css') != '') {
@@ -104,28 +50,15 @@ class ShortcodeVeranstalter
         // Optionen und Parameter zusammenführen
         $etstream->setEtParameters($attr);
 
-        // Wenn im Filter der Evangelischen Termine 'Zurücksetzen' geklickt wurde, werden die Standardwerte,
-        // die in EtQuery::__construct() gesetzt werden, nicht verändert.
-        // Sonst werden die Werte auf $_REQUEST gesetzt.
-        if ('1' === self::getRequestValue('reset')) {
-            ShortcodeVeranstalter::resetSessionVars($session, $etstream);
-        } else {
-            ShortcodeVeranstalter::setSessionVar('vid', $session, $etstream, $etstream->getEtParameter('vid'));
-            ShortcodeVeranstalter::setSessionVar('region', $session, $etstream, $etstream->getEtParameter('region'));
-            ShortcodeVeranstalter::setSessionVar('aid', $session, $etstream, $etstream->getEtParameter('aid'));
-            ShortcodeVeranstalter::setSessionVar('date', $session, $etstream, '');
-            ShortcodeVeranstalter::setSessionVar('eventtype', $session, $etstream, $etstream->getEtParameter('eventtype'));
-            ShortcodeVeranstalter::setSessionVar('highlight', $session, $etstream, $etstream->getEtParameter('highlight'));
-            ShortcodeVeranstalter::setSessionVar('people', $session, $etstream, $etstream->getEtParameter('people'));
-            ShortcodeVeranstalter::setSessionVar('itemsPerPage', $session, $etstream, $etstream->getEtParameter('itemsPerPage'));
-            ShortcodeVeranstalter::setSessionVar('pageID', $session, $etstream, '1');
-                        
-            $searchTerm = self::getRequestValue('et_q');
-            if (null !== $searchTerm && '' !== $searchTerm) {
-                $session->et_q = $searchTerm;
-            } else {
-                if ('search' === self::getRequestValue('action')) {
-                    $session->et_q = '';
+        // Die Filterwerte stehen nur in der URL, es gibt keine PHP-Session: Die Links und das Formular im HTML der
+        // Evangelischen Termine führen auf diese Seite zurück und enthalten die aktuellen Werte.
+        // Wenn im Filter 'Zurücksetzen' geklickt wurde (reset=1), bleiben die Standardwerte aus dem Shortcode
+        // bzw. von der Options-Page erhalten. Sonst werden die Werte aus dem Request übernommen.
+        if ('1' !== self::getRequestValue('reset')) {
+            foreach (array('vid', 'region', 'aid', 'date', 'eventtype', 'highlight', 'people', 'itemsPerPage', 'pageID') as $key) {
+                $value = self::getRequestValue($key);
+                if (null !== $value && '' !== $value) {
+                    $etstream->setEtParameter($key, $value);
                 }
             }
         }
@@ -163,7 +96,7 @@ class ShortcodeVeranstalter
             'etID',
             'Suche',
             'action',
-            session_name(),
+            session_name(), // z.B. PHPSESSID: steht im Formular der Evangelischen Termine und wird nicht weitergegeben.
             '_token',
             'reset',
             'dest',

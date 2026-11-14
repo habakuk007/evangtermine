@@ -58,7 +58,7 @@ readme.txt                <- WordPress.org plugin listing
 5. `EtQuery::filterStream()` post-processes the HTML (strip remote CSS/JS, rewrite image and pagination URLs)
 6. `EtView::buildView()` wraps the HTML in a `<div>`, which is returned to WordPress
 
-**Session management:** `ShortcodeVeranstalter` keeps the filter state in `$_SESSION['etsession']` (stdClass) across pagination and filter form submits. It does not call `session_start()` itself.
+**Filter state:** the user's filters travel in the URL only, the plugin does not use a PHP session. `ShortcodeVeranstalter` reads the filter values from the request (`getRequestValue()`) and passes them to `EtQuery::setEtParameter()`; `filterStream()` rewrites the links in the remote HTML to the permalink plus the current query string. `reset=1` returns to the shortcode defaults.
 
 **Admin settings** (`application/forms/options.php`): Seven options registered under `et_group` via Settings API. Shortcode attributes and widget fields override these defaults per call.
 
