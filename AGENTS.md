@@ -144,3 +144,5 @@ All instructions live in `.agents/instructions/` (source of truth).
 | microsoft-docs | http | `https://learn.microsoft.com/api/mcp` |
 
 Config: `.mcp.json` (Claude Code) · `.vscode/mcp.json` (VS Code)
+
+github-mcp in Claude Code needs the environment variable `GITHUB_PERSONAL_ACCESS_TOKEN` (a GitHub personal access token); without it the server fails to connect. `claude mcp list` shows the state of every server. VS Code signs in to GitHub itself. The first start of markitdown installs its packages and can exceed the 30 s start timeout; reconnect once.
