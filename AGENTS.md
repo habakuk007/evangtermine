@@ -8,11 +8,17 @@ Project guide for all AI agents (OpenCode, Claude Code, GitHub Copilot, VS Code)
 # Lint PHP syntax
 find . -name "*.php" -not -path "./.git/*" -not -path "./assets/*" -exec php -l {} \;
 
-# WordPress Coding Standard (requires PHPCS + WPCS)
-phpcs --standard=WordPress --extensions=php evangtermine.php autoloader.php application/
+# Install the dev tooling (PHPCS, WPCS, PHPCompatibilityWP) - dev only, not part of the release
+composer install
 
-# Auto-fix style issues
-phpcbf --standard=WordPress --extensions=php evangtermine.php autoloader.php application/
+# PHP compatibility check for PHP 7.4+ (blocking in CI)
+composer lint:compat
+
+# WordPress Coding Standard, full ruleset from phpcs.xml (not blocking in CI until issue #13)
+composer lint:php
+
+# Auto-fix
+composer fix:php
 
 # Validate readme.txt
 # Open https://wordpress.org/plugins/developers/readme-validator/ and paste contents
@@ -24,7 +30,7 @@ wp i18n make-pot . languages/evangtermine.pot
 wp plugin check evangtermine
 ```
 
-No build system, no npm, no Composer.
+No build system, no npm. Composer is used for dev tooling only (PHPCS); the plugin has no runtime dependencies.
 
 ## Project Structure
 
@@ -52,7 +58,7 @@ readme.txt                <- WordPress.org plugin listing
 5. `EtQuery::filterStream()` post-processes the HTML (strip remote CSS/JS, rewrite image and pagination URLs)
 6. `EtView::buildView()` wraps the HTML in a `<div>`, which is returned to WordPress
 
-**Session management:** `ShortcodeVeranstalter` keeps the filter state in `$_SESSION['etsession']` (stdClass) across pagination and filter form submits. It does not call `session_start()` itself.
+**Filter state:** the user's filters travel in the URL only, the plugin does not use a PHP session. `ShortcodeVeranstalter` reads the filter values from the request (`getRequestValue()`) and passes them to `EtQuery::setEtParameter()`; `filterStream()` rewrites the links in the remote HTML to the permalink plus the current query string. `reset=1` returns to the shortcode defaults.
 
 **Admin settings** (`application/forms/options.php`): Seven options registered under `et_group` via Settings API. Shortcode attributes and widget fields override these defaults per call.
 
@@ -107,6 +113,7 @@ Each skill has a corresponding Claude Code slash command in `.claude/commands/`.
 | Skill | Claude Command | Purpose |
 |-------|---------------|---------|
 | [gh/SKILL.md](.agents/skills/gh/SKILL.md) | `/gh` | GitHub CLI: issues, PRs, releases, labels |
+| [gh-bot/SKILL.md](.agents/skills/gh-bot/SKILL.md) | `/gh-bot` | Open PRs and PR comments as the bot identity `habakuk-ai`; commits and pushes stay `habakuk007` |
 | [php-lint/SKILL.md](.agents/skills/php-lint/SKILL.md) | `/php-lint` | PHPCS/PHPCBF for WordPress Coding Standard |
 | [wp-release/SKILL.md](.agents/skills/wp-release/SKILL.md) | `/wp-release` | Full plugin release workflow (version bump → tag → GitHub release) |
 | [grill-me/SKILL.md](.agents/skills/grill-me/SKILL.md) | `/grill-me` | Stress-test a plan through relentless questions |
@@ -131,9 +138,11 @@ All instructions live in `.agents/instructions/` (source of truth).
 | Server | Transport | Command / URL |
 |--------|-----------|---------------|
 | playwright-mcp | stdio | `npx @playwright/mcp@latest` |
-| markitdown | stdio | `uvx markitdown-mcp@0.0.1a4` |
+| markitdown | stdio | `uvx --python 3.13 markitdown-mcp@0.0.1a8` |
 | context7 | stdio | `npx @upstash/context7-mcp@1.0.31` |
 | github-mcp | http | `https://api.githubcopilot.com/mcp/` |
 | microsoft-docs | http | `https://learn.microsoft.com/api/mcp` |
 
 Config: `.mcp.json` (Claude Code) · `.vscode/mcp.json` (VS Code)
+
+github-mcp in Claude Code needs the environment variable `GITHUB_PERSONAL_ACCESS_TOKEN` (a GitHub personal access token); without it the server fails to connect. `claude mcp list` shows the state of every server. VS Code signs in to GitHub itself. The first start of markitdown installs its packages and can exceed the 30 s start timeout; reconnect once.

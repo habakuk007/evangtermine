@@ -1,32 +1,89 @@
 name: Deploy to WordPress.org
 
-# Triggers on any version tag push, e.g. "1.9" or "2.0.0".
-# Tag format: push `git tag 1.9 && git push origin 1.9`
+# Real deploy: push of a version tag, e.g. "3.4" or "3.4.1". The tagged commit
+# must be on master (see the guard step), and the job waits for the approval
+# configured on the "Deploy" environment.
+#
+# Dry run: start the workflow manually ("Run workflow"). It runs the same job
+# but does not commit anything to the WordPress.org SVN.
 on:
   push:
     tags:
       - '[0-9]+.[0-9]+'
       - '[0-9]+.[0-9]+.[0-9]+'
       - '[0-9]+.[0-9]+.[0-9]+-*'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-wordpress-org
+  cancel-in-progress: false
 
 jobs:
   deploy:
-    name: Deploy to WordPress.org SVN
+    name: Deploy to WordPress.org SVN${{ github.event_name != 'push' && ' (dry run)' || '' }}
     runs-on: ubuntu-latest
+
+    # Holds the secrets SVN_USERNAME and SVN_PASSWORD and requires a reviewer.
+    environment: Deploy
+
+    env:
+      # Only a tag push deploys for real; everything else is a dry run.
+      DRY_RUN: ${{ github.event_name != 'push' }}
 
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          # Full history, needed for the "is on master" check below.
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Check that the tagged commit is on master
+        if: github.event_name == 'push'
+        run: |
+          git fetch --no-tags origin '+refs/heads/master:refs/remotes/origin/master'
+          if ! git merge-base --is-ancestor HEAD origin/master; then
+            echo "::error::Tag ${GITHUB_REF_NAME} ($(git rev-parse HEAD)) is not contained in origin/master. Refusing to deploy."
+            exit 1
+          fi
+          echo "Tag ${GITHUB_REF_NAME} is contained in origin/master."
+
+      # The action takes the version from the tag name. A manual (dry) run has
+      # no tag, so read the version from the plugin header instead.
+      - name: Determine version
+        id: version
+        run: |
+          if [ "${GITHUB_EVENT_NAME}" = "push" ]; then
+            version="${GITHUB_REF_NAME}"
+          else
+            version="$(sed -n 's/^ \* Version:[[:space:]]*//p' evangtermine.php | head -n 1 | tr -d '\r')"
+          fi
+          if [ -z "${version}" ]; then
+            echo "::error::Could not determine the plugin version."
+            exit 1
+          fi
+          echo "version=${version}" >> "${GITHUB_OUTPUT}"
+          echo "Version: ${version} (dry run: ${DRY_RUN})"
 
       - name: WordPress Plugin Deploy
-        uses: 10up/action-wordpress-plugin-deploy@stable
+        uses: 10up/action-wordpress-plugin-deploy@54bd289b8525fd23a5c365ec369185f2966529c2 # 2.3.0
+        with:
+          # This version of the action reads the dry-run switch from this input.
+          dry-run: ${{ env.DRY_RUN }}
         env:
-          # WordPress.org credentials — add these as repository secrets:
-          #   Settings → Secrets and variables → Actions → New repository secret
-          #   SVN_USERNAME = your WordPress.org username
-          #   SVN_PASSWORD = your WordPress.org password or application password
+          # WordPress.org credentials, stored as secrets of the "Deploy" environment:
+          #   SVN_USERNAME = WordPress.org username
+          #   SVN_PASSWORD = WordPress.org SVN password
           SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
           SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
 
           # WordPress.org plugin slug — must match the directory name on wordpress.org/plugins/
           SLUG: evangtermine
+
+          VERSION: ${{ steps.version.outputs.version }}
+
+          # Screenshots, banners and icons for the plugin page (SVN /assets).
+          ASSETS_DIR: .wordpress-org

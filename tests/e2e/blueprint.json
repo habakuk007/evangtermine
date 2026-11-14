@@ -1,0 +1,46 @@
+{
+	"$schema": "https://playground.wordpress.net/blueprint-schema.json",
+	"meta": {
+		"title": "Evangelische Termine – test site",
+		"author": "habakuk007",
+		"description": "WordPress with the plugin mounted, debug output on, one page per shortcode and the widget in a classic sidebar. Start with: npx @wp-playground/cli@latest server --auto-mount --login --blueprint=tests/e2e/blueprint.json"
+	},
+	"preferredVersions": {
+		"php": "8.3",
+		"wp": "latest"
+	},
+	"features": {
+		"networking": true
+	},
+	"login": true,
+	"landingPage": "/et-veranstalter/",
+	"constants": {
+		"WP_DEBUG": true,
+		"WP_DEBUG_DISPLAY": true,
+		"WP_DEBUG_LOG": true
+	},
+	"siteOptions": {
+		"blogname": "Evangelische Termine Test",
+		"permalink_structure": "/%postname%/",
+		"vid": "1474"
+	},
+	"plugins": [
+		"plugin-check"
+	],
+	"steps": [
+		{
+			"step": "installTheme",
+			"themeData": {
+				"resource": "wordpress.org/themes",
+				"slug": "twentytwentyone"
+			},
+			"options": {
+				"activate": true
+			}
+		},
+		{
+			"step": "runPHP",
+			"code": "<?php\nrequire '/wordpress/wp-load.php';\n\n// One page per shortcode. Region 407 with vid=all gives a list with several pages; 1474 is the maintainer's test organiser.\n$pages = array(\n\t'et-veranstalter'      => '[et_veranstalter vid=\"all\" region=\"407\" itemsperpage=\"5\"]',\n\t'et-veranstalter-1474' => '[et_veranstalter]',\n\t'et-teaser'            => '[et_teaser vid=\"all\" region=\"407\" itemsperpage=\"5\"]',\n\t'et-panels'            => '[et_panels vid=\"all\" region=\"407\" itemsperpage=\"6\"]',\n\t'et-minical'           => '[et_minical vid=\"all\" region=\"407\"]',\n);\nforeach ( $pages as $slug => $content ) {\n\twp_insert_post(\n\t\tarray(\n\t\t\t'post_type'    => 'page',\n\t\t\t'post_status'  => 'publish',\n\t\t\t'post_name'    => $slug,\n\t\t\t'post_title'   => $slug,\n\t\t\t'post_content' => '<!-- wp:shortcode -->' . $content . '<!-- /wp:shortcode -->',\n\t\t)\n\t);\n}\n\n// The widget in the footer sidebar of Twenty Twenty-One.\nupdate_option(\n\t'widget_etwidget',\n\tarray(\n\t\t2              => array(\n\t\t\t'title'        => 'Nächste Veranstaltungen',\n\t\t\t'vid'          => 'all',\n\t\t\t'region'       => '407',\n\t\t\t'itemsPerPage' => '3',\n\t\t\t'tpl'          => '2',\n\t\t),\n\t\t'_multiwidget' => 1,\n\t)\n);\n$sidebars              = get_option( 'sidebars_widgets', array() );\n$sidebars['sidebar-1'] = array( 'etwidget-2' );\nupdate_option( 'sidebars_widgets', $sidebars );\n"
+		}
+	]
+}

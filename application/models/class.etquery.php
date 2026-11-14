@@ -3,7 +3,11 @@
 class EtQuery
 {
 
-    private $connectionTimeout = 5;
+    // Regex-Teil: Anfang der Adresse einer Datei aus /bundles/vket/ der Evangelischen Termine, mit oder ohne Protokoll und Host.
+    const REMOTE_BUNDLE_PREFIX = '(?:(?:https?:)?//[a-z0-9.:-]+)?/bundles/vket/';
+
+    // Timeout für den Abruf in Sekunden. Eine Suche dauert bei den Evangelischen Terminen oft länger als 5 Sekunden.
+    private $connectionTimeout = 15;
     private $etFilename;
     private $etParameters;
 
@@ -38,6 +42,12 @@ class EtQuery
             'css' => 'nocss', // unterbindet das CSS des Teasers in der Sidebar
             'encoding' => get_option('encoding') ? get_option('encoding') : ET_DEFAULT_CHARSET
         );
+
+        // Der Teaser im Inhaltsbereich (et_teaser) erhält das Standard-CSS der Evangelischen Termine, solange in den Einstellungen
+        // kein eigenes CSS hinterlegt ist. Sonst wäre er (anders als et_veranstalter) komplett ungestaltet.
+        if (ET_TEMPLATE_TEASER_SHORTCODE === (string) $tpl && '' === (string) get_option('css')) {
+            unset($this->etParameters['css']);
+        }
 
         // Protokoll für den Abruf der Evangelischen Termine übernehmen und Default-Host setzen
         $this->etProtocol = get_option('etprotocol') ? get_option('etprotocol') : ET_DEFAULT_PROTOCOL;
@@ -110,6 +120,22 @@ class EtQuery
     }
 
     /**
+     * Adresse der Evangelischen Termine für Abrufe aus dem Browser der Besucher (Mini-Kalender), ohne abschließenden
+     * Schrägstrich. Immer https, weil Browser auf https-Seiten keine http-Abrufe zulassen. Leer, wenn der Host aus den
+     * Einstellungen nicht zulässig ist.
+     *
+     * @return string
+     */
+    public function getBrowserBaseUrl()
+    {
+        $host = strtolower(trim((string) $this->etHost));
+        if (! preg_match('/^[a-z0-9.-]+(:[0-9]{1,5})?$/', $host) || ! self::isSafeHost($host)) {
+            return '';
+        }
+        return 'https://' . $host;
+    }
+
+    /**
      * Legt den zu verwendenden Filename in Attribut ab.
      *
      * @param string $filename
@@ -157,7 +183,7 @@ class EtQuery
      */
     public function getEtParameter($key)
     {
-        return $this->etParameters[$key];
+        return isset($this->etParameters[$key]) ? $this->etParameters[$key] : '';
     }
 
     /**
@@ -274,34 +300,140 @@ class EtQuery
                 return '<div>Der Veranstaltungskalender ist derzeit nicht verfügbar.</div>';
             }
 
-            // Abfrage der Evangelischen Termine über die http-Api von Wordpress
-            $response = wp_remote_get($url, array(
-                'timeout' => $this->connectionTimeout,
-                'reject_unsafe_urls' => true, // lehnt Ziele im lokalen Netz, Loopback und ungewöhnliche Ports ab
-                'user-agent' => 'evangtermine/' . ET_VERSION . ' Wordpress-Plugin',
-                'headers' => array(
-                    'Referer' => home_url($wp->request)
-                )
-            ));
+            // Kurzer Cache für die Teaser-Ausgabe (Widget und et_teaser), damit nicht jeder Seitenaufruf die Evangelischen Termine abfragt.
+            $cacheTtl = $this->getCacheTtl();
+            $cacheKey = $this->getCacheKey($url, $filename, $cacheTtl);
+            $stream = false === $cacheKey ? false : get_transient($cacheKey);
 
-            if (! is_wp_error($response) && $response['response']['code'] == 200) {
-                $stream = $response['body'];
-                if ('[{' != substr($stream, 0, 2)) {
-                    $stream = $this->filterStream($stream);
+            if (false === $stream || ! is_string($stream)) {
+                // Abfrage der Evangelischen Termine über die http-Api von Wordpress
+                $response = wp_remote_get($url, array(
+                    'timeout' => $this->getConnectionTimeout(),
+                    'reject_unsafe_urls' => true, // lehnt Ziele im lokalen Netz, Loopback und ungewöhnliche Ports ab
+                    'user-agent' => 'evangtermine/' . ET_VERSION . ' Wordpress-Plugin',
+                    'headers' => array(
+                        'Referer' => home_url($wp->request)
+                    )
+                ));
+
+                if (! is_wp_error($response) && 200 === (int) wp_remote_retrieve_response_code($response)) {
+                    $stream = wp_remote_retrieve_body($response);
+                    if ('[{' != substr($stream, 0, 2)) {
+                        $stream = $this->filterStream($stream);
+                    }
+                    if (false !== $cacheKey && '' !== $stream) {
+                        set_transient($cacheKey, $stream, $cacheTtl);
+                    }
+                } else {
+                    // Fehlermeldung $host ist vorübergehend nicht erreichbar (wird nicht zwischengespeichert)
+                    $stream = '<div>Der Veranstaltungskalender ist derzeit nicht verfügbar.</div>';
                 }
-            } else {
-                // Fehlermeldung $host ist vorübergehend nicht erreichbar
-                $stream = '<div>Der Veranstaltungskalender ist derzeit nicht verfügbar.</div>';
             }
         } else {
             $stream = 'Error: Plugin "Evangelische Termine": Veranstalter-ID ist nicht gesetzt';
         }
 
-        if (DEBUG) {
-            Debugging::writeOutputStream(BASE_PATH . '/etStream.html', $stream);
+        if (is_string($stream) && '[{' !== substr($stream, 0, 2)) {
+            $stream = $this->localizeLibraries($stream);
         }
 
         return $stream;
+    }
+
+    /**
+     * Ersetzt die Skripte, die das HTML der Evangelischen Termine vom Host des Kalenders nachlädt (jQuery, jQuery UI und
+     * common.js), durch jQuery und den Datepicker aus WordPress und das Skript assets/scripts/et_calendar.js des Plugins.
+     * Die Skripte werden an der Stelle des ersten ersetzten Tags ausgegeben, weil die Inline-Skripte im HTML des Kalenders
+     * sie sofort verwenden. Was WordPress auf der Seite schon ausgegeben hat, wird nicht noch einmal geladen.
+     * Läuft nach dem Cache, weil das Ergebnis davon abhängt, was auf der aktuellen Seite schon geladen ist.
+     *
+     * @param string $stream
+     * @return string
+     */
+    private function localizeLibraries($stream)
+    {
+        $pattern = '#<script\b[^>]*\bsrc=(["\'])' . self::REMOTE_BUNDLE_PREFIX . 'js/(jquery/jquery\.min\.js|jquery/jquery-ui\.min\.js|common\.js)(?:\?[^"\']*)?\1[^>]*>\s*</script>#i';
+        if (! preg_match_all($pattern, $stream, $matches)) {
+            return $stream;
+        }
+
+        if (! wp_script_is('evangtermine-calendar', 'registered')) {
+            wp_register_script(
+                'evangtermine-calendar',
+                plugins_url('assets/scripts/et_calendar.js', BASE_PATH . '/evangtermine.php'),
+                array('jquery'),
+                ET_VERSION,
+                false
+            );
+        }
+        $handles = array('evangtermine-calendar');
+        if (in_array('jquery/jquery-ui.min.js', array_map('strtolower', $matches[2]), true)) {
+            $handles[] = 'jquery-ui-datepicker';
+        }
+
+        ob_start();
+        wp_scripts()->do_items($handles);
+        $tags = ob_get_clean();
+
+        $first = true;
+        $result = preg_replace_callback($pattern, function ($match) use (&$first, $tags) {
+            if ($first) {
+                $first = false;
+                return $tags;
+            }
+            return '';
+        }, $stream);
+
+        return null === $result ? $stream : $result;
+    }
+
+    /**
+     * Timeout für den Abruf in Sekunden (Standard: 15). Über den Filter 'evangtermine_http_timeout' änderbar;
+     * der Wert wird auf 1 bis 30 Sekunden begrenzt.
+     *
+     * @return int
+     */
+    private function getConnectionTimeout()
+    {
+        $timeout = (int) apply_filters('evangtermine_http_timeout', $this->connectionTimeout);
+        return min(30, max(1, $timeout));
+    }
+
+    /**
+     * Lebensdauer des Caches in Sekunden (Standard: 5 Minuten). Über den Filter 'evangtermine_cache_ttl' änderbar;
+     * 0 schaltet den Cache ab.
+     *
+     * @return int
+     */
+    private function getCacheTtl()
+    {
+        $ttl = (int) apply_filters('evangtermine_cache_ttl', 5 * MINUTE_IN_SECONDS);
+        return max(0, $ttl);
+    }
+
+    /**
+     * Liefert den Cache-Schlüssel für den Abruf oder false, wenn dieser Abruf nicht zwischengespeichert wird.
+     * Nur die Teaser-Ausgabe (Widget, et_teaser) wird gecacht, nicht die interaktiven Module (Suche, Seitenwechsel, Detailansicht).
+     * Der Schlüssel enthält alles, was die Ausgabe verändert: die komplette Abruf-URL (Protokoll, Host, Parameter), die Plugin-Version,
+     * ob das Fremd-CSS entfernt wird und die aktuelle Seite (die Links im Stream werden auf deren Permalink umgeschrieben).
+     *
+     * @param string $url      Abruf-URL
+     * @param string $filename Aufgerufenes Modul
+     * @param int    $ttl      Lebensdauer des Caches in Sekunden (0 = kein Cache)
+     * @return string|false
+     */
+    private function getCacheKey($url, $filename, $ttl)
+    {
+        if (ET_TEASER_MODUL !== $filename || 0 === $ttl) {
+            return false;
+        }
+        $variant = array(
+            ET_VERSION,
+            $url,
+            $this->etLoadCSS ? 1 : 0,
+            (string) get_permalink()
+        );
+        return 'et_stream_' . md5(wp_json_encode($variant));
     }
 
     /**
@@ -313,20 +445,36 @@ class EtQuery
     private function filterStream($stream)
     {
         // nocss entfernen - verursacht eine Warnung
+        // phpcs:disable WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet -- Suchmuster: die Tags werden aus dem empfangenen HTML entfernt, nicht ausgegeben
         $stream = str_replace('<link rel="stylesheet" type="text/css" href="nocss"  />', '', $stream);
         $stream = str_replace('<link href="nocss" media="screen, projection" rel="stylesheet" type="text/css" />', '', $stream);
-        
-        // URL für JavaScripts in et_panels anpassen
-        $stream = str_replace('<script type="text/javascript" src="/bundles/vket/js/jquery/jquery.min.js"></script>', '<script type="text/javascript" src="' . plugin_dir_url( '' ) . 'evangtermine/assets/scripts/jquery.min.js' . '"></script>', $stream);
-        $stream = str_replace('<script type="text/javascript" src="/bundles/vket/css/panels/bootstrap3.3.7.min.js"></script>', '<script type="text/javascript" src="' . plugin_dir_url( '' ) . 'evangtermine/assets/scripts/bootstrap3.3.7.min.js' . '"></script>', $stream);
-        $stream = str_replace('<link rel="stylesheet" href="/bundles/vket/css/panels/bootstrap3.3.7.min.css" />', '<link rel="stylesheet" href="' . plugin_dir_url( '' ) . 'evangtermine/assets/styles/bootstrap3.3.7.min.css' . '" />', $stream);
-        $stream = str_replace('<link rel="stylesheet" href="/bundles/vket/css/panels/bootstrap-theme3.3.7.min.css" />', '<link rel="stylesheet" href="' . plugin_dir_url( '' ) . 'evangtermine/assets/styles/bootstrap-theme3.3.7.min.css' . '" />', $stream);
-        $stream = str_replace('<link rel="stylesheet" href="/bundles/vket/css/font-awesome.min.css" />', '<link rel="stylesheet" href="' . plugin_dir_url( '' ) . 'evangtermine/assets/font-awesome-4.7.0/css/font-awesome.min.css' . '" />', $stream);
+        // phpcs:enable WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
+
+        // Bootstrap, Font Awesome und das Stylesheet von jQuery UI aus dem Plugin laden statt vom Host der Evangelischen Termine.
+        // Die Adressen kommen je nach Modul relativ (/bundles/...), absolut (https://host/bundles/...) oder
+        // protokoll-relativ (//host/bundles/...), mit oder ohne Versionsparameter (?v=...); ersetzt wird deshalb über den Pfad.
+        $assetsUrl = plugins_url('assets/', BASE_PATH . '/evangtermine.php');
+        $bundled = array(
+            'css/panels/bootstrap3.3.7.min.js' => 'scripts/bootstrap3.3.7.min.js',
+            'css/panels/bootstrap3.3.7.min.css' => 'styles/bootstrap3.3.7.min.css',
+            'css/panels/bootstrap-theme3.3.7.min.css' => 'styles/bootstrap-theme3.3.7.min.css',
+            'css/font-awesome.min.css' => 'font-awesome-4.7.0/css/font-awesome.min.css',
+            'css/jquery-ui.min.css' => 'ui/1.12.1/themes/base/jquery-ui.css'
+        );
+        foreach ($bundled as $remotePath => $localPath) {
+            $stream = preg_replace(
+                '#\b(src|href)=(["\'])' . self::REMOTE_BUNDLE_PREFIX . preg_quote($remotePath, '#') . '(?:\?[^"\']*)?\2#i',
+                '$1="' . esc_url($assetsUrl . $localPath) . '"',
+                $stream
+            );
+        }
 
         // CSS der Evangelischen Termine entfernen, damit das eigene CSS verwendet werden kann.
         if (! $this->etLoadCSS) {
+            // phpcs:disable WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet, PluginCheck.CodeAnalysis.Offloading.OffloadedContent -- Suchmuster: die Tags werden aus dem empfangenen HTML entfernt, nicht ausgegeben
             $stream = str_replace('<link rel="stylesheet" type="text/css" href="http://www.evangelische-termine.de/bundles/vket/css/publicintegration.css"  />', '', $stream);
             $stream = str_replace('<link rel="stylesheet" type="text/css" href="https://www.evangelische-termine.de/bundles/vket/css/publicintegration.css"  />', '', $stream);
+            // phpcs:enable WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet, PluginCheck.CodeAnalysis.Offloading.OffloadedContent
         }
 
         // Detailansicht des Teasermoduls im Hauptfenster

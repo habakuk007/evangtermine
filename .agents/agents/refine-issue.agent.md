@@ -34,7 +34,7 @@ Specific, testable conditions that define "done". Each criterion:
 ### Technical Considerations
 - Which files need to change (`evangtermine.php`, `application/controllers/`, `application/models/class.etquery.php`, `application/forms/options.php`, CSS)
 - Any backwards-compatibility constraint (see CLAUDE.md "Do Not Change" section)
-- Session handling implications (does this affect `$_SESSION['etsession']`?)
+- Filter state implications (the filters of `[et_veranstalter]` travel in the URL only, there is no PHP session; does this change the request parameters?)
 - Remote API implications (`wp_remote_get()`) (does this change how the remote API is called?)
 - Admin settings page implications (does a new option need to be registered under `et_group`?)
 

@@ -25,6 +25,14 @@ gh auth status
 gh auth login
 ```
 
+## Identity: who acts as whom
+
+Plain `gh` and `git` run as the developer (`habakuk007`). Pull requests and PR comments written by the AI
+go through the `gh-bot` skill (`bash .agents/skills/gh-bot/gh-bot.sh pr|comment ...`), which runs as the
+bot account `habakuk-ai`, so the developer can approve them. Do not use `gh pr create` or
+`gh pr comment` for AI-authored PRs; approving and merging stay with the human. Details:
+[gh-bot/SKILL.md](../gh-bot/SKILL.md).
+
 ## Workflows
 
 ### Issues

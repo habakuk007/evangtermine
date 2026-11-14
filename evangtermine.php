@@ -1,19 +1,21 @@
 <?php
 /**
  * @package evangtermine
- * @version 3.3
+ * @version 3.4
  */
 /*
  * Plugin Name: Evangelische Termine
- * Description: Dieses Plugin bindet die Evangelischen Termine (www.evangelische-termine.de) in Wordpress ein.
- * Author: regibaer
- * Version: 3.3
- * Tested up to: 6.3
- * Author URI: mailto:mail@oisisi.de
- * License: GPLv2
+ * Description: Shows the events of the German Protestant event calendar "Evangelische Termine" (www.evangelische-termine.de) with shortcodes and a widget.
+ * Author: habakuk
+ * Version: 3.4
+ * Requires at least: 5.0
+ * Requires PHP: 7.4
+ * Author URI: https://profiles.wordpress.org/habakuk/
+ * License: GPLv2 or later
  */
 
 /*
+ * Originally developed by Norbert Räbiger (WordPress.org: regibaer).
  * Copyright (C) 2017-2022 Norbert Räbiger (E-Mail: mail@oisisi.de)
  * This program is free software; you can redistribute it and/or modify it under the terms
  * of the GNU General Public License as published by the Free Software Foundation; either
@@ -26,7 +28,7 @@
  * Boston, MA 02110-1301, USA.
  */
 
-define ('ET_VERSION', '3.3');
+define ('ET_VERSION', '3.4');
 
 define('DEBUG', false);
 
@@ -54,8 +56,11 @@ class evangtermine {
 		// Options-Seite über das Backend-Menü Plugins aufrufen
 		add_filter ('plugin_action_links_' . plugin_basename(__FILE__), array('PluginOptionsPage', 'etPluginActions'));
 
-		// CSS der Evangelischen Termine im Kopfbereich der Ausgabeseite integrieren
-		add_action ('wp_head', array('IncludeCSS', 'etIncludeCSS'));
+		// Eigene CSS-Datei aus den Einstellungen einbinden (nach den Stylesheets des Themes)
+		add_action ('wp_enqueue_scripts', array('IncludeCSS', 'etIncludeCSS'), 20);
+
+		// Skripte und Stylesheets des Mini-Kalenders registrieren
+		add_action ('wp_enqueue_scripts', array('ShortcodeMinical', 'registerAssets'));
 		
 		// shortcode für den Teaser einbinden
 		add_shortcode('et_teaser', array('ShortcodeTeaser', 'etTeaser'));

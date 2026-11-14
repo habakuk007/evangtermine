@@ -1,0 +1,19 @@
+{
+	"version": "0.0.1",
+	"configurations": [
+		{
+			"name": "playground",
+			"runtimeExecutable": "npx",
+			"runtimeArgs": [
+				"--yes",
+				"@wp-playground/cli@latest",
+				"server",
+				"--auto-mount",
+				"--login",
+				"--blueprint=tests/e2e/blueprint.json",
+				"--port=9400"
+			],
+			"port": 9400
+		}
+	]
+}

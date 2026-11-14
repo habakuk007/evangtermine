@@ -19,7 +19,7 @@ class AutoloaderET {
 	 * @return boolean (false - Klassendatei existiert nicht oder ist nicht lesbar)
 	 */
 	private static function Load($class) {
-		if (class_exists($class)) {
+		if (class_exists($class, false)) {
 			return false;
 		}
 		

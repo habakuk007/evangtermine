@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-**Evangelische Termine** (v3.3) — WordPress plugin that embeds the Protestant events calendar from [www.evangelische-termine.de](https://www.evangelische-termine.de) via shortcodes and a sidebar widget. The event HTML is fetched live from the remote host with the WordPress HTTP API (`wp_remote_get()`) and injected into the page. There is no build system, no Composer and no npm.
+**Evangelische Termine** (v3.3) — WordPress plugin that embeds the Protestant events calendar from [www.evangelische-termine.de](https://www.evangelische-termine.de) via shortcodes and a sidebar widget. The event HTML is fetched live from the remote host with the WordPress HTTP API (`wp_remote_get()`) and injected into the page. There is no build system and no npm; Composer is used for dev tooling only (PHPCS), the plugin has no runtime dependencies.
 
 The plugin was closed on WordPress.org on 2025-05-01 (security issue). The git history was imported from the WordPress.org SVN; the work here is to fix the security issues (issues #1–#6), make it PHP 8 compatible and get it re-opened. See `HANDOVER.md` for the current state if present.
 
@@ -14,11 +14,17 @@ The plugin was closed on WordPress.org on 2025-05-01 (security issue). The git h
 # Lint PHP syntax
 find . -name "*.php" -not -path "./.git/*" -not -path "./assets/*" -exec php -l {} \;
 
-# WordPress Coding Standard (requires PHPCS + WPCS)
-phpcs --standard=WordPress --extensions=php evangtermine.php autoloader.php application/
+# Install the dev tooling (PHPCS, WPCS, PHPCompatibilityWP) - dev only, not part of the release
+composer install
+
+# PHP compatibility check for PHP 7.4+ (blocking in CI)
+composer lint:compat
+
+# WordPress Coding Standard, full ruleset from phpcs.xml (not blocking in CI until issue #13)
+composer lint:php
 
 # Auto-fix
-phpcbf --standard=WordPress --extensions=php evangtermine.php autoloader.php application/
+composer fix:php
 
 # Generate translations (requires WP-CLI)
 wp i18n make-pot . languages/evangtermine.pot
@@ -50,7 +56,7 @@ assets/                                  ← bundled Bootstrap 3.3.7, jQuery, Fo
 
 **Data flow:** shortcode/widget attributes → `EtQuery::setEtParameters()` → request values (`$_REQUEST`, `$_GET['etID']`) are merged in → `EtQuery::getQuerystring()` → `EtQuery::retrieveStream()` (`wp_remote_get` to `{etprotocol}{ethost}/{veranstaltungen-php|detail-php|teaser|…}`) → `filterStream()` string-replace post-processing → `EtView::buildView()`.
 
-**Filter state:** `ShortcodeVeranstalter` stores the user's filters in `$_SESSION['etsession']` (stdClass) to keep them across pagination. The code does not call `session_start()` itself.
+**Filter state:** the user's filters travel in the URL only, the plugin does not use a PHP session. `ShortcodeVeranstalter` reads the filter values from the request (`getRequestValue()`) and passes them to `EtQuery::setEtParameter()`; `filterStream()` rewrites the links in the remote HTML to the permalink plus the current query string. `reset=1` returns to the shortcode defaults.
 
 **Settings:** `application/forms/options.php` registers seven options (`vid`, `region`, `until`, `css`, `encoding`, `etprotocol`, `ethost`) in the group `et_group`. Shortcode attributes override them per call.
 
@@ -112,6 +118,7 @@ Invoke via Claude Code slash commands (e.g. `/gh issue create`).
 | Command | Skill | Purpose |
 |---------|-------|---------|
 | `/gh` | [gh/SKILL.md](.agents/skills/gh/SKILL.md) | GitHub CLI: issues, PRs, releases |
+| `/gh-bot` | [gh-bot/SKILL.md](.agents/skills/gh-bot/SKILL.md) | Open PRs and PR comments as bot identity `habakuk-ai` (commits/pushes stay `habakuk007`) |
 | `/php-lint` | [php-lint/SKILL.md](.agents/skills/php-lint/SKILL.md) | PHPCS/PHPCBF for WordPress Coding Standard |
 | `/wp-release` | [wp-release/SKILL.md](.agents/skills/wp-release/SKILL.md) | Full plugin release workflow |
 | `/grill-me` | [grill-me/SKILL.md](.agents/skills/grill-me/SKILL.md) | Stress-test a plan through relentless questions |

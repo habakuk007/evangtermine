@@ -1,0 +1,30 @@
+{
+  "name": "habakuk007/evangtermine",
+  "description": "Development tooling for the WordPress plugin Evangelische Termine. Not part of the release.",
+  "type": "wordpress-plugin",
+  "license": "GPL-2.0-or-later",
+  "require": {
+    "php": ">=7.4"
+  },
+  "require-dev": {
+    "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
+    "phpcompatibility/phpcompatibility-wp": "^2.1",
+    "wp-coding-standards/wpcs": "^3.0"
+  },
+  "scripts": {
+    "lint:php": "phpcs",
+    "lint:compat": "phpcs --standard=PHPCompatibilityWP --runtime-set testVersion 7.4- --extensions=php --ignore=*/assets/*,*/vendor/* -s evangtermine.php autoloader.php application/",
+    "fix:php": "phpcbf"
+  },
+  "scripts-descriptions": {
+    "lint:php": "Full ruleset from phpcs.xml (WordPress Coding Standards + PHPCompatibilityWP).",
+    "lint:compat": "PHP compatibility sniffs only (PHP 7.4 and newer).",
+    "fix:php": "Auto-fix what PHPCBF can fix."
+  },
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    },
+    "sort-packages": true
+  }
+}

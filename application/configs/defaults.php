@@ -1,4 +1,8 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 // if(file_exists(__DIR__ . '/../../defaults-local.php')){
 // 	require_once (__DIR__ . '/../../defaults-local.php');
 // }

@@ -1,0 +1,45 @@
+name: Plugin Check
+
+# Runs the WordPress.org Plugin Check (https://wordpress.org/plugins/plugin-check/)
+# with WP-CLI in a real WordPress (wp-env). All checks run here, including the
+# PHP_CodeSniffer-based ones and the runtime checks, which do not work in
+# WordPress Playground.
+on:
+  push:
+    branches: [master, develop]
+  pull_request:
+    branches: [master, develop]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  plugin-check:
+    name: Plugin Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      # Check what would be released, not the repository: same command as in
+      # deploy.sh of 10up/action-wordpress-plugin-deploy (rsync with .distignore
+      # as the exclude list). The folder name is the plugin slug.
+      - name: Build the release file set
+        run: |
+          if [ ! -f .distignore ]; then
+            echo "::error::.distignore is missing."
+            exit 1
+          fi
+          mkdir -p build/evangtermine
+          rsync -rc --exclude-from=.distignore --exclude=/build ./ build/evangtermine/ --delete --delete-excluded
+          echo "Files: $(find build/evangtermine -type f | wc -l), size: $(du -sh build/evangtermine | cut -f1)"
+
+      - name: Run Plugin Check
+        uses: WordPress/plugin-check-action@10857da14b6c2246d15402b3e69f777edcf8c12e # v1.1.9
+        with:
+          build-dir: ./build/evangtermine
