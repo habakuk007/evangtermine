@@ -40,7 +40,7 @@ test.describe( 'live calendar host', () => {
 		await visit( page, '/et-veranstalter/' );
 		await list.locator( '.et_link_title' ).first().click();
 		await expect( page ).toHaveURL( /etID=\d+/ );
-		await expect( list.locator( 'h2#et_detail_title' ) ).toHaveText( firstTitle.trim() );
+		await expect( list.locator( '#et_detail_title' ) ).toHaveText( firstTitle.trim() );
 	} );
 
 	test( 'et_veranstalter search', async ( { page } ) => {
