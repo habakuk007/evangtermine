@@ -8,6 +8,7 @@ Requires PHP: 7.4
 Stable tag: 3.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Donate link: https://trumpkin.de/donate
 
 Shows the events of the German Protestant event calendar "Evangelische Termine" on your site, with shortcodes and a widget.
 
