@@ -3,7 +3,7 @@
 	"meta": {
 		"title": "Evangelische Termine – test site",
 		"author": "habakuk007",
-		"description": "WordPress with the plugin mounted, debug output on, one page per shortcode and the widget in a classic sidebar. Start with: npx @wp-playground/cli@latest server --auto-mount --login --blueprint=tests/e2e/blueprint.json"
+		"description": "WordPress with the plugin mounted, debug output on, one page per shortcode and the widget in a classic sidebar. Start with: npm run playground (see tests/e2e/README.md). The calendar is fetched from the real host unless the E2E tests switch the mock on."
 	},
 	"preferredVersions": {
 		"php": "8.3",
@@ -39,8 +39,13 @@
 			}
 		},
 		{
+			"step": "writeFile",
+			"path": "/wordpress/wp-content/mu-plugins/et-e2e-loader.php",
+			"data": "<?php\n// Loads the test helper of the E2E tests from the mounted plugin folder (tests/e2e/mock/et-e2e-mock.php).\nforeach ( (array) glob( WP_PLUGIN_DIR . '/*/tests/e2e/mock/et-e2e-mock.php' ) as $et_e2e_file ) {\n\trequire_once $et_e2e_file;\n}\n"
+		},
+		{
 			"step": "runPHP",
-			"code": "<?php\nrequire '/wordpress/wp-load.php';\n\n// One page per shortcode. Region 407 with vid=all gives a list with several pages; 1474 is the maintainer's test organiser.\n$pages = array(\n\t'et-veranstalter'      => '[et_veranstalter vid=\"all\" region=\"407\" itemsperpage=\"5\"]',\n\t'et-veranstalter-1474' => '[et_veranstalter]',\n\t'et-teaser'            => '[et_teaser vid=\"all\" region=\"407\" itemsperpage=\"5\"]',\n\t'et-panels'            => '[et_panels vid=\"all\" region=\"407\" itemsperpage=\"6\"]',\n\t'et-minical'           => '[et_minical vid=\"all\" region=\"407\"]',\n);\nforeach ( $pages as $slug => $content ) {\n\twp_insert_post(\n\t\tarray(\n\t\t\t'post_type'    => 'page',\n\t\t\t'post_status'  => 'publish',\n\t\t\t'post_name'    => $slug,\n\t\t\t'post_title'   => $slug,\n\t\t\t'post_content' => '<!-- wp:shortcode -->' . $content . '<!-- /wp:shortcode -->',\n\t\t)\n\t);\n}\n\n// The widget in the footer sidebar of Twenty Twenty-One.\nupdate_option(\n\t'widget_etwidget',\n\tarray(\n\t\t2              => array(\n\t\t\t'title'        => 'Nächste Veranstaltungen',\n\t\t\t'vid'          => 'all',\n\t\t\t'region'       => '407',\n\t\t\t'itemsPerPage' => '3',\n\t\t\t'tpl'          => '2',\n\t\t),\n\t\t'_multiwidget' => 1,\n\t)\n);\n$sidebars              = get_option( 'sidebars_widgets', array() );\n$sidebars['sidebar-1'] = array( 'etwidget-2' );\nupdate_option( 'sidebars_widgets', $sidebars );\n"
+			"code": "<?php\nrequire '/wordpress/wp-load.php';\n\n// One page per shortcode. Region 407 with vid=all gives a list with several pages; 1474 is the maintainer's test organiser.\n$pages = array(\n\t'et-veranstalter'      => '[et_veranstalter vid=\"all\" region=\"407\" itemsperpage=\"5\"]',\n\t'et-veranstalter-1474' => '[et_veranstalter]',\n\t'et-teaser'            => '[et_teaser vid=\"all\" region=\"407\" itemsperpage=\"5\"]',\n\t'et-panels'            => '[et_panels vid=\"all\" region=\"407\" itemsperpage=\"6\"]',\n\t'et-minical'           => '[et_minical vid=\"all\" region=\"407\"]',\n\t// Pages used only by the E2E tests.\n\t'et-teaser-other'      => '[et_teaser vid=\"952\" itemsperpage=\"5\"]',\n\t'et-minical-quote'     => '[et_minical vid=\"all\" region=\"407\" place=\"St. Mary\\'s\"]',\n\t'et-all'               => '[et_teaser vid=\"all\" region=\"407\" itemsperpage=\"5\"][et_veranstalter vid=\"all\" region=\"407\" itemsperpage=\"5\"]',\n);\nforeach ( $pages as $slug => $content ) {\n\twp_insert_post(\n\t\tarray(\n\t\t\t'post_type'    => 'page',\n\t\t\t'post_status'  => 'publish',\n\t\t\t'post_name'    => $slug,\n\t\t\t'post_title'   => $slug,\n\t\t\t'post_content' => '<!-- wp:shortcode -->' . $content . '<!-- /wp:shortcode -->',\n\t\t)\n\t);\n}\n\n// The widget in the footer sidebar of Twenty Twenty-One.\nupdate_option(\n\t'widget_etwidget',\n\tarray(\n\t\t2              => array(\n\t\t\t'title'        => 'Nächste Veranstaltungen',\n\t\t\t'vid'          => 'all',\n\t\t\t'region'       => '407',\n\t\t\t'itemsPerPage' => '3',\n\t\t\t'tpl'          => '2',\n\t\t),\n\t\t'_multiwidget' => 1,\n\t)\n);\n$sidebars              = get_option( 'sidebars_widgets', array() );\n$sidebars['sidebar-1'] = array( 'etwidget-2' );\nupdate_option( 'sidebars_widgets', $sidebars );\n\n// The theme was just activated. Without this, WordPress puts its default widgets back on the first page view.\ndelete_option( 'theme_switched' );\n"
 		}
 	]
 }

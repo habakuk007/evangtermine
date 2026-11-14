@@ -7,8 +7,8 @@ from [www.evangelische-termine.de](https://www.evangelische-termine.de) into any
 It provides shortcodes and a sidebar widget; the event HTML is fetched live from the remote host
 with the WordPress HTTP API (`wp_remote_get()`).
 
-The codebase is object-oriented PHP with an autoloader, no build tools, no runtime Composer dependencies (Composer is dev tooling only)
-and no npm. The plugin was closed on WordPress.org (security issue); the goal is to fix issues
+The codebase is object-oriented PHP with an autoloader, no build tools, no runtime Composer dependencies (Composer and npm are dev tooling only: PHPCS and the end-to-end tests).
+The plugin was closed on WordPress.org (security issue); the goal is to fix issues
 #1–#6, support PHP 8 and get it re-opened.
 
 ## File Map
@@ -24,6 +24,7 @@ application/
   helper/                   <- IncludeCSS, Debugging
   forms/                    <- options.php (Settings API), widget form
 assets/                     <- bundled Bootstrap, jQuery, Font Awesome, CSS
+tests/e2e/                  <- Playwright tests against WordPress Playground (not in the release)
 readme.txt                  <- WordPress.org listing
 ```
 
@@ -68,6 +69,18 @@ composer lint:php
 
 # Auto-fix
 composer fix:php
+
+# Install the E2E tooling (Playwright, WordPress Playground) - dev only, not part of the release
+npm ci && npx playwright install chromium
+
+# E2E tests in a real WordPress (WordPress Playground) with a mocked calendar host, see tests/e2e/README.md
+npm run test:e2e
+
+# Optional E2E checks against the real www.evangelische-termine.de (not run in CI)
+npm run test:e2e:live
+
+# Start the test site for manual testing: http://127.0.0.1:8881
+npm run playground
 
 # Generate .pot translation file (requires WP-CLI)
 wp i18n make-pot . languages/evangtermine.pot

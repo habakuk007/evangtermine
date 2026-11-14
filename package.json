@@ -1,0 +1,17 @@
+{
+  "name": "evangtermine-e2e",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Dev tooling for the end-to-end tests of the WordPress plugin Evangelische Termine. Not part of the release.",
+  "license": "GPL-2.0-or-later",
+  "scripts": {
+    "playground": "wp-playground-cli server --auto-mount --login --port=8881 --blueprint=tests/e2e/blueprint.json",
+    "test:e2e": "playwright test --config=tests/e2e/playwright.config.js --project=mock",
+    "test:e2e:live": "playwright test --config=tests/e2e/playwright.config.js --project=live",
+    "test:e2e:report": "playwright show-report tests/e2e/playwright-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.65.0",
+    "@wp-playground/cli": "3.1.64"
+  }
+}
