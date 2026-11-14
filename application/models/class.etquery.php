@@ -337,10 +337,6 @@ class EtQuery
             $stream = $this->localizeLibraries($stream);
         }
 
-        if (DEBUG) {
-            Debugging::writeOutputStream(BASE_PATH . '/etStream.html', $stream);
-        }
-
         return $stream;
     }
 
@@ -449,9 +445,11 @@ class EtQuery
     private function filterStream($stream)
     {
         // nocss entfernen - verursacht eine Warnung
+        // phpcs:disable WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet -- Suchmuster: die Tags werden aus dem empfangenen HTML entfernt, nicht ausgegeben
         $stream = str_replace('<link rel="stylesheet" type="text/css" href="nocss"  />', '', $stream);
         $stream = str_replace('<link href="nocss" media="screen, projection" rel="stylesheet" type="text/css" />', '', $stream);
-        
+        // phpcs:enable WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
+
         // Bootstrap, Font Awesome und das Stylesheet von jQuery UI aus dem Plugin laden statt vom Host der Evangelischen Termine.
         // Die Adressen kommen je nach Modul relativ (/bundles/...), absolut (https://host/bundles/...) oder
         // protokoll-relativ (//host/bundles/...), mit oder ohne Versionsparameter (?v=...); ersetzt wird deshalb über den Pfad.
@@ -473,8 +471,10 @@ class EtQuery
 
         // CSS der Evangelischen Termine entfernen, damit das eigene CSS verwendet werden kann.
         if (! $this->etLoadCSS) {
+            // phpcs:disable WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet -- Suchmuster: die Tags werden aus dem empfangenen HTML entfernt, nicht ausgegeben
             $stream = str_replace('<link rel="stylesheet" type="text/css" href="http://www.evangelische-termine.de/bundles/vket/css/publicintegration.css"  />', '', $stream);
             $stream = str_replace('<link rel="stylesheet" type="text/css" href="https://www.evangelische-termine.de/bundles/vket/css/publicintegration.css"  />', '', $stream);
+            // phpcs:enable WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
         }
 
         // Detailansicht des Teasermoduls im Hauptfenster

@@ -18,7 +18,7 @@ class ShortcodeVeranstalter
      */
     public static function getRequestValue($key)
     {
-        // phpcs:disable WordPress.Security.NonceVerification.Recommended -- öffentliche Filter-Parameter, kein Formular mit Nonce
+        // phpcs:disable WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing -- öffentliche Filter-Parameter, kein Formular mit Nonce
         $source = array_merge($_GET, $_POST);
         // phpcs:enable
         if (! isset($source[$key]) || ! is_scalar($source[$key])) {
@@ -170,7 +170,7 @@ class ShortcodeVeranstalter
             'q'
         );
         // GET und POST (keine Cookies): Namen und Werte werden bereinigt, die Werte URL-kodiert.
-        // phpcs:disable WordPress.Security.NonceVerification.Recommended -- öffentliche Filter-Parameter, kein Formular mit Nonce
+        // phpcs:disable WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing -- öffentliche Filter-Parameter, kein Formular mit Nonce
         $requestKeys = array_keys(array_merge($_GET, $_POST));
         // phpcs:enable
         foreach ($requestKeys as $key) {
