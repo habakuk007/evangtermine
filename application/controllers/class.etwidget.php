@@ -135,6 +135,9 @@ class EtWidget extends WP_Widget {
 		$output .= $content;
 		$output .= $args['after_widget'];
 		
+		// Das HTML der Evangelischen Termine wird bewusst ungefiltert ausgegeben (siehe readme.txt, "External service"),
+		// before_/after_widget und before_/after_title stammen vom Theme, der Titel ist oben escaped.
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo $output;
 	}
 }
