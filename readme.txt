@@ -183,6 +183,9 @@ Originally developed by Norbert Räbiger (https://profiles.wordpress.org/regibae
 
 == Changelog ==
 
+= 3.5 =
+* Changed: the settings page explains every setting below its field, and all labels and values are shown in German ("Until", "Encoding", "yes"/"no" were English). The stored values do not change.
+
 = 3.4 =
 * Security: fixed cross-site scripting and further security issues (including CVE-2025-28960). Request parameters are sanitized and URL-encoded, options and output are escaped, and the calendar host is checked against local and private addresses.
 * Security: the widget settings are limited to the known fields and sanitized when saved; output in the widget form is escaped.
@@ -198,7 +201,6 @@ Originally developed by Norbert Räbiger (https://profiles.wordpress.org/regibae
 * Fixed: compatibility with PHP 8.0 to 8.5 (undefined array keys in the widget and its form, HTTP status through the WordPress API).
 * New: deleting the plugin removes its settings and its cache (uninstall.php).
 * New: `Requires PHP: 7.4`, description of the external service, readme in English.
-* Changed: the settings page explains every setting below its field, and all labels and values are shown in German ("Until", "Encoding", "yes"/"no" were English). The stored values do not change.
 
 = 3.3 =
 * Fixed: display problem in `[et_panels]`.
