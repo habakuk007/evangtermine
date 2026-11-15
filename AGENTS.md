@@ -129,6 +129,7 @@ All instructions live in `.agents/instructions/` (source of truth).
 | [a11y.instructions.md](.agents/instructions/a11y.instructions.md) | `**` |
 | [html-css-style-color-guide.instructions.md](.agents/instructions/html-css-style-color-guide.instructions.md) | `**/*.css`, `**/*.html` |
 | [readme-txt.instructions.md](.agents/instructions/readme-txt.instructions.md) | `readme.txt` |
+| [wordpress-org-submission.instructions.md](.agents/instructions/wordpress-org-submission.instructions.md) | `readme.txt`, `changelog.txt`, `*.php` |
 | [ai-tool-sync.instructions.md](.agents/instructions/ai-tool-sync.instructions.md) | `CLAUDE.md`, `AGENTS.md`, `.github/copilot-instructions.md`, `.agents/**`, `.mcp.json` |
 | [agents.instructions.md](.agents/instructions/agents.instructions.md) | `**/*.agent.md` |
 | [agent-skills.instructions.md](.agents/instructions/agent-skills.instructions.md) | `**/.agents/skills/**/SKILL.md` |
