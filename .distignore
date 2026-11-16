@@ -29,4 +29,7 @@ phpunit.xml
 phpunit.xml.dist
 tests
 
+# The .pot template is only for translators and the i18n tooling, not needed at runtime (the .po/.mo files are shipped).
+languages/evangtermine.pot
+
 # LICENSE is shipped on purpose: the GPL asks that every recipient gets a copy of the license text.
