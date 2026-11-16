@@ -61,13 +61,40 @@ preflight() {
   esac
 }
 
-# Runs gh as the bot: the token lives only in the environment of this single call.
+# Quote a value as a PowerShell double-quoted literal. Escapes backtick, $,
+# double-quote and newlines so any argument (title, body, path with spaces)
+# survives the round-trip through `powershell.exe -Command`.
+ps_dquote() {
+  local s="$1" BT
+  BT=$(printf '\140')   # a backtick, without a literal backtick in this source
+  s="${s//$BT/$BT$BT}"  # `  -> ``
+  s="${s//\$/$BT\$}"    # $  -> `$
+  s="${s//\"/$BT\"}"    # "  -> `"`
+  s="${s//$'\n'/$BT n}" # newline -> `n
+  printf '"%s"' "$s"
+}
+
+# Join the given arguments into a PowerShell-safe command fragment.
+ps_args() {
+  local out="" a
+  for a in "$@"; do out+=" $(ps_dquote "$a")"; done
+  printf '%s' "$out"
+}
+
+# Runs gh as the bot: the token lives only in the environment of this single
+# call. WSL does not propagate GH_TOKEN to the Windows gh.exe (it then falls
+# back to the keyring/credential-manager login), so gh is run through
+# powershell.exe, which honors GH_TOKEN. Works under WSL and Git Bash alike.
 bot_gh() {
-  local token rc
+  local token rc cmd
   token="$(get_value Token)" || return 1
   [ -n "$token" ] || { echo "ERROR: empty bot token" >&2; return 1; }
-  GH_TOKEN="$token" env -u GITHUB_TOKEN gh "$@"
-  rc=$?
+  cmd=""
+  cmd+="\$env:GH_TOKEN = $(ps_dquote "$token");"
+  cmd+=" if (Test-Path Env:GITHUB_TOKEN) { Remove-Item Env:GITHUB_TOKEN };"
+  cmd+=" gh$(ps_args "$@")"
+  rc=0
+  powershell.exe -NoProfile -Command "$cmd" || rc=$?
   unset token
   return $rc
 }
