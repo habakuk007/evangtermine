@@ -12,6 +12,8 @@
  * Requires PHP: 7.4
  * Author URI: https://profiles.wordpress.org/habakuk/
  * License: GPLv2 or later
+ * Text Domain: evangtermine
+ * Domain Path: /languages
  */
 
 /*

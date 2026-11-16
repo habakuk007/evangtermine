@@ -23,8 +23,9 @@ composer fix:php
 # Validate readme.txt
 # Open https://wordpress.org/plugins/developers/readme-validator/ and paste contents
 
-# Generate translations (requires WP-CLI)
-wp i18n make-pot . languages/evangtermine.pot
+# Generate translations (WP-CLI comes from Composer)
+composer make:pot   # -> languages/evangtermine.pot (WP-CLI i18n from Composer, no global wp)
+composer make:mo    # compile languages/*.po to .mo
 
 # Run WordPress.org compliance checks (requires WP-CLI + plugin-check)
 wp plugin check evangtermine

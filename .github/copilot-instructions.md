@@ -70,7 +70,8 @@ composer lint:php
 composer fix:php
 
 # Generate .pot translation file (requires WP-CLI)
-wp i18n make-pot . languages/evangtermine.pot
+composer make:pot   # -> languages/evangtermine.pot (WP-CLI i18n from Composer, no global wp)
+composer make:mo    # compile languages/*.po to .mo
 
 # Check plugin against WP.org guidelines (requires WP-CLI + plugin-check)
 wp plugin check evangtermine
