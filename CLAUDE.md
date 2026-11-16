@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-**Evangelische Termine** (v3.3) — WordPress plugin that embeds the Protestant events calendar from [www.evangelische-termine.de](https://www.evangelische-termine.de) via shortcodes and a sidebar widget. The event HTML is fetched live from the remote host with the WordPress HTTP API (`wp_remote_get()`) and injected into the page. There is no build system and no npm; Composer is used for dev tooling only (PHPCS), the plugin has no runtime dependencies.
+**Evangelische Termine** (v3.3) — WordPress plugin that embeds the Protestant events calendar from [www.evangelische-termine.de](https://www.evangelische-termine.de) via shortcodes and a sidebar widget. The event HTML is fetched live from the remote host with the WordPress HTTP API (`wp_remote_get()`) and injected into the page. There is no build system; Composer (PHPCS) and npm (end-to-end tests) are used for dev tooling only, the plugin has no runtime dependencies.
 
 The plugin was closed on WordPress.org on 2025-05-01 (security issue). The git history was imported from the WordPress.org SVN; the work here is to fix the security issues (issues #1–#6), make it PHP 8 compatible and get it re-opened. See `HANDOVER.md` for the current state if present.
 
@@ -25,6 +25,18 @@ composer lint:php
 
 # Auto-fix
 composer fix:php
+
+# Install the E2E tooling (Playwright, WordPress Playground) - dev only, not part of the release
+npm ci && npx playwright install chromium
+
+# E2E tests in a real WordPress (WordPress Playground) with a mocked calendar host, see tests/e2e/README.md
+npm run test:e2e
+
+# Optional E2E checks against the real www.evangelische-termine.de (not run in CI)
+npm run test:e2e:live
+
+# Start the test site for manual testing: http://127.0.0.1:8881
+npm run playground
 
 # Generate translations (requires WP-CLI)
 wp i18n make-pot . languages/evangtermine.pot
@@ -52,6 +64,7 @@ application/
   forms/class.pluginoptionspage.php      ← "Einstellungen" link on the plugins page
   forms/form.etwidget.php                ← widget form
 assets/                                  ← bundled Bootstrap 3.3.7, jQuery, Font Awesome 4.7.0, CSS
+tests/e2e/                               ← Playwright tests against WordPress Playground (blueprint, mock of the calendar host, fixtures); not in the release
 ```
 
 **Data flow:** shortcode/widget attributes → `EtQuery::setEtParameters()` → request values (`$_REQUEST`, `$_GET['etID']`) are merged in → `EtQuery::getQuerystring()` → `EtQuery::retrieveStream()` (`wp_remote_get` to `{etprotocol}{ethost}/{veranstaltungen-php|detail-php|teaser|…}`) → `filterStream()` string-replace post-processing → `EtView::buildView()`.

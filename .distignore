@@ -18,6 +18,8 @@ README.md
 SECURITY.md
 opencode.json
 node_modules
+package.json
+package-lock.json
 vendor
 composer.json
 composer.lock

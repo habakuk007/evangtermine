@@ -1,0 +1,76 @@
+<script type="text/javascript" src="https://www.evangelische-termine.de/bundles/vket/js/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="https://www.evangelische-termine.de/bundles/vket/js/jquery/jquery-ui.min.js"></script>
+<script type="text/javascript" src="https://www.evangelische-termine.de/bundles/vket/js/common.js"></script>
+<script language="javascript" type="text/javascript">
+$(function() {
+	dateoptions['changeMonth'] = true;
+	dateoptions['changeYear'] = true;
+	dateoptions['showButtonPanel'] = true;
+	dateoptions['minDate'] = -0;
+	$('#date').datepicker(dateoptions);
+});
+function ET_openWindow(etURL,windowName,features) { window.open(etURL,windowName,features);}
+</script>
+<link rel="stylesheet" type="text/css" href="https://www.evangelische-termine.de/bundles/vket/css/publicintegration.css"  /><link rel="stylesheet" type="text/css" href="https://www.evangelische-termine.de/bundles/vket/css/jquery-ui.min.css"  />
+<link rel="stylesheet" type="text/css" href="nocss"  /><div id="et_headline"><h1>Veranstaltungen</h1></div>
+<div id="et_filter_container">
+	<form method="get">
+
+    <div class="et_filter_headline">
+      Auswahl:
+    </div>
+    <!-- et_replace_comment_1 -->
+    <div class="et_filter_main">
+    	<div class="et_filter_block"><div class="et_filter_row"><select id="vid" name="vid"><option value="all" selected="selected">Alle Veranstalter</option><option value="9001">Evang.-Luth. Kirchengemeinde Beispielhausen</option><option value="9002">Evang.-Luth. Kirchengemeinde Musterstadt</option><option value="9003">Evangelische Jugend im Dekanat Beispiel</option><option value="9004">Kirchenmusik im Dekanat Beispiel</option></select></div></div>
+    </div>      <div class="et_filter_main">
+    <div class="et_filter_block_left">
+    	<div class="et_filter_row_left"><select id="highlight" name="highlight"><option value="all" selected="selected">Alle Veranstaltungen</option><option value="high">Nur Highlights</option></select></div>
+        <div class="et_filter_row_left"> <select id="eventtype" name="eventtype"><option value="all" selected="selected">Alle Kategorien</option><option value="1">Gottesdienste</option><option value="2">Gruppen / Kreise</option><option value="3">Fortbildungen / Seminare / Vorträge</option><option value="4">Konzerte / Theater / Musik</option><option value="9">Sonstiges</option></select> </div>
+        <div class="et_filter_row_left"><select id="people" name="people"><option value="0" selected="selected">Alle Zielgruppen</option><option value="5">Kinder</option><option value="10">Jugendliche</option><option value="20">Familien</option><option value="25">Erwachsene</option><option value="30">Senioren</option></select></div>
+    </div>
+    <div class="et_filter_block_right">
+    	<div class="et_filter_row_right">Suchbegriff: <input type="text" id="et_q" name="et_q" size="15" /> </div>
+        <div class="et_filter_row_right">Datum:
+        <input type="text" id="date" name="date" size="10" maxlength="10" /></div>
+        <div class="et_filter_row_right">Anzeigen: <select id="itemsPerPage" name="itemsPerPage"><option value="5" selected="selected">5</option><option value="10">10</option><option value="20">20</option><option value="50">50</option></select> pro Seite von <span id="et_totalItems">7</span> </div>
+    </div>
+    </div>
+    <div class="et_filter_subrow">
+      <button type="submit" id="Suche" name="Suche" class="et_submit">Suche</button>
+
+        <input type="hidden" id="action" name="action" value="search" />
+        <input type="hidden" name="PHPSESSID" value="00000000000000000000000000000000">
+        <button type="submit" id="reset" name="reset" class="et_reset" value="1">Zurücksetzen</button>
+    </div>
+  <input type="hidden" id="dest" name="dest" value="extern" /><input type="hidden" id="until" name="until" value="yes" /><input type="hidden" id="_token" name="_token" value="e2e-fixture-token" /></form>
+  </div>
+<div class="et_pager_container">
+  	  <div class="light-theme simple-pagination"><b><span class="current">1</span></b>&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://_HOST_/?pageID=2&amp;dest=extern&amp;until=yes{{LINK_SUFFIX}}" title="page 2">2</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://_HOST_/?pageID=2&amp;dest=extern&amp;until=yes{{LINK_SUFFIX}}" title="next page">&raquo;</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://_HOST_/?pageID=2&amp;dest=extern&amp;until=yes{{LINK_SUFFIX}}" title="last page">[2]</a></div>
+  </div>
+  <div id="content_container_wrapper">
+      <div id="et_content_container">
+                  <div class="monthbar">November 2026</div>        <div class="et_content_row even ">
+            <div class="et_content_date"><span class="et_tag">Do, 12.11.</span><br /><span class="et_uhrzeit">14:30-16:30 Uhr</span></div>
+            <div class="et_content_title"><a href="?etID=1001&amp;dest=extern&amp;until=yes{{LINK_SUFFIX}}" class="et_link_title">Offener Kreis</a>            <span class="et_description"><br />Nachmittag mit Kaffee, Tee und Gespräch</span>            <br /><span class="et_city">Musterstadt: </span><span class="et_placename">Gemeindehaus Musterstadt</span><span class="et_personname">Erika Beispiel</span>            <span class="et_content_user">Evang.-Luth. Kirchengemeinde Musterstadt</span>            </div>
+        </div>
+                          <div class="et_content_row odd ">
+            <div class="et_content_date"><span class="et_tag">Do, 19.11.</span><br /><span class="et_uhrzeit">16 Uhr</span></div>
+            <div class="et_content_title"><a href="?etID=1011&amp;dest=extern&amp;until=yes{{LINK_SUFFIX}}" class="et_link_title">Offener Familientreff</a>                        <br /><span class="et_city">Beispielhausen: </span><span class="et_placename">Bürgertreff</span>            <span class="et_content_user">Evang.-Luth. Kirchengemeinde Beispielhausen</span>            </div>
+        </div>
+                          <div class="et_content_row even ">
+            <div class="et_content_date"><span class="et_tag">Fr, 20.11.</span><br /><span class="et_uhrzeit">17 Uhr</span></div>
+            <div class="et_content_title"><a href="?etID=1012&amp;dest=extern&amp;until=yes{{LINK_SUFFIX}}" class="et_link_title">Offener Jugendraum</a>            <span class="et_description"><br />komm einfach vorbei</span>            <br /><span class="et_city">Musterstadt: </span><span class="et_placename">Jugendraum</span>            <span class="et_content_user">Evangelische Jugend im Dekanat Beispiel</span>            </div>
+        </div>
+                          <div class="et_content_row odd ">
+            <div class="et_content_date"><span class="et_tag">Do, 26.11.</span><br /><span class="et_uhrzeit">14:30-16:30 Uhr</span></div>
+            <div class="et_content_title"><a href="?etID=1013&amp;dest=extern&amp;until=yes{{LINK_SUFFIX}}" class="et_link_title">Offener Kreis</a>                        <br /><span class="et_city">Musterstadt: </span><span class="et_placename">Gemeindehaus Musterstadt</span><span class="et_personname">Erika Beispiel</span>            <span class="et_content_user">Evang.-Luth. Kirchengemeinde Musterstadt</span>            </div>
+        </div>
+                          <div class="et_content_row even ">
+            <div class="et_content_date"><span class="et_tag">Fr, 27.11.</span><br /><span class="et_uhrzeit">19 Uhr</span></div>
+            <div class="et_content_title"><a href="?etID=1014&amp;dest=extern&amp;until=yes{{LINK_SUFFIX}}" class="et_link_title">Offenes Singen im Advent</a>                        <br /><span class="et_city">Musterstadt: </span><span class="et_placename">Friedenskirche</span><span class="et_personname">Max Muster</span>            <span class="et_content_user">Kirchenmusik im Dekanat Beispiel</span>            </div>
+        </div>
+      </div>
+  </div>
+  <div class="et_pager_container">
+      <div class="light-theme simple-pagination"><b><span class="current">1</span></b>&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://_HOST_/?pageID=2&amp;dest=extern&amp;until=yes{{LINK_SUFFIX}}" title="page 2">2</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://_HOST_/?pageID=2&amp;dest=extern&amp;until=yes{{LINK_SUFFIX}}" title="next page">&raquo;</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://_HOST_/?pageID=2&amp;dest=extern&amp;until=yes{{LINK_SUFFIX}}" title="last page">[2]</a></div>
+  </div>
