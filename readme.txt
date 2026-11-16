@@ -105,15 +105,15 @@ The settings are under "Settings" > "Evangelische Termine".
 
 **Dekanats-ID** (region ID): the ID of a Dekanat in Evangelische Termine. It is sent as `region` and shows the events of all organisers in that region.
 
-**Until**: whether events are shown until their end date (`yes` or `no`). Default: `yes`.
+**Termine bis zu ihrem Ende anzeigen** (until): whether events are shown until their end date ("ja", sent as `yes`) or disappear as soon as they have started ("nein", sent as `no`). Default: "ja".
 
 **CSS-Datei** (CSS file): the URL of a CSS file that is used instead of the stylesheet delivered by Evangelische Termine. Enter `nocss` to load no stylesheet at all, for example when the styles are part of your theme.
 
-**Encoding**: the character encoding of your site (`utf8` or `latin1`). The data is delivered in that encoding. Default: `utf8`.
+**Zeichenkodierung** (encoding): the character encoding of your site (`utf8` or `latin1`). The data is delivered in that encoding. Default: `utf8`.
 
-**Protokoll** (protocol): `http://` or `https://`. If nothing is selected, the plugin uses `https://`.
+**Protokoll** (protocol): `http://` or `https://`. With "Standard" the plugin uses `https://`.
 
-**Host**: the server that hosts the calendar. Default: `www.evangelische-termine.de`.
+**Host des Kalenderbetreibers** (host): the server that hosts the calendar, host name only. Default: `www.evangelische-termine.de`.
 
 = Parameters =
 
@@ -182,6 +182,9 @@ Originally developed by Norbert Räbiger (https://profiles.wordpress.org/regibae
 5. Output of the widget
 
 == Changelog ==
+
+= 3.5 =
+* Changed: the settings page explains every setting below its field, and all labels and values are shown in German ("Until", "Encoding", "yes"/"no" were English). The stored values do not change.
 
 = 3.4 =
 * Security: fixed cross-site scripting and further security issues (including CVE-2025-28960). Request parameters are sanitized and URL-encoded, options and output are escaped, and the calendar host is checked against local and private addresses.
