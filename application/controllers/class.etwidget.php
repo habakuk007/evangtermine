@@ -8,7 +8,7 @@ class EtWidget extends WP_Widget {
 		parent::__construct(
 				'EtWidget', 
 				'Evangelische Termine', 
-				array('description' => __('Zeigt eine Liste der nächsten Veranstaltungen an.', 'evangtermine'))
+				array('description' => __('Shows a list of the upcoming events.', 'evangtermine'))
 		);
 	}
 	
@@ -21,7 +21,7 @@ class EtWidget extends WP_Widget {
 		$etstream = new EtQuery(ET_TEMPLATE_TEASER_WIDGET);
 		$etstream->setEtParameters($instance);
 
-		$etstream->setEtParameter('title', 'Nächste Veranstaltungen');
+		$etstream->setEtParameter('title', __('Upcoming events', 'evangtermine'));
 		// Felder, die nicht in den Grundeinstellungen vorkommen, vorbelegen (sonst "Undefined array key" ab PHP 8)
 		$instance = wp_parse_args($etstream->getEtParameters(), array(
 			'auswahl'              => '',

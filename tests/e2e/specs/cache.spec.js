@@ -1,7 +1,7 @@
 // Cache of the teaser output (et_teaser and the widget) and the default CSS of et_teaser.
 const { test, expect, visit } = require( '../helpers' );
 
-const UNAVAILABLE = 'Der Veranstaltungskalender ist derzeit nicht verfügbar.';
+const UNAVAILABLE = 'The event calendar is currently unavailable.';
 const teaser = { module: 'teaser', tpl: '1' };
 const widget = { module: 'teaser', tpl: '2' };
 

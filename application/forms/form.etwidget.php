@@ -10,19 +10,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 ?>
-	<p>Titel: 
+	<p><?php esc_html_e( 'Title:', 'evangtermine' ); ?> 
 		<input name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['title'] ); ?>" />
 	</p>
-	<p>Veranstalter-ID (kommaseparierte Liste, keine Leerzeichen): 
+	<p><?php esc_html_e( 'Organizer ID (comma-separated list, no spaces):', 'evangtermine' ); ?> 
 		<input name="<?php echo esc_attr( $this->get_field_name( 'vid' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['vid'] ); ?>" />
 	</p>
-	<p>Dekanats-ID (kommaseparierte Liste, keine Leerzeichen):
+	<p><?php esc_html_e( 'Deanery ID (comma-separated list, no spaces):', 'evangtermine' ); ?>
 		<input name="<?php echo esc_attr( $this->get_field_name( 'region' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['region'] ); ?>" />
 	</p>
-	<p>Eventtype-ID (kommaseparierte Liste, keine Leerzeichen):
+	<p><?php esc_html_e( 'Eventtype ID (comma-separated list, no spaces):', 'evangtermine' ); ?>
 		<input name="<?php echo esc_attr( $this->get_field_name( 'eventtype' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['eventtype' ] ); ?>" />
 	</p>
-	<p>Highlight (all/high):
+	<p><?php esc_html_e( 'Highlight (all/high):', 'evangtermine' ); ?>
 		<select name="<?php echo esc_attr( $this->get_field_name( 'highlight' ) ); ?>">
 			<?php
 			$items = array( 'all', 'high' );
@@ -32,13 +32,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 			?>
 		</select>
 	</p>
-	<p>Veranstaltungsort-ID (kommaseparierte Liste, keine Leerzeichen):
+	<p><?php esc_html_e( 'Venue ID (comma-separated list, no spaces):', 'evangtermine' ); ?>
 		<input name="<?php echo esc_attr( $this->get_field_name( 'place' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['place'] ); ?>" />
 	</p>
-	<p>Veranstaltungstyp-ID (kommaseparierte Liste, keine Leerzeichen):
+	<p><?php esc_html_e( 'Event type ID (comma-separated list, no spaces):', 'evangtermine' ); ?>
 		<input name="<?php echo esc_attr( $this->get_field_name( 'ipm' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['ipm'] ); ?>" />
 	</p>
-	<p>Erwachsenenbildung (bei Auswahl von 'eb' werden die Felder Veranstaltungstyp-ID und Kanäle ignoriert):
+	<p><?php esc_html_e( "Adult education (if 'eb' is selected, the fields Event type ID and Channels are ignored):", 'evangtermine' ); ?>
 		<select name="<?php echo esc_attr( $this->get_field_name( 'auswahl' ) ); ?>" >
 			<?php
 			$items = array( '', 'eb' );
@@ -48,13 +48,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 			?>
 		</select>
 	</p>	
-	<p>Kanäle (kommaseparierte Liste, keine Leerzeichen):
+	<p><?php esc_html_e( 'Channels (comma-separated list, no spaces):', 'evangtermine' ); ?>
 		<input name="<?php echo esc_attr( $this->get_field_name( 'cha' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['cha'] ); ?>" />
 	</p>
-	<p>itemsPerPage:
+	<p><?php esc_html_e( 'itemsPerPage:', 'evangtermine' ); ?>
 		<input name="<?php echo esc_attr( $this->get_field_name( 'itemsPerPage' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['itemsPerPage'] ); ?>" />
 	</p>
-	<p>Anzeige (extern/intern/all):
+	<p><?php esc_html_e( 'Display (extern/intern/all):', 'evangtermine' ); ?>
 		<select name="<?php echo esc_attr( $this->get_field_name( 'dest' ) ); ?>">
 			<?php
 			$items = array( 'extern', 'intern', 'all' );
@@ -64,7 +64,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			?>
 		</select>
 	</p>
-	<p>Anzeige der Veranstaltung bis zum Enddatum (yes/no):
+	<p><?php esc_html_e( 'Show the event until its end date (yes/no):', 'evangtermine' ); ?>
 		<select name="<?php echo esc_attr( $this->get_field_name( 'until' ) ); ?>">
 			<?php
 			$items = array( 'yes', 'no' );
@@ -75,10 +75,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</select>
 		<!-- <input name="<?php echo esc_attr( $this->get_field_name( 'until' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['until'] ); ?>" /> -->
 	</p>
-	<p>Suchbegriffe (durch Komma getrennte Liste):
+	<p><?php esc_html_e( 'Search terms (comma-separated list):', 'evangtermine' ); ?>
 		<input name="<?php echo esc_attr( $this->get_field_name( 'q' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['q'] ); ?>" />
 	</p>
 	<input name="<?php echo esc_attr( $this->get_field_name( 'tpl' ) ); ?>" type="hidden" value="2" />
-	<p>Weitere Parameter (Format param1=value1&amp;param2=value2[&amp;..]):
+	<p><?php esc_html_e( 'Additional parameters (format param1=value1&param2=value2[&..]):', 'evangtermine' ); ?>
 		<input name="<?php echo esc_attr( $this->get_field_name( 'additionalParameters' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['additionalParameters' ] ); ?>" />
 	</p>
