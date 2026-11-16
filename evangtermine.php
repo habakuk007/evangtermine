@@ -12,6 +12,8 @@
  * Requires PHP: 7.4
  * Author URI: https://profiles.wordpress.org/habakuk/
  * License: GPLv2 or later
+ * Text Domain: evangtermine
+ * Domain Path: /languages
  */
 
 /*
@@ -49,6 +51,11 @@ class evangtermine {
 			AutoloaderET::Register();
 		}
 		
+		// Load the bundled translations (languages/evangtermine-<locale>.mo)
+		add_action ('init', function () {
+			load_plugin_textdomain ('evangtermine', false, dirname (plugin_basename (__FILE__)) . '/languages');
+		});
+
 		// integrate the options menu if an admin ist logged in
 		if (is_admin ()) {
 			require_once (__DIR__ . '/application/forms/options.php');

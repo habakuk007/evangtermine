@@ -1,0 +1,135 @@
+# Copyright (C) 2026 habakuk
+# This file is distributed under the GPLv2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Evangelische Termine 3.4\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/evangtermine\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-11-16T21:48:23+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: evangtermine\n"
+
+#. Plugin Name of the plugin
+#: evangtermine.php:13
+msgid "Evangelische Termine"
+msgstr ""
+
+#. Description of the plugin
+#: evangtermine.php:15
+msgid "Shows the events of the German Protestant event calendar \"Evangelische Termine\" (www.evangelische-termine.de) with shortcodes and a widget."
+msgstr ""
+
+#. Author of the plugin
+#: evangtermine.php:17
+msgid "habakuk"
+msgstr ""
+
+#. Author URI of the plugin
+#: evangtermine.php:25
+msgid "https://profiles.wordpress.org/habakuk/"
+msgstr ""
+
+#: application/controllers/class.etwidget.php:11
+msgid "Zeigt eine Liste der nächsten Veranstaltungen an."
+msgstr ""
+
+#: application/forms/options.php:9
+msgid "Evangelische Termine – Einstellungen"
+msgstr ""
+
+#: application/forms/options.php:14
+msgid "Hier legen Sie die Grundeinstellungen für das Plugin fest. Sie gelten für alle Shortcodes und das Widget, solange dort kein eigener Wert angegeben ist: Die Parameter der Shortcodes und die Einstellungen des Widgets haben Vorrang."
+msgstr ""
+
+#: application/forms/options.php:48
+msgid "Die ID Ihres Veranstalters bei den Evangelischen Terminen. Sie wird dort nach der Anmeldung oben rechts angezeigt. Mehrere IDs geben Sie durch Kommas getrennt und ohne Leerzeichen an, zum Beispiel 952,988. Ohne Veranstalter-ID werden keine Termine angezeigt."
+msgstr ""
+
+#: application/forms/options.php:55
+msgid "Die Nummer eines Dekanats bei den Evangelischen Terminen. Damit werden die Termine aller Veranstalter dieses Dekanats angezeigt. Mehrere Nummern geben Sie durch Kommas getrennt an. Lassen Sie das Feld leer, wenn nur die Termine der oben genannten Veranstalter erscheinen sollen."
+msgstr ""
+
+#: application/forms/options.php:66
+msgid "ja"
+msgstr ""
+
+#: application/forms/options.php:67
+msgid "nein"
+msgstr ""
+
+#: application/forms/options.php:70
+msgid "Bei „ja“ bleibt ein Termin sichtbar, bis er zu Ende ist. Bei „nein“ verschwindet er aus der Liste, sobald er begonnen hat. Standard: ja."
+msgstr ""
+
+#: application/forms/options.php:77
+msgid "Die Adresse (URL) einer eigenen CSS-Datei. Sie wird anstelle des Stylesheets der Evangelischen Termine geladen. Leer: Das Stylesheet der Evangelischen Termine wird verwendet. Mit dem Wert nocss wird gar kein Stylesheet geladen, zum Beispiel wenn die Gestaltung schon in Ihrem Theme enthalten ist."
+msgstr ""
+
+#: application/forms/options.php:91
+msgid "Die Zeichenkodierung Ihrer Website. Die Evangelischen Termine liefern die Daten in dieser Kodierung. Für nahezu alle WordPress-Seiten ist UTF-8 richtig; ändern Sie den Wert nur, wenn Umlaute falsch dargestellt werden. Standard: UTF-8."
+msgstr ""
+
+#. translators: %s: Protokoll, z.B. https:
+#: application/forms/options.php:102
+#, php-format
+msgid "Standard (%s)"
+msgstr ""
+
+#: application/forms/options.php:107
+msgid "Das Protokoll, mit dem Ihr Server die Termine beim Kalenderbetreiber abruft. Wählen Sie http:// nur, wenn der Kalenderbetreiber kein https:// anbietet; die Verbindung ist dann unverschlüsselt."
+msgstr ""
+
+#. translators: %s: Hostname, z.B. www.evangelische-termine.de
+#: application/forms/options.php:114
+#, php-format
+msgid "Der Server, von dem die Termine abgerufen werden: nur der Hostname, ohne http:// und ohne Pfad. Leer: %s. Ein anderer Wert ist nur nötig, wenn Ihre Landeskirche einen eigenen Kalender betreibt."
+msgstr ""
+
+#: application/forms/options.php:121
+msgid "Sie haben nicht die erforderlichen Rechte, um diese Seite aufzurufen."
+msgstr ""
+
+#: application/forms/options.php:189
+msgid "Der Host darf nur aus einem Domainnamen bestehen (ohne http://, ohne Pfad). Der bisherige Wert wurde beibehalten."
+msgstr ""
+
+#: application/forms/options.php:193
+msgid "Dieser Host ist nicht erlaubt (lokale oder private Adresse bzw. nicht erreichbarer Port). Der bisherige Wert wurde beibehalten."
+msgstr ""
+
+#: application/forms/options.php:201
+msgid "Grundeinstellungen"
+msgstr ""
+
+#: application/forms/options.php:203
+msgid "Veranstalter-ID"
+msgstr ""
+
+#: application/forms/options.php:204
+msgid "Dekanats-ID"
+msgstr ""
+
+#: application/forms/options.php:205
+msgid "Termine bis zu ihrem Ende anzeigen"
+msgstr ""
+
+#: application/forms/options.php:206
+msgid "CSS-Datei"
+msgstr ""
+
+#: application/forms/options.php:207
+msgid "Zeichenkodierung"
+msgstr ""
+
+#: application/forms/options.php:208
+msgid "Protokoll"
+msgstr ""
+
+#: application/forms/options.php:209
+msgid "Host des Kalenderbetreibers"
+msgstr ""
