@@ -1,18 +1,15 @@
-# German translation, formal address (Sie).
-# Copyright (C) 2026 habakuk
-# This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
 "Project-Id-Version: Evangelische Termine 3.4\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/evangtermine\n"
 "Last-Translator: habakuk\n"
 "Language-Team: German (Formal)\n"
-"Language: de_DE_formal\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2026-11-16T22:03:55+00:00\n"
-"PO-Revision-Date: 2026-11-16 23:00+0100\n"
+"PO-Revision-Date: 2026-11-16T23:14:58+00:00\n"
+"Language: de_DE_formal\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: evangtermine\n"
@@ -67,41 +64,76 @@ msgstr "Eventtype-ID (kommaseparierte Liste, keine Leerzeichen):"
 
 #: application/forms/form.etwidget.php:25
 msgid "Highlight (all/high):"
-msgstr "Highlight (all/high):"
+msgstr "Highlight (alle/hoch):"
 
-#: application/forms/form.etwidget.php:35
+#: application/forms/form.etwidget.php:29
+msgctxt "widget highlight option"
+msgid "all"
+msgstr "alle"
+
+#: application/forms/form.etwidget.php:30
+msgctxt "widget highlight option"
+msgid "high"
+msgstr "hoch"
+
+#: application/forms/form.etwidget.php:38
 msgid "Venue ID (comma-separated list, no spaces):"
 msgstr "Veranstaltungsort-ID (kommaseparierte Liste, keine Leerzeichen):"
 
-#: application/forms/form.etwidget.php:38
+#: application/forms/form.etwidget.php:41
 msgid "Event type ID (comma-separated list, no spaces):"
 msgstr "Veranstaltungstyp-ID (kommaseparierte Liste, keine Leerzeichen):"
 
-#: application/forms/form.etwidget.php:41
+#: application/forms/form.etwidget.php:44
 msgid "Adult education (if 'eb' is selected, the fields Event type ID and Channels are ignored):"
 msgstr "Erwachsenenbildung (bei Auswahl von 'eb' werden die Felder Veranstaltungstyp-ID und Kanäle ignoriert):"
 
-#: application/forms/form.etwidget.php:51
+#: application/forms/form.etwidget.php:54
 msgid "Channels (comma-separated list, no spaces):"
 msgstr "Kanäle (kommaseparierte Liste, keine Leerzeichen):"
 
-#: application/forms/form.etwidget.php:54
+#: application/forms/form.etwidget.php:57
 msgid "itemsPerPage:"
 msgstr "itemsPerPage:"
 
-#: application/forms/form.etwidget.php:57
+#: application/forms/form.etwidget.php:60
 msgid "Display (extern/intern/all):"
-msgstr "Anzeige (extern/intern/all):"
+msgstr "Anzeige (extern/intern/alle):"
 
-#: application/forms/form.etwidget.php:67
+#: application/forms/form.etwidget.php:64
+msgctxt "widget display option"
+msgid "extern"
+msgstr "extern"
+
+#: application/forms/form.etwidget.php:65
+msgctxt "widget display option"
+msgid "intern"
+msgstr "intern"
+
+#: application/forms/form.etwidget.php:66
+msgctxt "widget display option"
+msgid "all"
+msgstr "alle"
+
+#: application/forms/form.etwidget.php:74
 msgid "Show the event until its end date (yes/no):"
-msgstr "Anzeige der Veranstaltung bis zum Enddatum (yes/no):"
+msgstr "Anzeige der Veranstaltung bis zum Enddatum (ja/nein):"
 
 #: application/forms/form.etwidget.php:78
+#: application/forms/options.php:66
+msgid "yes"
+msgstr "ja"
+
+#: application/forms/form.etwidget.php:79
+#: application/forms/options.php:67
+msgid "no"
+msgstr "nein"
+
+#: application/forms/form.etwidget.php:88
 msgid "Search terms (comma-separated list):"
 msgstr "Suchbegriffe (durch Komma getrennte Liste):"
 
-#: application/forms/form.etwidget.php:82
+#: application/forms/form.etwidget.php:92
 msgid "Additional parameters (format param1=value1&param2=value2[&..]):"
 msgstr "Weitere Parameter (Format param1=value1&param2=value2[&..]):"
 
@@ -120,14 +152,6 @@ msgstr "Die ID Ihres Veranstalters bei den Evangelischen Terminen. Sie wird dort
 #: application/forms/options.php:55
 msgid "The number of a deanery (Dekanat) at Evangelische Termine. The events of all organizers of this deanery are shown. Enter several numbers separated by commas. Leave the field empty if only the events of the organizers above should appear."
 msgstr "Die Nummer eines Dekanats bei den Evangelischen Terminen. Damit werden die Termine aller Veranstalter dieses Dekanats angezeigt. Mehrere Nummern geben Sie durch Kommas getrennt an. Lassen Sie das Feld leer, wenn nur die Termine der oben genannten Veranstalter erscheinen sollen."
-
-#: application/forms/options.php:66
-msgid "yes"
-msgstr "ja"
-
-#: application/forms/options.php:67
-msgid "no"
-msgstr "nein"
 
 #: application/forms/options.php:70
 msgid "With “yes” an event stays visible until it has ended. With “no” it disappears from the list as soon as it has started. Default: yes."

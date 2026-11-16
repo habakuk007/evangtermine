@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-16T22:03:55+00:00\n"
+"POT-Creation-Date: 2026-11-16T23:14:46+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: evangtermine\n"
@@ -66,39 +66,74 @@ msgstr ""
 msgid "Highlight (all/high):"
 msgstr ""
 
-#: application/forms/form.etwidget.php:35
-msgid "Venue ID (comma-separated list, no spaces):"
+#: application/forms/form.etwidget.php:29
+msgctxt "widget highlight option"
+msgid "all"
+msgstr ""
+
+#: application/forms/form.etwidget.php:30
+msgctxt "widget highlight option"
+msgid "high"
 msgstr ""
 
 #: application/forms/form.etwidget.php:38
-msgid "Event type ID (comma-separated list, no spaces):"
+msgid "Venue ID (comma-separated list, no spaces):"
 msgstr ""
 
 #: application/forms/form.etwidget.php:41
+msgid "Event type ID (comma-separated list, no spaces):"
+msgstr ""
+
+#: application/forms/form.etwidget.php:44
 msgid "Adult education (if 'eb' is selected, the fields Event type ID and Channels are ignored):"
 msgstr ""
 
-#: application/forms/form.etwidget.php:51
+#: application/forms/form.etwidget.php:54
 msgid "Channels (comma-separated list, no spaces):"
 msgstr ""
 
-#: application/forms/form.etwidget.php:54
+#: application/forms/form.etwidget.php:57
 msgid "itemsPerPage:"
 msgstr ""
 
-#: application/forms/form.etwidget.php:57
+#: application/forms/form.etwidget.php:60
 msgid "Display (extern/intern/all):"
 msgstr ""
 
-#: application/forms/form.etwidget.php:67
+#: application/forms/form.etwidget.php:64
+msgctxt "widget display option"
+msgid "extern"
+msgstr ""
+
+#: application/forms/form.etwidget.php:65
+msgctxt "widget display option"
+msgid "intern"
+msgstr ""
+
+#: application/forms/form.etwidget.php:66
+msgctxt "widget display option"
+msgid "all"
+msgstr ""
+
+#: application/forms/form.etwidget.php:74
 msgid "Show the event until its end date (yes/no):"
 msgstr ""
 
 #: application/forms/form.etwidget.php:78
+#: application/forms/options.php:66
+msgid "yes"
+msgstr ""
+
+#: application/forms/form.etwidget.php:79
+#: application/forms/options.php:67
+msgid "no"
+msgstr ""
+
+#: application/forms/form.etwidget.php:88
 msgid "Search terms (comma-separated list):"
 msgstr ""
 
-#: application/forms/form.etwidget.php:82
+#: application/forms/form.etwidget.php:92
 msgid "Additional parameters (format param1=value1&param2=value2[&..]):"
 msgstr ""
 
@@ -116,14 +151,6 @@ msgstr ""
 
 #: application/forms/options.php:55
 msgid "The number of a deanery (Dekanat) at Evangelische Termine. The events of all organizers of this deanery are shown. Enter several numbers separated by commas. Leave the field empty if only the events of the organizers above should appear."
-msgstr ""
-
-#: application/forms/options.php:66
-msgid "yes"
-msgstr ""
-
-#: application/forms/options.php:67
-msgid "no"
 msgstr ""
 
 #: application/forms/options.php:70

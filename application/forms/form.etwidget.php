@@ -25,9 +25,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<p><?php esc_html_e( 'Highlight (all/high):', 'evangtermine' ); ?>
 		<select name="<?php echo esc_attr( $this->get_field_name( 'highlight' ) ); ?>">
 			<?php
-			$items = array( 'all', 'high' );
-			foreach ($items as $item) {
-			 	 echo '<option value="' . esc_attr( $item ) . '"' . selected( (string) $instance['highlight'], $item, false ) . '>' . esc_html( $item ) . '</option>';
+			$items = array(
+				'all'  => _x( 'all', 'widget highlight option', 'evangtermine' ),
+				'high' => _x( 'high', 'widget highlight option', 'evangtermine' ),
+			);
+			foreach ($items as $item => $label) {
+			 	 echo '<option value="' . esc_attr( $item ) . '"' . selected( (string) $instance['highlight'], $item, false ) . '>' . esc_html( $label ) . '</option>';
 			} 
 			?>
 		</select>
@@ -57,9 +60,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<p><?php esc_html_e( 'Display (extern/intern/all):', 'evangtermine' ); ?>
 		<select name="<?php echo esc_attr( $this->get_field_name( 'dest' ) ); ?>">
 			<?php
-			$items = array( 'extern', 'intern', 'all' );
-			foreach ($items as $item) {
-			 	 echo '<option value="' . esc_attr( $item ) . '"' . selected( (string) $instance['dest'], $item, false ) . '>' . esc_html( $item ) . '</option>';
+			$items = array(
+				'extern' => _x( 'extern', 'widget display option', 'evangtermine' ),
+				'intern' => _x( 'intern', 'widget display option', 'evangtermine' ),
+				'all'    => _x( 'all', 'widget display option', 'evangtermine' ),
+			);
+			foreach ($items as $item => $label) {
+			 	 echo '<option value="' . esc_attr( $item ) . '"' . selected( (string) $instance['dest'], $item, false ) . '>' . esc_html( $label ) . '</option>';
 			} 
 			?>
 		</select>
@@ -67,9 +74,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<p><?php esc_html_e( 'Show the event until its end date (yes/no):', 'evangtermine' ); ?>
 		<select name="<?php echo esc_attr( $this->get_field_name( 'until' ) ); ?>">
 			<?php
-			$items = array( 'yes', 'no' );
-			foreach ($items as $item) {
-			 	 echo '<option value="' . esc_attr( $item ) . '"' . selected( (string) $instance['until'], $item, false ) . '>' . esc_html( $item ) . '</option>';
+			$items = array(
+				'yes' => __( 'yes', 'evangtermine' ),
+				'no'  => __( 'no', 'evangtermine' ),
+			);
+			foreach ($items as $item => $label) {
+			 	 echo '<option value="' . esc_attr( $item ) . '"' . selected( (string) $instance['until'], $item, false ) . '>' . esc_html( $label ) . '</option>';
 			} 
 			?>
 		</select>
