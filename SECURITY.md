@@ -31,8 +31,8 @@ This plugin is maintained by one person in their free time. The times below are 
 
 | Step | Goal |
 |------|------|
-| First answer that the report has arrived | within 7 days |
-| Assessment (confirmed or not, and how serious) | within 14 days |
+| First answer that the report has arrived | within 14 days |
+| Assessment (confirmed or not, and how serious) | within 21 days |
 | Fixed version | within 30 days for serious problems, within 90 days for others |
 
 You are kept informed in the private report until the problem is closed.
