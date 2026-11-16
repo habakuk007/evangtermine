@@ -297,7 +297,7 @@ class EtQuery
 
             // Ziel prüfen (Host aus den Einstellungen): keine lokalen/privaten Adressen
             if (! self::isSafeHost($host)) {
-                return '<div>Der Veranstaltungskalender ist derzeit nicht verfügbar.</div>';
+                return '<div>' . esc_html__('The event calendar is currently unavailable.', 'evangtermine') . '</div>';
             }
 
             // Kurzer Cache für die Teaser-Ausgabe (Widget und et_teaser), damit nicht jeder Seitenaufruf die Evangelischen Termine abfragt.
@@ -326,11 +326,11 @@ class EtQuery
                     }
                 } else {
                     // Fehlermeldung $host ist vorübergehend nicht erreichbar (wird nicht zwischengespeichert)
-                    $stream = '<div>Der Veranstaltungskalender ist derzeit nicht verfügbar.</div>';
+                    $stream = '<div>' . esc_html__('The event calendar is currently unavailable.', 'evangtermine') . '</div>';
                 }
             }
         } else {
-            $stream = 'Error: Plugin "Evangelische Termine": Veranstalter-ID ist nicht gesetzt';
+            $stream = esc_html__('Error: plugin "Evangelische Termine": the organizer ID is not set.', 'evangtermine');
         }
 
         if (is_string($stream) && '[{' !== substr($stream, 0, 2)) {

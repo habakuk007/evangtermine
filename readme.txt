@@ -83,7 +83,7 @@ Yes. `[et_veranstalter]` always shows the filter form. Use `[et_teaser]` for a p
 
 Yes. Enter the host name under "Settings" > "Evangelische Termine" > "Host". Local and private addresses are rejected.
 
-= The page shows "Der Veranstaltungskalender ist derzeit nicht verfügbar". =
+= The page shows "The event calendar is currently unavailable". =
 
 The request to the calendar failed or took too long. Check that your server may open outgoing HTTPS connections to the calendar host and that the "Host" setting is correct. The plugin waits up to 15 seconds for an answer; the filter `evangtermine_http_timeout` changes that (1 to 30 seconds).
 
@@ -184,7 +184,8 @@ Originally developed by Norbert Räbiger (https://profiles.wordpress.org/regibae
 == Changelog ==
 
 = 3.5 =
-* Changed: the settings page explains every setting below its field, and all labels and values are shown in German ("Until", "Encoding", "yes"/"no" were English). The stored values do not change.
+* Changed: the settings page explains every setting below its field, and all labels and values are translated ("Until", "Encoding", "yes"/"no" were untranslated English). The stored values do not change.
+* Changed: the source strings of the plugin are English now (WordPress.org convention); German translations for `de_DE` (du) and `de_DE_formal` (Sie) are included. All texts of the settings page, the widget form and the plugin list link are translatable. Translations can be contributed at translate.wordpress.org.
 
 = 3.4 =
 * Security: fixed cross-site scripting and further security issues (including CVE-2025-28960). Request parameters are sanitized and URL-encoded, options and output are escaped, and the calendar host is checked against local and private addresses.
@@ -196,7 +197,7 @@ Originally developed by Norbert Räbiger (https://profiles.wordpress.org/regibae
 * Changed: `[et_veranstalter]` no longer uses the PHP session. The filters are passed in the URL, as before; the display does not change.
 * Fixed: `[et_minical]` uses the host from the settings instead of a fixed address, and texts from the calendar are escaped in its tooltip.
 * Fixed: `[et_veranstalter]` and the detail view no longer load jQuery, jQuery UI and a script from the calendar host in the visitor's browser; they use jQuery and the date picker from WordPress and files of the plugin.
-* Fixed: the search in `[et_veranstalter]` often ran into a timeout ("Der Veranstaltungskalender ist derzeit nicht verfügbar"). The request now waits up to 15 instead of 5 seconds (filter `evangtermine_http_timeout`).
+* Fixed: the search in `[et_veranstalter]` often ran into a timeout ("The event calendar is currently unavailable"). The request now waits up to 15 instead of 5 seconds (filter `evangtermine_http_timeout`).
 * Fixed: `[et_teaser]` is delivered with the default styles of Evangelische Termine as long as no own CSS file is set.
 * Fixed: compatibility with PHP 8.0 to 8.5 (undefined array keys in the widget and its form, HTTP status through the WordPress API).
 * New: deleting the plugin removes its settings, its widget settings and its cache (uninstall.php).

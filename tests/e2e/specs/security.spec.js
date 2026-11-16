@@ -153,7 +153,7 @@ test.describe( 'request to the calendar host', () => {
 			await site.reset( { options: { ethost: host } } );
 			await visit( page, PAGE );
 
-			await expect( page.locator( '.et_veranstalter' ) ).toHaveText( 'Der Veranstaltungskalender ist derzeit nicht verfügbar.' );
+			await expect( page.locator( '.et_veranstalter' ) ).toHaveText( 'The event calendar is currently unavailable.' );
 			expect( await site.requests( page ) ).toEqual( [] );
 		} );
 	}

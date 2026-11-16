@@ -4,7 +4,7 @@
 // The data on the real host changes, so these tests check only the structure of the output.
 const { test, expect, visit } = require( '../helpers' );
 
-const UNAVAILABLE = 'Der Veranstaltungskalender ist derzeit nicht verfügbar.';
+const UNAVAILABLE = 'The event calendar is currently unavailable.';
 
 test.describe( 'live calendar host', () => {
 	// The real host can be slow, searches take 5 to 8 seconds.
