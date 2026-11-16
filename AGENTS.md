@@ -96,7 +96,7 @@ readme.txt                <- WordPress.org plugin listing
 ## Available Agents
 
 All agent definitions live in `.agents/agents/` (source of truth).
-`.github/agents/` is a directory junction — never edit files there directly.
+`.github/agents/` is a tracked copy of `.agents/agents/` — never edit files there directly; re-copy after changes.
 Each agent has a corresponding Claude Code slash command in `.claude/commands/`.
 
 | Agent | Claude Command | Purpose |
@@ -121,7 +121,7 @@ Each skill has a corresponding Claude Code slash command in `.claude/commands/`.
 ## Available Instruction Files
 
 All instructions live in `.agents/instructions/` (source of truth).
-`.github/instructions/` is a directory junction pointing to the same folder.
+`.github/instructions/` is a tracked copy of this folder (re-copy after changes).
 
 | File | Applies To |
 |------|-----------|
@@ -129,6 +129,7 @@ All instructions live in `.agents/instructions/` (source of truth).
 | [a11y.instructions.md](.agents/instructions/a11y.instructions.md) | `**` |
 | [html-css-style-color-guide.instructions.md](.agents/instructions/html-css-style-color-guide.instructions.md) | `**/*.css`, `**/*.html` |
 | [readme-txt.instructions.md](.agents/instructions/readme-txt.instructions.md) | `readme.txt` |
+| [wordpress-org-submission.instructions.md](.agents/instructions/wordpress-org-submission.instructions.md) | `readme.txt`, `changelog.txt`, `**/*.php` |
 | [ai-tool-sync.instructions.md](.agents/instructions/ai-tool-sync.instructions.md) | `CLAUDE.md`, `AGENTS.md`, `.github/copilot-instructions.md`, `.agents/**`, `.mcp.json` |
 | [agents.instructions.md](.agents/instructions/agents.instructions.md) | `**/*.agent.md` |
 | [agent-skills.instructions.md](.agents/instructions/agent-skills.instructions.md) | `**/.agents/skills/**/SKILL.md` |

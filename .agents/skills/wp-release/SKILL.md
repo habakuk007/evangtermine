@@ -113,21 +113,29 @@ Open https://wordpress.org/plugins/developers/readme-validator/ and paste the co
 
 ## Post-Release (WordPress.org SVN)
 
-If publishing to WordPress.org, after the GitHub release:
+**Preferred: let the deploy workflow do it.** Pushing the version tag on `master` runs `.github/workflows/deploy.yml` (10up action, environment `Deploy`, reviewer required). It respects `.distignore` and publishes `.wordpress-org/` (screenshots, banner, icon) to the SVN root-level `assets/`. A manual run is a dry run. Read `.agents/instructions/wordpress-org-submission.instructions.md` first (§8 common rejections, §9 automated security review).
+
+Before tagging:
+- Run `/wp-security-review` on the release diff. Since June 2026 every release goes through an automated AI/Jetpack Scan review, and a version above the blocking threshold is withheld from the update API (fix and release a new version).
+- **Pushing to SVN makes the release live immediately.** While the plugin is closed on WordPress.org, do **not** push; get it re-opened by the Plugins team first.
+
+Only if the workflow cannot be used, manually (never copy dev files — respect `.distignore`):
 
 ```bash
 # Check out SVN (first time)
 svn co https://plugins.svn.wordpress.org/evangtermine/ svn-evangtermine
 cd svn-evangtermine
 
-# Copy plugin files to trunk
-cp -r /path/to/evangtermine/* trunk/
+# Copy the release files to trunk (excludes everything listed in .distignore)
+rsync -r --delete --exclude-from=/path/to/evangtermine/.distignore /path/to/evangtermine/ trunk/
+# Screenshots/banner/icon go to the root-level assets/ (not trunk/assets)
+cp /path/to/evangtermine/.wordpress-org/* assets/
 
 # Create a new tag
 svn cp trunk tags/X.Y.Z
 
-# Commit to SVN
-svn add --force trunk/ tags/X.Y.Z/
+# Commit to SVN (a message is required)
+svn add --force trunk/ tags/X.Y.Z/ assets/
 svn commit -m "Release X.Y.Z"
 ```
 

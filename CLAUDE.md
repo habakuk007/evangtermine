@@ -97,6 +97,7 @@ assets/                                  ← bundled Bootstrap 3.3.7, jQuery, Fo
 | [.agents/instructions/a11y.instructions.md](.agents/instructions/a11y.instructions.md) | `**` |
 | [.agents/instructions/html-css-style-color-guide.instructions.md](.agents/instructions/html-css-style-color-guide.instructions.md) | `**/*.css`, `**/*.html` |
 | [.agents/instructions/readme-txt.instructions.md](.agents/instructions/readme-txt.instructions.md) | `readme.txt` |
+| [.agents/instructions/wordpress-org-submission.instructions.md](.agents/instructions/wordpress-org-submission.instructions.md) | `readme.txt`, `changelog.txt`, `**/*.php` |
 | [.agents/instructions/ai-tool-sync.instructions.md](.agents/instructions/ai-tool-sync.instructions.md) | `CLAUDE.md`, `AGENTS.md`, `.github/copilot-instructions.md`, `.agents/**`, `.mcp.json` |
 | [.agents/instructions/agents.instructions.md](.agents/instructions/agents.instructions.md) | `**/*.agent.md` |
 | [.agents/instructions/agent-skills.instructions.md](.agents/instructions/agent-skills.instructions.md) | `**/.agents/skills/**/SKILL.md` |

@@ -9,6 +9,8 @@ model: 'claude-sonnet-4-6'
 
 Perform a focused security audit of the evangtermine plugin code.
 
+Context: WordPress.org reviews every release automatically (AI models + Jetpack Scan) and withholds versions above a risk threshold; see `.agents/instructions/wordpress-org-submission.instructions.md` §8–§9. Treat findings you would expect there as release blockers.
+
 ## Core Responsibilities
 
 Systematically check for the following vulnerability classes:
