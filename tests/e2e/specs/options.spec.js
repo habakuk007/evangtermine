@@ -70,7 +70,7 @@ test.describe( 'options page', () => {
 			await page.locator( 'input[name="ethost"]' ).fill( host );
 			await save( page );
 
-			await expect( page.locator( '.notice-error, .settings-error.error' ).first() ).toContainText( 'Der bisherige Wert wurde beibehalten' );
+			await expect( page.locator( '.notice-error, .settings-error.error' ).first() ).toContainText( /Der bisherige Wert wurde beibehalten|The previous value was kept/ );
 			await expect( page.locator( 'input[name="ethost"]' ) ).toHaveValue( HOST );
 		} );
 	}
