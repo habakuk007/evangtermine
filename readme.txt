@@ -199,7 +199,7 @@ Originally developed by Norbert Räbiger (https://profiles.wordpress.org/regibae
 * Fixed: the search in `[et_veranstalter]` often ran into a timeout ("Der Veranstaltungskalender ist derzeit nicht verfügbar"). The request now waits up to 15 instead of 5 seconds (filter `evangtermine_http_timeout`).
 * Fixed: `[et_teaser]` is delivered with the default styles of Evangelische Termine as long as no own CSS file is set.
 * Fixed: compatibility with PHP 8.0 to 8.5 (undefined array keys in the widget and its form, HTTP status through the WordPress API).
-* New: deleting the plugin removes its settings and its cache (uninstall.php).
+* New: deleting the plugin removes its settings, its widget settings and its cache (uninstall.php).
 * New: `Requires PHP: 7.4`, description of the external service, readme in English.
 
 = 3.3 =
