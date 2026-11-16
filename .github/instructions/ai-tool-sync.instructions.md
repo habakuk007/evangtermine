@@ -8,7 +8,7 @@ description: 'Rules for keeping AI-tool config files in sync when any one of the
 ## Architecture
 
 `.agents/` is the **single source of truth** for all instructions, agents, and skills.
-Three junction/alias paths make the content available to other tools — never edit through those paths.
+Tracked copies under `.github/` make the content available to other tools. Edit only `.agents/` and re-copy; never edit the copies.
 
 ```
 .agents/
@@ -17,8 +17,8 @@ Three junction/alias paths make the content available to other tools — never e
   skills/             ← source of truth for all skill definitions
 
 .github/
-  instructions/       ← NTFS junction → .agents/instructions/  (do not touch)
-  agents/             ← NTFS junction → .agents/agents/         (do not touch)
+  instructions/       ← tracked copy of .agents/instructions/  (do not edit directly)
+  agents/             ← tracked copy of .agents/agents/        (do not edit directly)
 
 .claude/commands/     ← slash commands that reference agents and skills
 
@@ -40,13 +40,13 @@ opencode.json         ← OpenCode config (reads AGENTS.md for context)
    - `CLAUDE.md` (under "Instruction Files")
    - `AGENTS.md` (under "Available Instruction Files")
    - `.github/copilot-instructions.md` (under "Coding Standards Applied Automatically")
-4. Do **not** create a copy in `.github/instructions/` — the junction handles it.
+4. Copy the file to `.github/instructions/` as well. In the repository that directory is a set of **tracked copies**, not a junction (a clone on GitHub/Linux has no junction, and Copilot reads only `.github/instructions/`). Verify with `diff -rq .agents/instructions .github/instructions` — it must print nothing.
 
 ---
 
 ## When you remove an instruction file
 
-1. Delete from `.agents/instructions/` only.
+1. Delete from `.agents/instructions/` and from `.github/instructions/`.
 2. Remove the row from all three instruction tables.
 
 ---
@@ -61,7 +61,7 @@ opencode.json         ← OpenCode config (reads AGENTS.md for context)
    Context for this task: $ARGUMENTS
    ```
 3. Add a row to the agent table in `CLAUDE.md`, `AGENTS.md`, and `.github/copilot-instructions.md`
-4. Do **not** create a copy in `.github/agents/` — the junction handles it.
+4. Copy the file to `.github/agents/` as well (tracked copies, see above). Verify with `diff -rq .agents/agents .github/agents`.
 
 ---
 

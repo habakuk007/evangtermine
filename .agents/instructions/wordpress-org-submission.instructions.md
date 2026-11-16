@@ -1,5 +1,5 @@
 ---
-applyTo: 'readme.txt,changelog.txt,*.php'
+applyTo: 'readme.txt,changelog.txt,**/*.php'
 description: 'Submitting a plugin to WordPress.org: the Add page, developer account, manual review, slug and naming, closure and re-opening a closed plugin, SVN usage, and readme/changelog rules.'
 ---
 
@@ -64,11 +64,13 @@ around it (account, review, closure, re-opening, naming).
 - A **closed** plugin's page shows as closed and no zips are generated; it cannot be downloaded or installed. The SVN stays accessible for forking. After 60 days the closure note reveals the broad reason (Guideline Violation / Security) without detail.
 - Plugins are closed for **guideline violations, security issues, or by author request**; all committers are notified for active security / guideline issues.
 - **Re-opening:** if it was closed for a **security** issue, **fix the issue, reply to the closure email, and the plugin is usually re-opened** (unless there are more security or severe guideline issues). For guideline closures it depends on severity and whether you are a repeat offender.
-- **Every plugin must pass a current standards and security review to be restored — this is not optional.**
+- Expect the plugin to be re-reviewed against current standards before it is restored (see "Unverified" note below).
 - **For this plugin:** it was closed 2025-05-01 for a security issue. The re-open path is:
-  1. Fix the security issues (issues #1–#6) and make it PHP 8 compatible.
-  2. Re-submit via the Add page / reply to the closure email (see §2–§3).
-  3. The mechanical SVN push is in the `wp-release` skill; validate `readme.txt` at the [readme-validator](https://wordpress.org/plugins/developers/readme-validator/).
+  1. Fix the security issues (issues #1–#6), make it PHP 8 compatible and work through §8 (common review rejections) and §9 (automated security review).
+  2. **Reply to the closure thread** with `plugins@wordpress.org`, say what was fixed and ask for a re-review / re-opening. Do **not** use the Add page for this: the slug `evangtermine` is still taken by the closed plugin (an upload would fail with "name already exists"), and it must stay the same because the slug cannot be renamed.
+  3. If the team asks for a fresh upload, they will say so in the thread — only then use the Add page, and follow the thread's instructions for the slug.
+  4. Only after the team re-opens it: push to SVN (see the `wp-release` skill) and validate `readme.txt` at the [readme-validator](https://wordpress.org/plugins/developers/readme-validator/).
+- **Unverified against the live pages** (the FAQ states "security closures can reopen after fixes", but not the exact procedure): the "reply to the closure thread" route and the claim that a current standards/security review is always required. Re-check the FAQ section "Closed Plugins" and the closure email before acting.
 - Note: closure is permanent and there is no "temporary" closure — fix the bug and keep it live, or update the readme to say it is unsupported.
 
 ## 6) SVN repository (after approval)
@@ -85,12 +87,36 @@ around it (account, review, closure, re-opening, naming).
   - Bump the version for **every code** release; **not** for readme / icon / header-only changes (still update `trunk/` and the `tags/` folder).
   - Keep the **current major version + one back** in `== Changelog ==`; move older entries to `changelog.txt` (WordPress.org recommends [Keep a Changelog](https://keepachangelog.com/)).
   - `Tested up to:` ≤ the current release candidate (never a non-released version like a future RC).
+  - Keep `readme.txt` under about 10 KB (move old changelog entries to `changelog.txt`), tags ≤ 5, short description < 150 characters without markup.
+  - Open point: the main plugin file header has no `Plugin URI`, `Text Domain` or `License URI`. Add `Text Domain: evangtermine` (matches the slug) and `License URI`; a unique `Plugin URI` is recommended.
   - Validate at the [readme-validator](https://wordpress.org/plugins/developers/readme-validator/).
 
-## 8) What does not apply to this plugin
+## 8) Common review rejections (checklist before every (re)submission)
+Source: [Common Issues](https://developer.wordpress.org/plugins/wordpress-org/common-issues/). The reviewers' most frequent grounds are unescaped output, unsanitized input and form handling without a nonce.
+- **Input/output:** sanitize and validate input, escape late on output. Never process whole `$_POST`/`$_GET`/`$_REQUEST`; read single keys. `esc_url_raw()` sanitizes, `esc_url()` escapes. `__()`/`_e()` do **not** escape — use `esc_html__()`, `esc_attr__()`, `esc_html_e()`. Use `wp_kses_post()`/`wp_kses()` for HTML, `wp_json_encode()` for JSON, `$wpdb->prepare()` for SQL.
+- **Direct access:** `if ( ! defined( 'ABSPATH' ) ) { exit; }` in every PHP file that executes code (check `application/**`, `uninstall.php`).
+- **Prefixes:** prefix functions, classes, constants, options, globals. **Two- or three-letter prefixes are not accepted**, and `wp_`, `__` and a bare `_` are forbidden. Open point for this plugin: `ET_*` constants, `Et*` classes, `AutoloaderET` and the unprefixed global `DEBUG` constant are at risk — this collides with the "Do Not Change" list (option keys, `.et_` CSS classes, `EtWidget`, shortcode names). Decide with the maintainer (e.g. rename internal-only symbols, keep the stored/public names) and ask the Plugins team if unsure; do not rename stored names unilaterally.
+- **i18n:** text, context and domain must be literal strings; the text domain must equal the slug (`evangtermine`).
+- **Assets:** enqueue with `wp_enqueue_script()`/`wp_enqueue_style()` (and the inline variants); no remote JS/CSS/images (exceptions: GPL-compatible font CDNs, service APIs, oEmbed). Do not ship libraries WordPress already bundles (jQuery, …). Open point: bundled jQuery under `assets/`, and the external image host used by the remote HTML (see the external-resources memory) — be ready to justify or remove them.
+- **Plugin standards:** main file named after the slug (`evangtermine.php`) with complete headers; `readme.txt` complete and valid; GPL-compatible license in header **and** readme, identical; `Stable tag` equals `Version`; no update checkers or phone-home code; no dev folders (tests, demos, node/grunt tooling) in the release — keep `composer.json`; source or a public link for minified files.
+- **External services:** document each one in `readme.txt` (what it does, link, terms and privacy links). Done for evangelische-termine.de; keep it current when the host option changes behaviour.
+- **Test with `WP_DEBUG` on** and run `wp plugin check evangtermine` (CI: `plugin-check.yml`).
+
+## 9) Automated security review and compliance claims
+- **Automated security review (since June 2026, [page](https://developer.wordpress.org/plugins/wordpress-org/automated-security-review/)):** every release has a cooldown in which AI models and Jetpack Scan analyse the diff. If the highest risk score reaches the blocking threshold, that version is **withheld from the update API** and all committers get an email with file and line. Only that version is affected; older versions keep serving. Fix the issue and publish a **new** version (fixing is usually faster than appealing; false positives: reply to the email). Consequence for releases: run `/wp-security-review` before tagging, and do not assume a pushed tag has reached users.
+- **Compliance disclaimers ([page](https://developer.wordpress.org/plugins/wordpress-org/compliance-disclaimers/), guideline 9):** never claim that the plugin creates, provides or guarantees legal compliance (GDPR, ADA, cookie law). Say it "helps" or "assists". This applies to `readme.txt`, descriptions, assets and the plugin name.
+
+## 10) Plugin assets (banner, icon, screenshots)
+Source: [Plugin Assets](https://developer.wordpress.org/plugins/wordpress-org/plugin-assets/).
+- They live in the **root-level `assets/` folder of the SVN repo** (next to `trunk/` and `tags/`), never in `trunk/assets` or `tags/x/assets`. The plugin's own `assets/` folder is the plugin's CSS/JS and is something else.
+- Banner `banner-772x250.(png|jpg)` (+ `banner-1544x500` for retina, only in addition to the small one); icon `icon-128x128` / `icon-256x256` or `icon.svg` (with a PNG fallback); screenshots `screenshot-1.png` … in lower case, matching the `== Screenshots ==` list. Limits: banner 4 MB, icon 1 MB, screenshot 10 MB. No official logos you do not own.
+- If images download instead of displaying: `svn propset svn:mime-type image/png *.png` (only affects new files unless re-run).
+- Changes appear after minutes, up to about 6 hours.
+
+## 11) What does not apply to this plugin
 - **Block-specific / Block Directory** rules ([Block Specific Plugin Guidelines](https://developer.wordpress.org/plugins/wordpress-org/block-specific-plugin-guidelines/)) apply only to *block-only* plugins. Evangelische Termine is a **shortcode + widget plugin with no blocks**, so those rules do **not** apply. They would apply only if the plugin is ever converted to a block plugin — in which case all of that document must be followed (on top of the Detailed Plugin Guidelines).
 
-## 9) Community conduct
+## 12) Community conduct
 - When the agents or the bot post to **GitHub** (PR / issue comments) or email the **Plugins team** / use the **support forums**, follow the [WordPress Community Code of Conduct](https://make.wordpress.org/handbook/community-code-of-conduct/): be respectful and constructive, accept feedback, and never harass or retaliate against reporters. See the `gh-bot` skill for how AI-authored posts are made.
 
 ## Sources

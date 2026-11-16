@@ -77,7 +77,7 @@ Below the frontmatter, the markdown body defines the agent's behavior:
 
 ## File Organization
 
-- **Location:** `.agents/agents/` (source of truth) — Copilot reads via `.github/agents/` junction
+- **Location:** `.agents/agents/` (source of truth) — Copilot reads the tracked copy in `.github/agents/`
 - **Naming:** `kebab-case-purpose.agent.md`
 - **Allowed chars:** `a-z`, `A-Z`, `0-9`, `-`, `_`, `.`
 - Each agent in `.agents/agents/` needs a corresponding `.claude/commands/<name>.md` slash command
@@ -103,7 +103,7 @@ Below the frontmatter, the markdown body defines the agent's behavior:
 - ❌ Granting `execute` when only `read`+`search` are needed
 - ❌ Vague instructions without scope boundaries
 - ❌ Creating agent without matching `.claude/commands/` entry
-- ❌ Editing `.github/agents/` directly (it's a junction — edit `.agents/agents/` instead)
+- ❌ Editing `.github/agents/` directly (it's a tracked copy — edit `.agents/agents/` instead)
 
 ## Official Documentation
 

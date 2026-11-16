@@ -92,7 +92,7 @@ wp plugin check evangtermine
 | [Accessibility](.agents/instructions/a11y.instructions.md) | `**` |
 | [HTML/CSS Colors](.agents/instructions/html-css-style-color-guide.instructions.md) | `**/*.css`, `**/*.html` |
 | [readme.txt](.agents/instructions/readme-txt.instructions.md) | `readme.txt` |
-| [WordPress.org Submission](.agents/instructions/wordpress-org-submission.instructions.md) | `readme.txt`, `changelog.txt`, `*.php` |
+| [WordPress.org Submission](.agents/instructions/wordpress-org-submission.instructions.md) | `readme.txt`, `changelog.txt`, `**/*.php` |
 | [AI Tool Sync](.agents/instructions/ai-tool-sync.instructions.md) | `CLAUDE.md`, `AGENTS.md`, `.github/copilot-instructions.md`, `.agents/instructions/**`, `.mcp.json` |
 | [Agent Files](.agents/instructions/agents.instructions.md) | `**/*.agent.md` |
 | [Skill Files](.agents/instructions/agent-skills.instructions.md) | `**/.agents/skills/**/SKILL.md` |

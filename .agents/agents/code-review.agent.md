@@ -22,6 +22,8 @@ Review PHP code changes in the evangtermine plugin for correctness, security, an
 - **Code quality**: Identify dead code, PHP notices (undefined variables, deprecated functions), and logic errors
 - **i18n**: Verify user-visible strings use `__()` / `_e()` with text domain `evangtermine`
 
+- **WordPress.org review readiness**: Check against §8 "Common review rejections" in `.agents/instructions/wordpress-org-submission.instructions.md` (ABSPATH guard, prefixes ≥ 4 characters, escaping functions, literal i18n strings, no remote assets, no compliance claims in `readme.txt`)
+
 ## Approach
 
 1. Read the diff or the files provided in `$ARGUMENTS`
