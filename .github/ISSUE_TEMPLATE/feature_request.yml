@@ -1,0 +1,25 @@
+name: Feature request
+description: Suggest an improvement or a new feature.
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem do you want to solve?
+      description: Describe the situation in which the plugin does not do what you need.
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: What should the plugin do?
+      description: Describe the solution you would like. An example shortcode helps.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives
+      description: Other solutions or workarounds you have tried.
+    validations:
+      required: false

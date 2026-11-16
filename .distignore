@@ -12,7 +12,10 @@
 .editorconfig
 AGENTS.md
 CLAUDE.md
+CONTRIBUTING.md
 HANDOVER.md
+README.md
+SECURITY.md
 opencode.json
 node_modules
 vendor
@@ -23,3 +26,5 @@ phpcs.xml.dist
 phpunit.xml
 phpunit.xml.dist
 tests
+
+# LICENSE is shipped on purpose: the GPL asks that every recipient gets a copy of the license text.

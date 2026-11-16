@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security problem
+    url: https://github.com/habakuk007/evangtermine/security/advisories/new
+    about: Please do not open a public issue for a security problem. Report it in private here. See SECURITY.md.
+  - name: Ask a question or get help with using the plugin
+    url: https://wordpress.org/support/plugin/evangtermine/
+    about: For questions about setup and usage, please use the WordPress.org support forum.
