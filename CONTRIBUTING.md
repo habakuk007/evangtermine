@@ -77,10 +77,11 @@ Fix what can be fixed automatically:
 composer fix:php
 ```
 
-Create the translation template (needs WP-CLI):
+Create the translation template and compile the translations (WP-CLI i18n comes from Composer, no global `wp` needed):
 
 ```bash
-wp i18n make-pot . languages/evangtermine.pot
+composer make:pot   # -> languages/evangtermine.pot
+composer make:mo    # compile languages/*.po to .mo
 ```
 
 Run the WordPress.org plugin check (needs WP-CLI and the plugin "Plugin Check"):
