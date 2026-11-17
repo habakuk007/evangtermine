@@ -33,7 +33,7 @@ msgstr "Die Ausgabe des Widgets und von <code>[et_teaser]</code> wird 5 Minuten 
 
 #. Found in faq paragraph.
 msgid "The request to the calendar failed or took too long. Check that your server may open outgoing HTTPS connections to the calendar host and that the \"Host\" setting is correct. The plugin waits up to 15 seconds for an answer; the filter <code>evangtermine_http_timeout</code> changes that (1 to 30 seconds)."
-msgstr "Die Anfrage an den Kalender ist fehlgeschlagen oder hat zu lange gedauert. Prüfen Sie, ob Ihr Server ausgehende HTTPS-Verbindungen zum Kalender-Host öffnen darf und ob die Einstellung „Host“ stimmt. Das Plugin wartet bis zu 15 Sekunden auf eine Antwort; mit dem Filter <code>evangtermine_http_timeout</code> ändern Sie das (1 bis 30 Sekunden)."
+msgstr "Die Anfrage an den Kalender ist fehlgeschlagen oder hat zu lange gedauert. Prüfen Sie, ob Ihr Server ausgehende HTTPS-Verbindungen zum Kalender-Host herstellen darf und ob die Einstellung „Host“ stimmt. Das Plugin wartet bis zu 15 Sekunden auf eine Antwort; mit dem Filter <code>evangtermine_http_timeout</code> ändern Sie das (1 bis 30 Sekunden)."
 
 #. Found in faq paragraph.
 msgid "Yes. Enter the host name under \"Settings\" &gt; \"Evangelische Termine\" &gt; \"Host\". Local and private addresses are rejected."
@@ -177,7 +177,7 @@ msgstr "<strong>Protokoll</strong>: <code>http://</code> oder <code>https://</co
 
 #. Found in description paragraph.
 msgid "<strong>Encoding</strong>: the character encoding of your site (<code>utf8</code> or <code>latin1</code>). The data is delivered in that encoding. Default: <code>utf8</code>."
-msgstr "<strong>Encoding</strong> (Zeichenkodierung): die Zeichenkodierung Ihrer Website (<code>utf8</code> oder <code>latin1</code>). Die Daten werden in dieser Kodierung geliefert. Standard: <code>utf8</code>."
+msgstr "<strong>Zeichenkodierung</strong>: die Zeichenkodierung Ihrer Website (<code>utf8</code> oder <code>latin1</code>). Die Daten werden in dieser Kodierung geliefert. Standard: <code>utf8</code>."
 
 #. Found in description paragraph.
 msgid "<strong>CSS-Datei</strong> (CSS file): the URL of a CSS file that is used instead of the stylesheet delivered by Evangelische Termine. Enter <code>nocss</code> to load no stylesheet at all, for example when the styles are part of your theme."
@@ -185,7 +185,7 @@ msgstr "<strong>CSS-Datei</strong>: die URL einer CSS-Datei, die anstelle des vo
 
 #. Found in description paragraph.
 msgid "<strong>Until</strong>: whether events are shown until their end date (<code>yes</code> or <code>no</code>). Default: <code>yes</code>."
-msgstr "<strong>Until</strong> (Termine bis zu ihrem Ende anzeigen): ob Veranstaltungen bis zu ihrem Enddatum angezeigt werden (<code>yes</code> oder <code>no</code>). Standard: <code>yes</code>."
+msgstr "<strong>Termine bis zu ihrem Ende anzeigen</strong>: ob Veranstaltungen bis zu ihrem Enddatum angezeigt werden (<code>yes</code> oder <code>no</code>). Standard: <code>yes</code>."
 
 #. Found in description paragraph.
 msgid "<strong>Dekanats-ID</strong> (region ID): the ID of a Dekanat in Evangelische Termine. It is sent as <code>region</code> and shows the events of all organisers in that region."
