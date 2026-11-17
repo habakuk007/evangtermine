@@ -65,6 +65,7 @@ application/
   forms/class.pluginoptionspage.php      ← "Einstellungen" link on the plugins page
   forms/form.etwidget.php                ← widget form
 assets/                                  ← bundled Bootstrap 3.3.7, jQuery, Font Awesome 4.7.0, CSS
+readme-translations/                     ← readme.txt translations (de, de formal) for translate.wordpress.org; not in the release
 tests/e2e/                               ← Playwright tests against WordPress Playground (blueprint, mock of the calendar host, fixtures); not in the release
 ```
 
