@@ -48,34 +48,34 @@ wp plugin check evangtermine
 
 ## Architecture
 
-Object-oriented, classes are loaded by `autoloader.php` (`AutoloaderET`), which maps `ClassName` to `application/{controllers,models,views,helper,forms}/class.classname.php` (lower case).
+Object-oriented, classes are loaded by `autoloader.php` (`Evangtermine_Autoloader`), which maps `ClassName` to `application/{controllers,models,views,helper,forms}/class.classname.php` (lower case).
 
 ```
 evangtermine.php                         ← entry point: constants, registers shortcodes, widget, CSS hook
-autoloader.php                           ← AutoloaderET
+autoloader.php                           ← Evangtermine_Autoloader
 application/
   configs/defaults.php                   ← ET_DEFAULT_HOST, ET_DEFAULT_PROTOCOL, ET_OPTION_* defaults
-  controllers/class.shortcode*.php       ← ShortcodeVeranstalter, ShortcodeTeaser, ShortcodePanels, ShortcodeMinical
+  controllers/class.evangtermine_shortcode*.php       ← Evangtermine_ShortcodeVeranstalter, Evangtermine_ShortcodeTeaser, Evangtermine_ShortcodePanels, Evangtermine_ShortcodeMinical
   controllers/class.etwidget.php         ← EtWidget (WP_Widget)
-  models/class.etquery.php               ← EtQuery: builds the query string, fetches and post-processes the remote HTML
-  views/class.etview.php                 ← EtView: wraps the content in a <div>
-  helper/class.includecss.php            ← IncludeCSS: <link> tag in wp_head
-  helper/class.debugging.php             ← Debugging (only active if DEBUG is true)
+  models/class.evangtermine_query.php               ← Evangtermine_Query: builds the query string, fetches and post-processes the remote HTML
+  views/class.evangtermine_view.php                 ← Evangtermine_View: wraps the content in a <div>
+  helper/class.evangtermine_includecss.php            ← Evangtermine_IncludeCSS: <link> tag in wp_head
+  helper/class.evangtermine_debugging.php             ← Evangtermine_Debugging (only active if ET_DEBUG is true)
   forms/options.php                      ← Settings API page (loaded in wp-admin only)
-  forms/class.pluginoptionspage.php      ← "Einstellungen" link on the plugins page
+  forms/class.evangtermine_pluginoptionspage.php      ← "Einstellungen" link on the plugins page
   forms/form.etwidget.php                ← widget form
 assets/                                  ← bundled Bootstrap 3.3.7, jQuery, Font Awesome 4.7.0, CSS
 readme-translations/                     ← readme.txt translations (de, de formal) for translate.wordpress.org; not in the release
 tests/e2e/                               ← Playwright tests against WordPress Playground (blueprint, mock of the calendar host, fixtures); not in the release
 ```
 
-**Data flow:** shortcode/widget attributes → `EtQuery::setEtParameters()` → request values (`$_REQUEST`, `$_GET['etID']`) are merged in → `EtQuery::getQuerystring()` → `EtQuery::retrieveStream()` (`wp_remote_get` to `{etprotocol}{ethost}/{veranstaltungen-php|detail-php|teaser|…}`) → `filterStream()` string-replace post-processing → `EtView::buildView()`.
+**Data flow:** shortcode/widget attributes → `Evangtermine_Query::setEtParameters()` → request values (`$_REQUEST`, `$_GET['etID']`) are merged in → `Evangtermine_Query::getQuerystring()` → `Evangtermine_Query::retrieveStream()` (`wp_remote_get` to `{etprotocol}{ethost}/{veranstaltungen-php|detail-php|teaser|…}`) → `filterStream()` string-replace post-processing → `Evangtermine_View::buildView()`.
 
-**Filter state:** the user's filters travel in the URL only, the plugin does not use a PHP session. `ShortcodeVeranstalter` reads the filter values from the request (`getRequestValue()`) and passes them to `EtQuery::setEtParameter()`; `filterStream()` rewrites the links in the remote HTML to the permalink plus the current query string. `reset=1` returns to the shortcode defaults.
+**Filter state:** the user's filters travel in the URL only, the plugin does not use a PHP session. `Evangtermine_ShortcodeVeranstalter` reads the filter values from the request (`getRequestValue()`) and passes them to `Evangtermine_Query::setEtParameter()`; `filterStream()` rewrites the links in the remote HTML to the permalink plus the current query string. `reset=1` returns to the shortcode defaults.
 
 **Settings:** `application/forms/options.php` registers seven options (`vid`, `region`, `until`, `css`, `encoding`, `etprotocol`, `ethost`) in the group `et_group`. Shortcode attributes override them per call.
 
-**Security-critical spots:** everything that takes request data and puts it into the remote URL or into the returned HTML (`ShortcodeVeranstalter`, `EtQuery::getQuerystring`, `EtQuery::filterStream`), and everything that prints option values (`options.php`, `IncludeCSS`). The remote HTML is returned unfiltered by design.
+**Security-critical spots:** everything that takes request data and puts it into the remote URL or into the returned HTML (`Evangtermine_ShortcodeVeranstalter`, `Evangtermine_Query::getQuerystring`, `Evangtermine_Query::filterStream`), and everything that prints option values (`options.php`, `Evangtermine_IncludeCSS`). The remote HTML is returned unfiltered by design.
 
 ## Branches and Releases
 
@@ -93,7 +93,7 @@ tests/e2e/                               ← Playwright tests against WordPress 
 | Text domain | `evangtermine` |
 | Settings option names | `vid`, `region`, `until`, `css`, `encoding`, `etprotocol`, `ethost` (no `et_` prefix — legacy) |
 | API endpoint | `{etprotocol}{ethost}/veranstaltungen-php` (`ET_VERANSTALTER_MODUL`), `/detail-php`, `/teaser` |
-| HTTP | `wp_remote_get()`, timeout from `EtQuery::$connectionTimeout` |
+| HTTP | `wp_remote_get()`, timeout from `Evangtermine_Query::$connectionTimeout` |
 | Commit identity | `habakuk007 <2253878+habakuk007@users.noreply.github.com>` (set locally in this repo, not the global git config) |
 
 ## Do Not Change
@@ -119,7 +119,7 @@ tests/e2e/                               ← Playwright tests against WordPress 
 
 ## Agents
 
-Invoke via Claude Code slash commands (e.g. `/code-review application/models/class.etquery.php`).
+Invoke via Claude Code slash commands (e.g. `/code-review application/models/class.evangtermine_query.php`).
 
 | Command | Agent | Purpose |
 |---------|-------|---------|

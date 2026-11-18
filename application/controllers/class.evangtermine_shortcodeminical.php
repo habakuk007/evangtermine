@@ -1,6 +1,10 @@
 <?php
 
-class ShortcodeMinical
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+class Evangtermine_ShortcodeMinical
 {
 
     /**
@@ -11,7 +15,7 @@ class ShortcodeMinical
      */
     public static function registerAssets()
     {
-        $baseUrl = plugins_url('assets/', BASE_PATH . '/evangtermine.php');
+        $baseUrl = plugins_url('assets/', ET_BASE_PATH . '/evangtermine.php');
 
         wp_register_style('evangtermine-jquery-ui', $baseUrl . 'ui/1.12.1/themes/base/jquery-ui.css', array(), '1.12.1');
         wp_register_style('evangtermine-colorbox', $baseUrl . 'styles/colorbox.css', array(), '1.6.4');
@@ -41,7 +45,7 @@ class ShortcodeMinical
      */
     public static function etMinical($attr, $content = null)
     {
-        $etstream = new EtQuery();
+        $etstream = new Evangtermine_Query();
 
         // Optionen und Parameter zusammenführen
         $etstream->setEtParameters($attr);

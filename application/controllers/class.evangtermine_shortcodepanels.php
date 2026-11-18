@@ -1,5 +1,10 @@
 <?php
-class ShortcodePanels {
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+class Evangtermine_ShortcodePanels {
 	
 	/**
 	 * Verarbeitet die Attribute aus dem Shortcode et_panel und gibt die Daten aus den Evangelischen Terminen aus.
@@ -10,7 +15,7 @@ class ShortcodePanels {
 	 */
 	public static function etPanels($attr, $content = null) {
 		
-		$etstream = new EtQuery();
+		$etstream = new Evangtermine_Query();
 // 		$etstream->setNoDetail(true); // Detailansicht für dieses Modul unterdrücken
 // 		if(get_option ('css') != '') {
 // 			$etstream->setLoadCSS(false);
@@ -27,7 +32,7 @@ class ShortcodePanels {
 		$content = $etstream->retrieveStream($querystring);
 		
 		// View für die Ausgabe aufrufen
-		$view = new EtView('et_panel');
+		$view = new Evangtermine_View('et_panel');
 		$content = $view->buildView($content);
 		
 		return $content;

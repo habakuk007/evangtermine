@@ -4,7 +4,12 @@
  * @author Norbert Räbiger
  *
  */
-class EtView {
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+class Evangtermine_View {
 	private $wrapcontent = '<div class="###etwrapperclass###">###content###</div>';
 
 	/**

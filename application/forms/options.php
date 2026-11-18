@@ -1,16 +1,18 @@
 <?php
 // Exit if accessed directly
-defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 // TODO Thumbnail in der Detailansicht ja/nein integrieren
 
 // Optionsmenü hinzufügen
-function et_menu() {
-	add_options_page( __( 'Evangelische Termine – Settings', 'evangtermine' ), 'Evangelische Termine', 'manage_options', 'options.php', 'et_options' );
+function evangtermine_menu() {
+	add_options_page( __( 'Evangelische Termine – Settings', 'evangtermine' ), 'Evangelische Termine', 'manage_options', 'options.php', 'evangtermine_options' );
 }
-add_action( 'admin_menu', 'et_menu' );
+add_action( 'admin_menu', 'evangtermine_menu' );
 
-function et_show_section() {
+function evangtermine_show_section() {
 	echo '<p>' . esc_html__( 'Here you set the basic settings for the plugin. They apply to all shortcodes and the widget unless a value is given there: the shortcode parameters and the widget settings take precedence.', 'evangtermine' ) . '</p>';
 }
 
@@ -20,7 +22,7 @@ function et_show_section() {
  * @param string $id   ID des Feldes (der Hilfetext erhält die ID "<Feld>_description").
  * @param string $text Bereits übersetzter Hilfetext.
  */
-function et_show_description( $id, $text ) {
+function evangtermine_show_description( $id, $text ) {
 	echo '<p class="description" id="' . esc_attr( $id . '_description' ) . '">' . esc_html( $text ) . '</p>';
 }
 
@@ -32,7 +34,7 @@ function et_show_description( $id, $text ) {
  * @param array  $items   Wert => Beschriftung.
  * @param string $current Gespeicherter Wert.
  */
-function et_show_select( $id, $name, $items, $current ) {
+function evangtermine_show_select( $id, $name, $items, $current ) {
 	echo '<select id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '" aria-describedby="' . esc_attr( $id . '_description' ) . '">';
 	foreach ( $items as $value => $label ) {
 		echo '<option value="' . esc_attr( $value ) . '"' . selected( $current, (string) $value, false ) . '>' . esc_html( $label ) . '</option>';
@@ -42,22 +44,22 @@ function et_show_select( $id, $name, $items, $current ) {
 
 // Inputfelder
 // Veranstalter-ID(s): kommagetrennte Liste der Veranstalter-IDs der Evangelischen Termine
-function et_show_vid() {
+function evangtermine_show_vid() {
 	$vid = get_option( 'vid' );
 	echo '<input id="et_option_vid" name="vid" type="text" value="' . esc_attr( $vid ) . '" aria-describedby="et_option_vid_description" />';
-	et_show_description( 'et_option_vid', __( 'The ID of your organizer at Evangelische Termine. It is shown at the top right after you log in there. Enter several IDs separated by commas and without spaces, for example 952,988. Without an organizer ID no events are shown.', 'evangtermine' ) );
+	evangtermine_show_description( 'et_option_vid', __( 'The ID of your organizer at Evangelische Termine. It is shown at the top right after you log in there. Enter several IDs separated by commas and without spaces, for example 952,988. Without an organizer ID no events are shown.', 'evangtermine' ) );
 }
 
 // Dekanats-ID: Dekanatsnummer. Wird als Parameter "region" an die Evangelischen Termine übergeben.
-function et_show_region() {
+function evangtermine_show_region() {
 	$region = get_option( 'region' );
 	echo '<input id="et_option_region" name="region" type="text" value="' . esc_attr( $region ) . '" aria-describedby="et_option_region_description" />';
-	et_show_description( 'et_option_region', __( 'The number of a deanery (Dekanat) at Evangelische Termine. The events of all organizers of this deanery are shown. Enter several numbers separated by commas. Leave the field empty if only the events of the organizers above should appear.', 'evangtermine' ) );
+	evangtermine_show_description( 'et_option_region', __( 'The number of a deanery (Dekanat) at Evangelische Termine. The events of all organizers of this deanery are shown. Enter several numbers separated by commas. Leave the field empty if only the events of the organizers above should appear.', 'evangtermine' ) );
 }
 
 // Über diesen Schalter wird eingestellt, ob ein Termin bis zum Ablauf angezeigt wird oder mit Beginn
 // des Termins von der Anzeige ausgeschlossen wird.
-function et_show_until() {
+function evangtermine_show_until() {
 	$until = (string) get_option( 'until' );
 	if ( '' === $until ) {
 		$until = ET_OPTION_UNTIL;
@@ -66,19 +68,19 @@ function et_show_until() {
 		'yes' => __( 'yes', 'evangtermine' ),
 		'no'  => __( 'no', 'evangtermine' ),
 	);
-	et_show_select( 'et_option_until', 'until', $items, $until );
-	et_show_description( 'et_option_until', __( 'With “yes” an event stays visible until it has ended. With “no” it disappears from the list as soon as it has started. Default: yes.', 'evangtermine' ) );
+	evangtermine_show_select( 'et_option_until', 'until', $items, $until );
+	evangtermine_show_description( 'et_option_until', __( 'With “yes” an event stays visible until it has ended. With “no” it disappears from the list as soon as it has started. Default: yes.', 'evangtermine' ) );
 }
 
 // Eigene CSS-Datei. Dadurch werden die CSS-Einstellungen der Evangelischen Termine überschrieben.
-function et_show_css() {
+function evangtermine_show_css() {
 	$css = get_option( 'css' );
 	echo '<input id="et_option_css" name="css" type="text" value="' . esc_attr( $css ) . '" size="40" aria-describedby="et_option_css_description" />';
-	et_show_description( 'et_option_css', __( 'The address (URL) of your own CSS file. It is loaded instead of the Evangelische Termine stylesheet. Empty: the Evangelische Termine stylesheet is used. With the value nocss no stylesheet is loaded at all, for example if the styling is already part of your theme.', 'evangtermine' ) );
+	evangtermine_show_description( 'et_option_css', __( 'The address (URL) of your own CSS file. It is loaded instead of the Evangelische Termine stylesheet. Empty: the Evangelische Termine stylesheet is used. With the value nocss no stylesheet is loaded at all, for example if the styling is already part of your theme.', 'evangtermine' ) );
 }
 
 // Encoding der Website einstellen
-function et_show_encoding() {
+function evangtermine_show_encoding() {
 	$encoding = (string) get_option( 'encoding' );
 	if ( '' === $encoding ) {
 		$encoding = ET_DEFAULT_CHARSET;
@@ -87,15 +89,15 @@ function et_show_encoding() {
 		'utf8'   => 'UTF-8',
 		'latin1' => 'ISO-8859-1 (Latin-1)',
 	);
-	et_show_select( 'et_option_encoding', 'encoding', $items, $encoding );
-	et_show_description( 'et_option_encoding', __( 'The character encoding of your website. Evangelische Termine delivers the data in this encoding. UTF-8 is correct for almost all WordPress sites; only change the value if umlauts are displayed incorrectly. Default: UTF-8.', 'evangtermine' ) );
+	evangtermine_show_select( 'et_option_encoding', 'encoding', $items, $encoding );
+	evangtermine_show_description( 'et_option_encoding', __( 'The character encoding of your website. Evangelische Termine delivers the data in this encoding. UTF-8 is correct for almost all WordPress sites; only change the value if umlauts are displayed incorrectly. Default: UTF-8.', 'evangtermine' ) );
 }
 
 /*
  * Protokoll und Host des jeweiligen Kalenderbetreibers
  * Optional: Ist das Feld leer, wird ET_DEFAULT_PROTOCOL (https://) verwendet.
  */
-function et_show_etprotocol() {
+function evangtermine_show_etprotocol() {
 	$etprotocol = (string) get_option( 'etprotocol' );
 	$items      = array(
 		/* translators: %s: protocol, e.g. https:// */
@@ -103,20 +105,20 @@ function et_show_etprotocol() {
 		'https://' => 'https://',
 		'http://'  => 'http://',
 	);
-	et_show_select( 'et_option_protocol', 'etprotocol', $items, $etprotocol );
-	et_show_description( 'et_option_protocol', __( 'The protocol your server uses to fetch the events from the calendar operator. Choose http:// only if the calendar operator does not offer https://; the connection is then unencrypted.', 'evangtermine' ) );
+	evangtermine_show_select( 'et_option_protocol', 'etprotocol', $items, $etprotocol );
+	evangtermine_show_description( 'et_option_protocol', __( 'The protocol your server uses to fetch the events from the calendar operator. Choose http:// only if the calendar operator does not offer https://; the connection is then unencrypted.', 'evangtermine' ) );
 }
 
-function et_show_ethost() {
+function evangtermine_show_ethost() {
 	$ethost = get_option( 'ethost' );
 	echo '<input id="et_option_ethost" name="ethost" type="text" value="' . esc_attr( $ethost ) . '" size="40" aria-describedby="et_option_ethost_description" />';
 	/* translators: %s: host name, e.g. www.evangelische-termine.de */
 	$description = __( 'The server the events are fetched from: the host name only, without http:// and without a path. Empty: %s. Another value is only needed if your regional church (Landeskirche) runs its own calendar.', 'evangtermine' );
-	et_show_description( 'et_option_ethost', sprintf( $description, ET_DEFAULT_HOST ) );
+	evangtermine_show_description( 'et_option_ethost', sprintf( $description, ET_DEFAULT_HOST ) );
 }
 
 // Aufbau der Optionen
-function et_options() {
+function evangtermine_options() {
 	if( !current_user_can( 'manage_options' ) ) {
 		wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', 'evangtermine' ) );
 	}
@@ -138,7 +140,7 @@ function et_options() {
  * @param mixed $value Eingegebener Wert.
  * @return string
  */
-function et_sanitize_css( $value ) {
+function evangtermine_sanitize_css( $value ) {
 	$value = trim( sanitize_text_field( (string) $value ) );
 	if ( '' === $value || 'nocss' === $value ) {
 		return $value;
@@ -154,21 +156,21 @@ function et_sanitize_css( $value ) {
  * @param string $default Standardwert.
  * @return string
  */
-function et_sanitize_choice( $value, $allowed, $default ) {
+function evangtermine_sanitize_choice( $value, $allowed, $default ) {
 	$value = is_scalar( $value ) ? (string) $value : '';
 	return in_array( $value, $allowed, true ) ? $value : $default;
 }
 
-function et_sanitize_until( $value ) {
-	return et_sanitize_choice( $value, array( 'yes', 'no' ), 'yes' );
+function evangtermine_sanitize_until( $value ) {
+	return evangtermine_sanitize_choice( $value, array( 'yes', 'no' ), 'yes' );
 }
 
-function et_sanitize_encoding( $value ) {
-	return et_sanitize_choice( $value, array( 'utf8', 'latin1' ), 'utf8' );
+function evangtermine_sanitize_encoding( $value ) {
+	return evangtermine_sanitize_choice( $value, array( 'utf8', 'latin1' ), 'utf8' );
 }
 
-function et_sanitize_etprotocol( $value ) {
-	return et_sanitize_choice( $value, array( '', 'https://', 'http://' ), '' );
+function evangtermine_sanitize_etprotocol( $value ) {
+	return evangtermine_sanitize_choice( $value, array( '', 'https://', 'http://' ), '' );
 }
 
 /**
@@ -179,7 +181,7 @@ function et_sanitize_etprotocol( $value ) {
  * @param mixed $value Eingegebener Wert.
  * @return string
  */
-function et_sanitize_ethost( $value ) {
+function evangtermine_sanitize_ethost( $value ) {
 	$value = strtolower( trim( sanitize_text_field( (string) $value ) ) );
 	if ( '' === $value ) {
 		return '';
@@ -189,7 +191,7 @@ function et_sanitize_ethost( $value ) {
 		add_settings_error( 'ethost', 'et_ethost_invalid', __( 'The host must consist of a domain name only (without http://, without a path). The previous value was kept.', 'evangtermine' ) );
 		return $previous;
 	}
-	if ( ! wp_http_validate_url( 'https://' . $value . '/' ) || ! EtQuery::isSafeHost( $value ) ) {
+	if ( ! wp_http_validate_url( 'https://' . $value . '/' ) || ! Evangtermine_Query::isSafeHost( $value ) ) {
 		add_settings_error( 'ethost', 'et_ethost_unsafe', __( 'This host is not allowed (local or private address, or unreachable port). The previous value was kept.', 'evangtermine' ) );
 		return $previous;
 	}
@@ -197,25 +199,25 @@ function et_sanitize_ethost( $value ) {
 }
 
 // Optionsseite initialisieren
-function et_admin_init() {
-	add_settings_section( 'et_section', __( 'Basic settings', 'evangtermine' ), 'et_show_section', 'et_menu_slug' );
+function evangtermine_admin_init() {
+	add_settings_section( 'et_section', __( 'Basic settings', 'evangtermine' ), 'evangtermine_show_section', 'et_menu_slug' );
 
-	add_settings_field( 'vid', __( 'Organizer ID', 'evangtermine' ), 'et_show_vid', 'et_menu_slug', 'et_section', array( 'label_for' => 'et_option_vid' ) );
-	add_settings_field( 'region', __( 'Deanery ID', 'evangtermine' ), 'et_show_region', 'et_menu_slug', 'et_section', array( 'label_for' => 'et_option_region' ) );
-	add_settings_field( 'until', __( 'Show events until they end', 'evangtermine' ), 'et_show_until', 'et_menu_slug', 'et_section', array( 'label_for' => 'et_option_until' ) );
-	add_settings_field( 'css', __( 'CSS file', 'evangtermine' ), 'et_show_css', 'et_menu_slug', 'et_section', array( 'label_for' => 'et_option_css' ) );
-	add_settings_field( 'encoding', __( 'Character encoding', 'evangtermine' ), 'et_show_encoding', 'et_menu_slug', 'et_section', array( 'label_for' => 'et_option_encoding' ) );
-	add_settings_field( 'etprotocol', __( 'Protocol', 'evangtermine' ), 'et_show_etprotocol', 'et_menu_slug', 'et_section', array( 'label_for' => 'et_option_protocol' ) );
-	add_settings_field( 'ethost', __( 'Calendar operator host', 'evangtermine' ), 'et_show_ethost', 'et_menu_slug', 'et_section', array( 'label_for' => 'et_option_ethost' ) );
+	add_settings_field( 'vid', __( 'Organizer ID', 'evangtermine' ), 'evangtermine_show_vid', 'et_menu_slug', 'et_section', array( 'label_for' => 'et_option_vid' ) );
+	add_settings_field( 'region', __( 'Deanery ID', 'evangtermine' ), 'evangtermine_show_region', 'et_menu_slug', 'et_section', array( 'label_for' => 'et_option_region' ) );
+	add_settings_field( 'until', __( 'Show events until they end', 'evangtermine' ), 'evangtermine_show_until', 'et_menu_slug', 'et_section', array( 'label_for' => 'et_option_until' ) );
+	add_settings_field( 'css', __( 'CSS file', 'evangtermine' ), 'evangtermine_show_css', 'et_menu_slug', 'et_section', array( 'label_for' => 'et_option_css' ) );
+	add_settings_field( 'encoding', __( 'Character encoding', 'evangtermine' ), 'evangtermine_show_encoding', 'et_menu_slug', 'et_section', array( 'label_for' => 'et_option_encoding' ) );
+	add_settings_field( 'etprotocol', __( 'Protocol', 'evangtermine' ), 'evangtermine_show_etprotocol', 'et_menu_slug', 'et_section', array( 'label_for' => 'et_option_protocol' ) );
+	add_settings_field( 'ethost', __( 'Calendar operator host', 'evangtermine' ), 'evangtermine_show_ethost', 'et_menu_slug', 'et_section', array( 'label_for' => 'et_option_ethost' ) );
 
 	register_setting( 'et_group', 'vid', array( 'sanitize_callback' => 'sanitize_text_field' ) );
 	register_setting( 'et_group', 'region', array( 'sanitize_callback' => 'sanitize_text_field' ) );
-	register_setting( 'et_group', 'until', array( 'sanitize_callback' => 'et_sanitize_until' ) );
-	register_setting( 'et_group', 'css', array( 'sanitize_callback' => 'et_sanitize_css' ) );
-	register_setting( 'et_group', 'encoding', array( 'sanitize_callback' => 'et_sanitize_encoding' ) );
-	register_setting( 'et_group', 'etprotocol', array( 'sanitize_callback' => 'et_sanitize_etprotocol' ) );
-	register_setting( 'et_group', 'ethost', array( 'sanitize_callback' => 'et_sanitize_ethost' ) );
+	register_setting( 'et_group', 'until', array( 'sanitize_callback' => 'evangtermine_sanitize_until' ) );
+	register_setting( 'et_group', 'css', array( 'sanitize_callback' => 'evangtermine_sanitize_css' ) );
+	register_setting( 'et_group', 'encoding', array( 'sanitize_callback' => 'evangtermine_sanitize_encoding' ) );
+	register_setting( 'et_group', 'etprotocol', array( 'sanitize_callback' => 'evangtermine_sanitize_etprotocol' ) );
+	register_setting( 'et_group', 'ethost', array( 'sanitize_callback' => 'evangtermine_sanitize_ethost' ) );
 }
-add_action( 'admin_init', 'et_admin_init' );
+add_action( 'admin_init', 'evangtermine_admin_init' );
 
 ?>

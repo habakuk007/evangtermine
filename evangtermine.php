@@ -30,12 +30,14 @@
  * Boston, MA 02110-1301, USA.
  */
 
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 define ('ET_VERSION', '3.4');
 
-define('DEBUG', false);
-
-// Exit if accessed directly
-defined('ABSPATH') or die('No script kiddies please!');
+define('ET_DEBUG', false);
 
 class evangtermine {
 	
@@ -45,41 +47,39 @@ class evangtermine {
 		require_once (__DIR__ . '/application/configs/defaults.php');
 		
 		// Autoloader aufrufen - über diesen werden die einzelnen Klassen registriert.
-		if (!defined('BASE_PATH')) {
-			define('BASE_PATH', __DIR__);
-			require_once BASE_PATH . '/autoloader.php';
-			AutoloaderET::Register();
+		if (!defined('ET_BASE_PATH')) {
+			define('ET_BASE_PATH', __DIR__);
+			require_once ET_BASE_PATH . '/autoloader.php';
+			Evangtermine_Autoloader::Register();
 		}
 		
-		// Load the bundled translations (languages/evangtermine-<locale>.mo)
-		add_action ('init', function () {
-			load_plugin_textdomain ('evangtermine', false, dirname (plugin_basename (__FILE__)) . '/languages');
-		});
+		// No load_plugin_textdomain(): since WordPress 4.6 translations of plugins hosted on
+		// WordPress.org (text domain = slug) are loaded automatically from the language packs.
 
 		// integrate the options menu if an admin ist logged in
 		if (is_admin ()) {
 			require_once (__DIR__ . '/application/forms/options.php');
 		}
 		// Options-Seite über das Backend-Menü Plugins aufrufen
-		add_filter ('plugin_action_links_' . plugin_basename(__FILE__), array('PluginOptionsPage', 'etPluginActions'));
+		add_filter ('plugin_action_links_' . plugin_basename(__FILE__), array('Evangtermine_PluginOptionsPage', 'etPluginActions'));
 
 		// Eigene CSS-Datei aus den Einstellungen einbinden (nach den Stylesheets des Themes)
-		add_action ('wp_enqueue_scripts', array('IncludeCSS', 'etIncludeCSS'), 20);
+		add_action ('wp_enqueue_scripts', array('Evangtermine_IncludeCSS', 'etIncludeCSS'), 20);
 
 		// Skripte und Stylesheets des Mini-Kalenders registrieren
-		add_action ('wp_enqueue_scripts', array('ShortcodeMinical', 'registerAssets'));
+		add_action ('wp_enqueue_scripts', array('Evangtermine_ShortcodeMinical', 'registerAssets'));
 		
 		// shortcode für den Teaser einbinden
-		add_shortcode('et_teaser', array('ShortcodeTeaser', 'etTeaser'));
+		add_shortcode('et_teaser', array('Evangtermine_ShortcodeTeaser', 'etTeaser'));
 		
 		// shortcode für das Veranstaltermodul einbinden
-		add_shortcode('et_veranstalter', array('ShortcodeVeranstalter', 'etVeranstalter'));
+		add_shortcode('et_veranstalter', array('Evangtermine_ShortcodeVeranstalter', 'etVeranstalter'));
 		
 		// TODO shortcode für das Panelsmodul einbinden
-		add_shortcode('et_panels', array('ShortcodePanels', 'etPanels'));
+		add_shortcode('et_panels', array('Evangtermine_ShortcodePanels', 'etPanels'));
 		
 		// shortcode für den Mini-Kalender
-		add_shortcode('et_minical', array('ShortcodeMinical', 'etMinical'));
+		add_shortcode('et_minical', array('Evangtermine_ShortcodeMinical', 'etMinical'));
 		
 		// shortcode für einen Teaser der die Daten über JSON abruft
 		// add_shortcode('et_teaserjson', array('ShortcodeTeaserJson', 'etTeaserJson'));
@@ -87,12 +87,18 @@ class evangtermine {
 		// TODO shortcode für das Modul mit der Übersichtskarte http://www.evangelische-termine.de/map?vid=952&itemsPerPage=100&lat=48.92971763063&lng=10.78857421875&zoom=7&ipm=808®ion=407&vid=all
 		
 		// Widget einbinden
-		function EtWidget_init_widget () {
-			return register_widget('EtWidget');
-		}
-		add_action ('widgets_init', 'EtWidget_init_widget');
+		add_action( 'widgets_init', 'evangtermine_register_widget' );
 	}
 	
+}
+
+/**
+ * Registers the widget. Declared at top level, not inside the constructor.
+ *
+ * @return void
+ */
+function evangtermine_register_widget() {
+	register_widget( 'EtWidget' );
 }
 
 new evangtermine();

@@ -1,5 +1,10 @@
 <?php
-class Debugging {
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+class Evangtermine_Debugging {
 	
 	/**
 	 * consoleLog
@@ -8,7 +13,7 @@ class Debugging {
 	 * @param mixed $data
 	 */
 	public static function consoleLog($description, $data) {
-		if (DEBUG) {
+		if (ET_DEBUG) {
 			$output = '';
 			
 			if (is_array ( $data )) {

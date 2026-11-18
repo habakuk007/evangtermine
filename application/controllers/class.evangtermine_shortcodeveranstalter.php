@@ -1,6 +1,10 @@
 <?php
 
-class ShortcodeVeranstalter
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+class Evangtermine_ShortcodeVeranstalter
 {
     /**
      * Parameter, die als ganze Zahl behandelt werden.
@@ -41,8 +45,8 @@ class ShortcodeVeranstalter
     public static function etVeranstalter($attr, $content = null)
     { 
 
-        // @TODO Default-Werte festlegen und an EtQuery übermitteln
-        $etstream = new EtQuery();
+        // @TODO Default-Werte festlegen und an Evangtermine_Query übermitteln
+        $etstream = new Evangtermine_Query();
         if (get_option('css') != '') {
             $etstream->setLoadCSS(false);
         }
@@ -107,7 +111,7 @@ class ShortcodeVeranstalter
         $requestKeys = array_keys(array_merge($_GET, $_POST));
         // phpcs:enable
         foreach ($requestKeys as $key) {
-            $cleanKey = EtQuery::cleanParameterName($key);
+            $cleanKey = Evangtermine_Query::cleanParameterName($key);
             if ('' === $cleanKey || in_array($cleanKey, $etURLParameters, true)) {
                 continue;
             }
@@ -116,14 +120,14 @@ class ShortcodeVeranstalter
                 continue; // Arrays und andere Nicht-Skalare werden nicht weitergegeben
             }
             $querystring .= '&' . $cleanKey . '=' . urlencode($val);
-            Debugging::consoleLog($cleanKey . ': ', $val);
+            Evangtermine_Debugging::consoleLog($cleanKey . ': ', $val);
         }
 
         // Daten von den Evangelischen Terminen abrufen
         $content = $etstream->retrieveStream($querystring);
 
         // View für die Ausgabe aufrufen
-        $view = new EtView('et_veranstalter');
+        $view = new Evangtermine_View('et_veranstalter');
         $content = $view->buildView($content);
 
         return $content;

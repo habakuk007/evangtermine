@@ -1,4 +1,9 @@
 <?php
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 class EtWidget extends WP_Widget {
 	
 	/**
@@ -18,7 +23,7 @@ class EtWidget extends WP_Widget {
 	 * @param array $instance
 	 */
 	function form($instance) {
-		$etstream = new EtQuery(ET_TEMPLATE_TEASER_WIDGET);
+		$etstream = new Evangtermine_Query(ET_TEMPLATE_TEASER_WIDGET);
 		$etstream->setEtParameters($instance);
 
 		$etstream->setEtParameter('title', __('Upcoming events', 'evangtermine'));
@@ -30,7 +35,7 @@ class EtWidget extends WP_Widget {
 
 		// Formular einbinden
 		// TODO evtl. eigene Klasse für das Formular entwickeln
-		include(BASE_PATH. '/application/forms/form.etwidget.php');
+		include(ET_BASE_PATH. '/application/forms/form.etwidget.php');
 	}
 	
 	/**
@@ -76,7 +81,7 @@ class EtWidget extends WP_Widget {
 			}
 		}
 
-		// Weitere Parameter: fertiger Teil-Querystring, nur URL-taugliche Zeichen (wie in EtQuery::getQuerystring).
+		// Weitere Parameter: fertiger Teil-Querystring, nur URL-taugliche Zeichen (wie in Evangtermine_Query::getQuerystring).
 		$additional = '';
 		if (isset($new_instance['additionalParameters']) && is_scalar($new_instance['additionalParameters'])) {
 			$additional = (string) $new_instance['additionalParameters'];
@@ -107,7 +112,7 @@ class EtWidget extends WP_Widget {
 			'after_title'   => ''
 		));
 
-		$etstream = new EtQuery(ET_TEMPLATE_TEASER_WIDGET);
+		$etstream = new Evangtermine_Query(ET_TEMPLATE_TEASER_WIDGET);
 		$etstream->setNoDetail(true); // Detailansicht für dieses Modul unterdrücken
 		if(get_option ('css') != '') {
 			$etstream->setLoadCSS(false);
@@ -115,14 +120,14 @@ class EtWidget extends WP_Widget {
 		
 		$etstream->setEtParameters($instance);
 		
-		// Der Titel wird beim Aufbau des Querystrings übersprungen (EtQuery::getQuerystring) und hier nur ausgegeben.
+		// Der Titel wird beim Aufbau des Querystrings übersprungen (Evangtermine_Query::getQuerystring) und hier nur ausgegeben.
 		$title	= apply_filters('widget_title', isset($instance['title']) ? $instance['title'] : '');
 
 		$queryString = $etstream->getQuerystring();
 		$content = $etstream->retrieveStream($queryString);
 		
 		// View für die Ausgabe aufrufen
-		$view = new EtView('et_sidebar');
+		$view = new Evangtermine_View('et_sidebar');
 		$content = $view->buildView($content);
 		
 		// $content in den Widget-Code einpacken und ausgeben

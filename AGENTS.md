@@ -49,13 +49,13 @@ No build system. Composer (PHPCS) and npm (end-to-end tests) are used for dev to
 
 ```
 evangtermine.php          <- Plugin entry: constants, shortcodes, widget registration, CSS hook
-autoloader.php            <- AutoloaderET: application/{controllers,models,views,helper,forms}/class.<name>.php
+autoloader.php            <- Evangtermine_Autoloader: application/{controllers,models,views,helper,forms}/class.<name>.php
 application/
   configs/defaults.php    <- ET_DEFAULT_HOST, ET_DEFAULT_PROTOCOL, ET_OPTION_* defaults
-  controllers/            <- ShortcodeVeranstalter/Teaser/Panels/Minical, EtWidget
-  models/class.etquery.php <- EtQuery: query string + wp_remote_get + HTML post-processing
-  views/class.etview.php  <- EtView: <div> wrapper
-  helper/                 <- IncludeCSS (wp_head), Debugging
+  controllers/            <- Evangtermine_ShortcodeVeranstalter/Teaser/Panels/Minical, EtWidget
+  models/class.evangtermine_query.php <- Evangtermine_Query: query string + wp_remote_get + HTML post-processing
+  views/class.evangtermine_view.php  <- Evangtermine_View: <div> wrapper
+  helper/                 <- Evangtermine_IncludeCSS (wp_head), Evangtermine_Debugging
   forms/                  <- options.php (Settings API, et_group), widget form
 assets/                   <- bundled Bootstrap 3.3.7, jQuery, Font Awesome 4.7.0, CSS
 readme-translations/   <- readme.txt translations (de, de formal) for translate.wordpress.org (not in the release)
@@ -67,17 +67,17 @@ readme.txt                <- WordPress.org plugin listing
 
 **Data flow (shortcode or widget call):**
 1. `evangtermine.php` registers the shortcodes (`et_veranstalter`, `et_teaser`, `et_panels`, `et_minical`) and the widget
-2. The controller collects attributes and saved options into an `EtQuery` object
+2. The controller collects attributes and saved options into an `Evangtermine_Query` object
 3. Request values (`$_REQUEST`, `$_GET['etID']`) are merged into the query
-4. `EtQuery::retrieveStream()` fetches the remote Evangelische Termine page with `wp_remote_get()`
-5. `EtQuery::filterStream()` post-processes the HTML (strip remote CSS/JS, rewrite image and pagination URLs)
-6. `EtView::buildView()` wraps the HTML in a `<div>`, which is returned to WordPress
+4. `Evangtermine_Query::retrieveStream()` fetches the remote Evangelische Termine page with `wp_remote_get()`
+5. `Evangtermine_Query::filterStream()` post-processes the HTML (strip remote CSS/JS, rewrite image and pagination URLs)
+6. `Evangtermine_View::buildView()` wraps the HTML in a `<div>`, which is returned to WordPress
 
-**Filter state:** the user's filters travel in the URL only, the plugin does not use a PHP session. `ShortcodeVeranstalter` reads the filter values from the request (`getRequestValue()`) and passes them to `EtQuery::setEtParameter()`; `filterStream()` rewrites the links in the remote HTML to the permalink plus the current query string. `reset=1` returns to the shortcode defaults.
+**Filter state:** the user's filters travel in the URL only, the plugin does not use a PHP session. `Evangtermine_ShortcodeVeranstalter` reads the filter values from the request (`getRequestValue()`) and passes them to `Evangtermine_Query::setEtParameter()`; `filterStream()` rewrites the links in the remote HTML to the permalink plus the current query string. `reset=1` returns to the shortcode defaults.
 
 **Admin settings** (`application/forms/options.php`): Seven options registered under `et_group` via Settings API. Shortcode attributes and widget fields override these defaults per call.
 
-**Security-critical spots:** request data that reaches the remote URL or the returned HTML (`ShortcodeVeranstalter`, `EtQuery::getQuerystring`, `EtQuery::filterStream`) and printed option values (`options.php`, `IncludeCSS`).
+**Security-critical spots:** request data that reaches the remote URL or the returned HTML (`Evangtermine_ShortcodeVeranstalter`, `Evangtermine_Query::getQuerystring`, `Evangtermine_Query::filterStream`) and printed option values (`options.php`, `Evangtermine_IncludeCSS`).
 
 ## Branches and Releases
 

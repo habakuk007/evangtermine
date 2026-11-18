@@ -1,5 +1,10 @@
 <?php
-class PluginOptionsPage {
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+class Evangtermine_PluginOptionsPage {
 	
 	/**
 	 * Optionspage auf der Pluginseite aufrufbar

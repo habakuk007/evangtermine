@@ -1,16 +1,20 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 // Klassen automatisch laden
-class AutoloaderET {
+class Evangtermine_Autoloader {
 	
 	/**
-	 * AutoloaderET
+	 * Evangtermine_Autoloader
 	 * Registiert die Methode für das automatische Laden der Klassen.
 	 * 
 	 * @return boolean
 	 */
 	public static function Register() {
-		return spl_autoload_register(array('AutoloaderET', 'Load'));
+		return spl_autoload_register(array('Evangtermine_Autoloader', 'Load'));
 	}
 	
 	/**
@@ -24,11 +28,11 @@ class AutoloaderET {
 		}
 		
 		$classDirectories = array(
-				BASE_PATH . '/application/controllers/',
-				BASE_PATH . '/application/models/',
-				BASE_PATH . '/application/views/',
-				BASE_PATH . '/application/helper/',
-				BASE_PATH . '/application/forms/'
+				ET_BASE_PATH . '/application/controllers/',
+				ET_BASE_PATH . '/application/models/',
+				ET_BASE_PATH . '/application/views/',
+				ET_BASE_PATH . '/application/helper/',
+				ET_BASE_PATH . '/application/forms/'
 		);
 		
 		foreach ($classDirectories as $classDirectory) {
