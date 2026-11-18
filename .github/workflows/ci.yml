@@ -71,7 +71,7 @@ jobs:
           # dependency folders, tests, tool configuration, Markdown documents.
           unwanted="$(find . -mindepth 1 \( \
             -name '.*' -o -name 'vendor' -o -name 'node_modules' -o -name 'tests' \
-            -o -name 'composer.json' -o -name 'composer.lock' \
+            -o -name 'composer.lock' \
             -o -name 'package.json' -o -name 'package-lock.json' \
             -o -name 'phpcs.xml*' -o -name 'phpunit.xml*' -o -name 'opencode.json' \
             -o -name '*.md' -o -name '*.zip' -o -name '*.log' \

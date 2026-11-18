@@ -16,10 +16,6 @@ class Evangtermine_ShortcodePanels {
 	public static function etPanels($attr, $content = null) {
 		
 		$etstream = new Evangtermine_Query();
-// 		$etstream->setNoDetail(true); // Detailansicht für dieses Modul unterdrücken
-// 		if(get_option ('css') != '') {
-// 			$etstream->setLoadCSS(false);
-// 		}
 		
 		// Optionen und Parameter zusammenführen
 		$etstream->setEtParameters($attr);

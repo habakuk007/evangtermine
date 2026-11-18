@@ -113,7 +113,7 @@ Open https://wordpress.org/plugins/developers/readme-validator/ and paste the co
 
 ## Post-Release (WordPress.org SVN)
 
-**Preferred: let the deploy workflow do it.** Pushing the version tag on `master` runs `.github/workflows/deploy.yml` (10up action, environment `Deploy`, reviewer required). It respects `.distignore` and publishes `.wordpress-org/` (screenshots, banner, icon) to the SVN root-level `assets/`. A manual run is a dry run. Read `.agents/instructions/wordpress-org-submission.instructions.md` first (§8 common rejections, §9 automated security review).
+**Preferred: let the deploy workflow do it.** Pushing the version tag on `master` runs `.github/workflows/deploy.yml` (10up action, environment `Deploy`, reviewer required). It respects `.distignore` and publishes `.wordpress-org/` (screenshots, banner, icon) to the SVN root-level `assets/`. A manual run is a dry run. What ships: the plugin PHP code, `application/`, `assets/`, `languages/` (.po/.mo), `readme.txt`, `changelog.txt`, `LICENSE` and `composer.json` (kept on purpose: it documents the dev tooling and licence; `composer.lock` is excluded). `build/` (local build output), `tests/`, `vendor/`, `node_modules/`, zips and all AI/tool files are excluded via `.distignore`. Check with `rsync -rc --exclude-from=.distignore ./ <tmpdir>/` and confirm no zips/tests/vendor/build/AI files and a size below 10 MB. Read `.agents/instructions/wordpress-org-submission.instructions.md` first (§8 common rejections, §9 automated security review).
 
 Before tagging:
 - Run `/wp-security-review` on the release diff. Since June 2026 every release goes through an automated AI/Jetpack Scan review, and a version above the blocking threshold is withheld from the update API (fix and release a new version).

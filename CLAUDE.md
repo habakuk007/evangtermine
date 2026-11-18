@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-**Evangelische Termine** (v3.3) — WordPress plugin that embeds the Protestant events calendar from [www.evangelische-termine.de](https://www.evangelische-termine.de) via shortcodes and a sidebar widget. The event HTML is fetched live from the remote host with the WordPress HTTP API (`wp_remote_get()`) and injected into the page. There is no build system; Composer (PHPCS) and npm (end-to-end tests) are used for dev tooling only, the plugin has no runtime dependencies.
+**Evangelische Termine** (v3.4) — WordPress plugin that embeds the Protestant events calendar from [www.evangelische-termine.de](https://www.evangelische-termine.de) via shortcodes and a sidebar widget. The event HTML is fetched live from the remote host with the WordPress HTTP API (`wp_remote_get()`) and injected into the page. There is no build system; Composer (PHPCS) and npm (end-to-end tests) are used for dev tooling only, the plugin has no runtime dependencies.
 
 The plugin was closed on WordPress.org on 2025-05-01 (security issue). The git history was imported from the WordPress.org SVN; the work here is to fix the security issues (issues #1–#6), make it PHP 8 compatible and get it re-opened. See `HANDOVER.md` for the current state if present.
 
