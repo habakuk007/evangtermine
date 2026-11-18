@@ -53,10 +53,8 @@ class evangtermine {
 			Evangtermine_Autoloader::Register();
 		}
 		
-		// Load the bundled translations (languages/evangtermine-<locale>.mo)
-		add_action ('init', function () {
-			load_plugin_textdomain ('evangtermine', false, dirname (plugin_basename (__FILE__)) . '/languages');
-		});
+		// No load_plugin_textdomain(): since WordPress 4.6 translations of plugins hosted on
+		// WordPress.org (text domain = slug) are loaded automatically from the language packs.
 
 		// integrate the options menu if an admin ist logged in
 		if (is_admin ()) {
