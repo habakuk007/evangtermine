@@ -30,14 +30,14 @@
  * Boston, MA 02110-1301, USA.
  */
 
-define ('ET_VERSION', '3.4');
-
-define('ET_DEBUG', false);
-
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+define ('ET_VERSION', '3.4');
+
+define('ET_DEBUG', false);
 
 class evangtermine {
 	
