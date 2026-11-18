@@ -459,11 +459,16 @@ class Evangtermine_Query
         // protokoll-relativ (//host/bundles/...), mit oder ohne Versionsparameter (?v=...); ersetzt wird deshalb über den Pfad.
         $assetsUrl = plugins_url('assets/', ET_BASE_PATH . '/evangtermine.php');
         $bundled = array(
-            'css/panels/bootstrap3.3.7.min.js' => 'scripts/bootstrap3.3.7.min.js',
             'css/panels/bootstrap3.3.7.min.css' => 'styles/bootstrap3.3.7.min.css',
             'css/panels/bootstrap-theme3.3.7.min.css' => 'styles/bootstrap-theme3.3.7.min.css',
             'css/font-awesome.min.css' => 'font-awesome-4.7.0/css/font-awesome.min.css',
             'css/jquery-ui.min.css' => 'ui/1.12.1/themes/base/jquery-ui.css'
+        );
+        // Das Bootstrap-JavaScript des Panels-Moduls wird nicht mitgeliefert: das Markup nutzt keine Bootstrap-Komponenten (#67).
+        $stream = preg_replace(
+            '#<script\b[^>]*\bsrc=(["\'])' . self::REMOTE_BUNDLE_PREFIX . 'css/panels/bootstrap3\.3\.7\.min\.js(?:\?[^"\']*)?\1[^>]*>\s*</script>#i',
+            '',
+            $stream
         );
         foreach ($bundled as $remotePath => $localPath) {
             $stream = preg_replace(

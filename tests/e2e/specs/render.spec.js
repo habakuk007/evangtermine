@@ -49,7 +49,7 @@ test.describe( 'shortcodes and widget render', () => {
 		expect( await site.requests( page, { module: 'teaser', tpl: '1' } ) ).toHaveLength( 1 );
 	} );
 
-	test( 'et_panels shows the panels and loads Bootstrap and Font Awesome from the plugin', async ( { page, site } ) => {
+	test( 'et_panels shows the panels and loads Bootstrap CSS and Font Awesome from the plugin', async ( { page, site } ) => {
 		await visit( page, '/et-panels/' );
 
 		await expect( page.locator( '.et_panel .thumbnail' ) ).toHaveCount( 6 );
@@ -60,7 +60,8 @@ test.describe( 'shortcodes and widget render', () => {
 		);
 		expect( assets.filter( ( url ) => url.includes( '/assets/styles/bootstrap3.3.7.min.css' ) ) ).toHaveLength( 1 );
 		expect( assets.filter( ( url ) => url.includes( '/assets/font-awesome-4.7.0/css/font-awesome.min.css' ) ) ).toHaveLength( 1 );
-		expect( assets.filter( ( url ) => url.includes( '/assets/scripts/bootstrap3.3.7.min.js' ) ) ).toHaveLength( 1 );
+		// The Bootstrap JavaScript is not bundled: the markup uses no Bootstrap components, the script tag is removed.
+		expect( assets.filter( ( url ) => url.includes( 'bootstrap3.3.7.min.js' ) ) ).toHaveLength( 0 );
 		// Everything comes from this WordPress site (plugin folder or wp-includes), nothing from the calendar host.
 		for ( const url of assets ) {
 			expect( url ).toMatch( /\/wp-(content\/plugins|includes)\// );
