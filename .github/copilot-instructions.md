@@ -15,13 +15,13 @@ The plugin was closed on WordPress.org (security issue); the goal is to fix issu
 
 ```
 evangtermine.php            <- Plugin entry point, shortcode and widget registration
-autoloader.php              <- AutoloaderET (application/{controllers,models,views,helper,forms})
+autoloader.php              <- Evangtermine_Autoloader (application/{controllers,models,views,helper,forms})
 application/
   configs/defaults.php      <- ET_DEFAULT_HOST, ET_DEFAULT_PROTOCOL, ET_OPTION_* defaults
-  controllers/              <- ShortcodeVeranstalter/Teaser/Panels/Minical, EtWidget
-  models/class.etquery.php  <- EtQuery: query string, wp_remote_get, HTML post-processing
-  views/class.etview.php    <- EtView: <div> wrapper
-  helper/                   <- IncludeCSS, Debugging
+  controllers/              <- Evangtermine_ShortcodeVeranstalter/Teaser/Panels/Minical, EtWidget
+  models/class.evangtermine_query.php  <- Evangtermine_Query: query string, wp_remote_get, HTML post-processing
+  views/class.evangtermine_view.php    <- Evangtermine_View: <div> wrapper
+  helper/                   <- Evangtermine_IncludeCSS, Evangtermine_Debugging
   forms/                    <- options.php (Settings API), widget form
 assets/                     <- bundled Bootstrap, jQuery, Font Awesome, CSS
 readme-translations/     <- readme.txt translations (de, de formal) for translate.wordpress.org (not in the release)
@@ -46,7 +46,7 @@ readme.txt                  <- WordPress.org listing
 | Options names | `vid`, `region`, `until`, `css`, `encoding`, `etprotocol`, `ethost` (no prefix — legacy) |
 | External API host | `www.evangelische-termine.de` (configurable via option `ethost`) |
 | API transport | WordPress HTTP API (`wp_remote_get()`) |
-| Filter state | In the URL only (request value -> `EtQuery::setEtParameter()`), no PHP session |
+| Filter state | In the URL only (request value -> `Evangtermine_Query::setEtParameter()`), no PHP session |
 | Capability | `manage_options` (admin settings page) |
 | Shortcodes | `[et_veranstalter]`, `[et_teaser]`, `[et_panels]`, `[et_minical]` |
 | Widget | `EtWidget` class |
@@ -93,7 +93,7 @@ wp plugin check evangtermine
 
 ## When Adding Features
 
-1. Add new parameters to `EtQuery` (defaults) and the relevant controller in `application/controllers/`
+1. Add new parameters to `Evangtermine_Query` (defaults) and the relevant controller in `application/controllers/`
 2. Sanitize request input and escape all output (see the WordPress instructions)
 3. Add corresponding admin settings fields in `application/forms/options.php`
 4. Register the setting with `register_setting()` and a sanitize callback

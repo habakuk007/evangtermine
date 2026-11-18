@@ -1,5 +1,10 @@
 <?php
-class ShortcodeTeaser {
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+class Evangtermine_ShortcodeTeaser {
 	
 	/**
 	 * Verarbeitet die Attribute aus dem Shortcode et_teaser und gibt die Daten aus den Evangelischen Terminen aus.
@@ -10,7 +15,7 @@ class ShortcodeTeaser {
 	 */
 	public static function etTeaser($attr, $content = null) {
 		
-		$etstream = new EtQuery(ET_TEMPLATE_TEASER_SHORTCODE);
+		$etstream = new Evangtermine_Query(ET_TEMPLATE_TEASER_SHORTCODE);
 		$etstream->setNoDetail(true); // Detailansicht für dieses Modul unterdrücken
 		if(get_option ('css') != '') {
 			$etstream->setLoadCSS(false);
@@ -26,7 +31,7 @@ class ShortcodeTeaser {
 		$content = $etstream->retrieveStream($querystring);
 		
 		// View für die Ausgabe aufrufen
-		$view = new EtView('et_teaser');
+		$view = new Evangtermine_View('et_teaser');
 		$content = $view->buildView($content);
 		
 		return $content;

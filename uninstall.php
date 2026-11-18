@@ -23,7 +23,7 @@ function evangtermine_uninstall_site() {
 	// Gespeicherte Instanzen des Widgets (EtWidget; WordPress speichert sie unter "widget_" + kleingeschriebener id_base).
 	delete_option( 'widget_etwidget' );
 
-	// Zwischengespeicherte Abrufe (EtQuery::getCacheKey) inklusive ihrer Ablaufzeiten.
+	// Zwischengespeicherte Abrufe (Evangtermine_Query::getCacheKey) inklusive ihrer Ablaufzeiten.
 	// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 	$wpdb->query(
 		$wpdb->prepare(

@@ -147,7 +147,7 @@ test.describe( 'et_veranstalter: known bugs', () => {
 	} );
 
 	test( 'the <h1> of the detail view becomes an <h2>', async ( { page } ) => {
-		// EtQuery::filterStream() replaces only "<h1>" without attributes. The calendar host sends
+		// Evangtermine_Query::filterStream() replaces only "<h1>" without attributes. The calendar host sends
 		// <h1 id="et_detail_title">, so the output is <h1 id="et_detail_title">...</h2>.
 		test.fail();
 

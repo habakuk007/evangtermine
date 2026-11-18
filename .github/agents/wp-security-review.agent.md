@@ -18,7 +18,7 @@ Systematically check for the following vulnerability classes:
 ### 1. Cross-Site Scripting (XSS)
 - Any `echo`, `print`, or template output that is not wrapped in an escaping function
 - Required escaping: `esc_html()`, `esc_attr()`, `esc_url()`, `esc_textarea()`, `wp_kses_post()`
-- Remote response content (`wp_remote_get()` body) injected into page HTML in `EtQuery::filterStream()` / `EtView` (the plugin does this by design — flag every place where request data can reach that HTML, e.g. via the `http://_HOST_/?` rewrite)
+- Remote response content (`wp_remote_get()` body) injected into page HTML in `Evangtermine_Query::filterStream()` / `Evangtermine_View` (the plugin does this by design — flag every place where request data can reach that HTML, e.g. via the `http://_HOST_/?` rewrite)
 
 ### 2. Cross-Site Request Forgery (CSRF)
 - Any admin form submission or state-changing action without `check_admin_referer()` or `wp_verify_nonce()`
@@ -41,7 +41,7 @@ Systematically check for the following vulnerability classes:
 - File path construction using `$_GET` / `$_POST`
 
 ### 7. Remote requests (SSRF, transport security)
-- The plugin uses `wp_remote_get()` (`EtQuery::retrieveStream()`). Verify the target host/protocol (options `ethost`, `etprotocol`) is validated, `reject_unsafe_urls` is set, and request data is URL-encoded before it is appended to the query string.
+- The plugin uses `wp_remote_get()` (`Evangtermine_Query::retrieveStream()`). Verify the target host/protocol (options `ethost`, `etprotocol`) is validated, `reject_unsafe_urls` is set, and request data is URL-encoded before it is appended to the query string.
 - Flag any `curl_*`, `file_get_contents()` on URLs, or other direct HTTP access.
 
 ### 8. CVE / Known Vulnerability Checks

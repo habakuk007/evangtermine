@@ -1,6 +1,10 @@
 <?php
 
-class EtQuery
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+class Evangtermine_Query
 {
 
     // Regex-Teil: Anfang der Adresse einer Datei aus /bundles/vket/ der Evangelischen Termine, mit oder ohne Protokoll und Host.
@@ -289,11 +293,11 @@ class EtQuery
                 $filename = ET_DETAILS_MODUL;
             }
 
-            Debugging::consoleLog('Querystring: ', $queryString);
+            Evangtermine_Debugging::consoleLog('Querystring: ', $queryString);
 
             // TODO Prüfen, ob etHost mit dem angegebenen Protokoll erreichbar ist, wenn nicht, das andere Protokoll testen
             $url = $this->etProtocol . $host . '/' . $filename . '?' . $queryString;
-            Debugging::consoleLog('URL: ', $url);
+            Evangtermine_Debugging::consoleLog('URL: ', $url);
 
             // Ziel prüfen (Host aus den Einstellungen): keine lokalen/privaten Adressen
             if (! self::isSafeHost($host)) {
@@ -360,7 +364,7 @@ class EtQuery
         if (! wp_script_is('evangtermine-calendar', 'registered')) {
             wp_register_script(
                 'evangtermine-calendar',
-                plugins_url('assets/scripts/et_calendar.js', BASE_PATH . '/evangtermine.php'),
+                plugins_url('assets/scripts/et_calendar.js', ET_BASE_PATH . '/evangtermine.php'),
                 array('jquery'),
                 ET_VERSION,
                 false
@@ -453,7 +457,7 @@ class EtQuery
         // Bootstrap, Font Awesome und das Stylesheet von jQuery UI aus dem Plugin laden statt vom Host der Evangelischen Termine.
         // Die Adressen kommen je nach Modul relativ (/bundles/...), absolut (https://host/bundles/...) oder
         // protokoll-relativ (//host/bundles/...), mit oder ohne Versionsparameter (?v=...); ersetzt wird deshalb über den Pfad.
-        $assetsUrl = plugins_url('assets/', BASE_PATH . '/evangtermine.php');
+        $assetsUrl = plugins_url('assets/', ET_BASE_PATH . '/evangtermine.php');
         $bundled = array(
             'css/panels/bootstrap3.3.7.min.js' => 'scripts/bootstrap3.3.7.min.js',
             'css/panels/bootstrap3.3.7.min.css' => 'styles/bootstrap3.3.7.min.css',

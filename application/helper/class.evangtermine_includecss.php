@@ -1,5 +1,10 @@
 <?php
-class IncludeCSS {
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+class Evangtermine_IncludeCSS {
 
 	/**
 	 * Eigene CSS-Datei aus den Einstellungen einbinden (Hook wp_enqueue_scripts)

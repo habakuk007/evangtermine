@@ -100,7 +100,7 @@ Which fixture is used:
 | `teaser` | `teaser-tpl1-css.html` (et_teaser with the default styles), `teaser-tpl1-nocss.html` (with `css=nocss`), `teaser-tpl2.html` (widget) |
 | `panels` | `panels.html` |
 
-A host check with a local HTTP server is not possible: the plugin refuses `localhost` and private addresses as calendar host (`EtQuery::isSafeHost()`, `et_sanitize_ethost()`). This is why the mock is a filter inside WordPress.
+A host check with a local HTTP server is not possible: the plugin refuses `localhost` and private addresses as calendar host (`Evangtermine_Query::isSafeHost()`, `evangtermine_sanitize_ethost()`). This is why the mock is a filter inside WordPress.
 
 The helper is switched off after the start of the test site (the plugin talks to the real host, good for manual testing). Every test switches it on with a reset.
 
