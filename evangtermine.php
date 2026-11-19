@@ -5,6 +5,7 @@
  */
 /*
  * Plugin Name: Evangelische Termine
+ * Plugin URI: https://github.com/habakuk007/evangtermine
  * Description: Shows the events of the German Protestant event calendar "Evangelische Termine" (www.evangelische-termine.de) with shortcodes and a widget.
  * Author: habakuk
  * Version: 3.4
@@ -12,6 +13,7 @@
  * Requires PHP: 7.4
  * Author URI: https://profiles.wordpress.org/habakuk/
  * License: GPLv2 or later
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: evangtermine
  * Domain Path: /languages
  */
