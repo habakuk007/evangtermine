@@ -88,12 +88,12 @@ msgid "Originally developed by Norbert Räbiger (https://profiles.wordpress.org/
 msgstr "Ursprünglich entwickelt von Norbert Räbiger (https://profiles.wordpress.org/regibaer)."
 
 #. Found in description paragraph.
-msgid "[et_veranstalter], <code>[et_panels]</code> and <code>[et_minical]</code> use the jQuery that ships with WordPress; <code>[et_veranstalter]</code> also uses its date picker, <code>[et_minical]</code> its jQuery UI and moment."
-msgstr "[et_veranstalter], <code>[et_panels]</code> und <code>[et_minical]</code> verwenden das jQuery, das mit WordPress ausgeliefert wird; <code>[et_veranstalter]</code> nutzt auch dessen Datumsauswahl, <code>[et_minical]</code> dessen jQuery UI und moment."
+msgid "jQuery, the date picker and moment come from WordPress."
+msgstr "jQuery, die Datumsauswahl und moment stammen von WordPress."
 
 #. Found in description paragraph.
-msgid "Colorbox 1.6.4 (MIT), https://www.jacklmoore.com/colorbox/ - used by <code>[et_minical]</code>"
-msgstr "Colorbox 1.6.4 (MIT), https://www.jacklmoore.com/colorbox/ – verwendet von <code>[et_minical]</code>"
+msgid "Colorbox 1.6.4 (MIT), https://www.jacklmoore.com/colorbox/ - used by <code>[et_minical]</code>. Final release, no known CVE."
+msgstr "Colorbox 1.6.4 (MIT), https://www.jacklmoore.com/colorbox/ – verwendet von <code>[et_minical]</code>. Letzte Version, keine bekannte CVE."
 
 #. Found in description paragraph.
 msgid "The widget form offers the same parameters, plus a field for additional parameters in the form <code>param1=value1&amp;param2=value2</code>."
@@ -116,16 +116,16 @@ msgid "\"Evangelische Termine\" (https://www.evangelische-termine.de/) is the ev
 msgstr "„Evangelische Termine“ (https://www.evangelische-termine.de/) ist der Veranstaltungskalender der evangelischen Kirchen in Deutschland. Dieses Plugin ruft die Veranstaltungen eines oder mehrerer Veranstalter oder einer ganzen Region (Dekanat) aus diesem Kalender ab und zeigt sie in WordPress an. Shortcodes und ein Widget steuern, was angezeigt wird."
 
 #. Found in description list item.
-msgid "jQuery UI 1.12.1 base theme, stylesheet and icons only (MIT), https://jqueryui.com/ - used by <code>[et_minical]</code> and the date filter of <code>[et_veranstalter]</code>"
-msgstr "jQuery UI 1.12.1, nur Basis-Theme, Stylesheet und Icons (MIT), https://jqueryui.com/ – verwendet von <code>[et_minical]</code> und dem Datumsfilter von <code>[et_veranstalter]</code>"
+msgid "jQuery UI 1.12.1 base theme (MIT), https://jqueryui.com/ - used by <code>[et_minical]</code> and the date filter of <code>[et_veranstalter]</code>"
+msgstr "jQuery UI 1.12.1, Basis-Theme (MIT), https://jqueryui.com/ – verwendet von <code>[et_minical]</code> und dem Datumsfilter von <code>[et_veranstalter]</code>"
 
 #. Found in description list item.
-msgid "Font Awesome 4.7.0 (font: SIL OFL 1.1, CSS: MIT), https://fontawesome.com/v4/ - used by <code>[et_panels]</code>"
-msgstr "Font Awesome 4.7.0 (Schrift: SIL OFL 1.1, CSS: MIT), https://fontawesome.com/v4/ – verwendet von <code>[et_panels]</code>"
+msgid "Font Awesome 4.7.0, CSS and woff/woff2 fonts (OFL 1.1 / MIT), https://fontawesome.com/v4/ - used by <code>[et_panels]</code>. No JavaScript, no known CVE."
+msgstr "Font Awesome 4.7.0, CSS und woff/woff2-Schriften (OFL 1.1 / MIT), https://fontawesome.com/v4/ – verwendet von <code>[et_panels]</code>. Kein JavaScript, keine bekannte CVE."
 
 #. Found in description list item.
-msgid "Bootstrap 3.3.7 (MIT), https://getbootstrap.com/ - used by <code>[et_panels]</code>"
-msgstr "Bootstrap 3.3.7 (MIT), https://getbootstrap.com/ – verwendet von <code>[et_panels]</code>"
+msgid "Bootstrap 3.4.1, CSS only (MIT), https://getbootstrap.com/ - used by <code>[et_panels]</code>. Last 3.x release, fixes the known CVEs. No Bootstrap JS."
+msgstr "Bootstrap 3.4.1, nur CSS (MIT), https://getbootstrap.com/ – verwendet von <code>[et_panels]</code>. Letzte 3.x-Version, behebt die bekannten CVEs. Kein Bootstrap-JS."
 
 #. Found in description list item.
 msgid "<code>evangtermine_cache_ttl</code>: lifetime of the cache for <code>[et_teaser]</code> and the widget in seconds (default 300, 0 switches it off)."
