@@ -113,12 +113,12 @@ The widget form offers the same parameters, plus a field for additional paramete
 
 = Bundled libraries =
 
-* Bootstrap 3.4.1, CSS only (MIT), https://getbootstrap.com/ - used by `[et_panels]`. 3.4.1 is the last 3.x release and fixes CVE-2018-14040, CVE-2018-14041, CVE-2018-14042, CVE-2018-20676, CVE-2018-20677 and CVE-2019-8331. The Bootstrap JavaScript is not bundled, the calendar markup uses no Bootstrap components.
-* Font Awesome 4.7.0, CSS and woff/woff2 fonts only (font: SIL OFL 1.1, CSS: MIT), https://fontawesome.com/v4/ - used by `[et_panels]`. No JavaScript, no known CVE, and the icon classes are used by the markup of the calendar.
-* jQuery UI 1.12.1 base theme, stylesheet and icons only (MIT), https://jqueryui.com/ - used by `[et_minical]` and the date filter of `[et_veranstalter]`
-* Colorbox 1.6.4 (MIT), https://www.jacklmoore.com/colorbox/ - used by `[et_minical]`. Final release of the library, no known CVE.
+* Bootstrap 3.4.1, CSS only (MIT), https://getbootstrap.com/ - used by `[et_panels]`. Last 3.x release, fixes the known CVEs. No Bootstrap JS.
+* Font Awesome 4.7.0, CSS and woff/woff2 fonts (OFL 1.1 / MIT), https://fontawesome.com/v4/ - used by `[et_panels]`. No JavaScript, no known CVE.
+* jQuery UI 1.12.1 base theme (MIT), https://jqueryui.com/ - used by `[et_minical]` and the date filter of `[et_veranstalter]`
+* Colorbox 1.6.4 (MIT), https://www.jacklmoore.com/colorbox/ - used by `[et_minical]`. Final release, no known CVE.
 
-`[et_veranstalter]`, `[et_panels]` and `[et_minical]` use the jQuery that ships with WordPress; `[et_veranstalter]` also uses its date picker, `[et_minical]` its jQuery UI and moment.
+jQuery, the date picker and moment come from WordPress.
 
 = Alternative =
 
