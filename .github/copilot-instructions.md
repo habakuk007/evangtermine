@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-**Evangelische Termine** is a WordPress plugin (v3.3) that embeds the Protestant events database
+**Evangelische Termine** is a WordPress plugin (v3.4) that embeds the Protestant events database
 from [www.evangelische-termine.de](https://www.evangelische-termine.de) into any WordPress site.
 It provides shortcodes and a sidebar widget; the event HTML is fetched live from the remote host
 with the WordPress HTTP API (`wp_remote_get()`).

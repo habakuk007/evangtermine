@@ -75,16 +75,11 @@ class evangtermine {
 		// shortcode für das Veranstaltermodul einbinden
 		add_shortcode('et_veranstalter', array('Evangtermine_ShortcodeVeranstalter', 'etVeranstalter'));
 		
-		// TODO shortcode für das Panelsmodul einbinden
+		// shortcode für das Panelsmodul einbinden
 		add_shortcode('et_panels', array('Evangtermine_ShortcodePanels', 'etPanels'));
 		
 		// shortcode für den Mini-Kalender
 		add_shortcode('et_minical', array('Evangtermine_ShortcodeMinical', 'etMinical'));
-		
-		// shortcode für einen Teaser der die Daten über JSON abruft
-		// add_shortcode('et_teaserjson', array('ShortcodeTeaserJson', 'etTeaserJson'));
-		
-		// TODO shortcode für das Modul mit der Übersichtskarte http://www.evangelische-termine.de/map?vid=952&itemsPerPage=100&lat=48.92971763063&lng=10.78857421875&zoom=7&ipm=808®ion=407&vid=all
 		
 		// Widget einbinden
 		add_action( 'widgets_init', 'evangtermine_register_widget' );
