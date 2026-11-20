@@ -27,6 +27,8 @@ const PAGES = [
 ];
 
 // Values of src/href/srcset that start a request, read from the markup (protocol-relative URLs stay as written).
+// Navigation links (a[href], for example the iCal and invitation links of the detail view) are out of scope on purpose:
+// they only contact a host when the visitor clicks them.
 async function referencedUrls( page ) {
 	return page.evaluate( () => {
 		const selectors = [
@@ -42,8 +44,15 @@ async function referencedUrls( page ) {
 				const raw = node.getAttribute( attribute );
 				const values = 'srcset' === attribute ? raw.split( ',' ).map( ( part ) => part.trim().split( /\s+/ )[ 0 ] ) : [ raw ];
 				for ( const value of values ) {
-					if ( value ) {
-						found.push( { selector, raw: value, url: new URL( value, document.baseURI ).href } );
+					// A malformed value (or a data:/javascript: URL) cannot start a request to another host: skip it
+					// instead of failing the whole test with an unclear stack.
+					try {
+						const url = new URL( value, document.baseURI );
+						if ( /^https?:$/.test( url.protocol ) ) {
+							found.push( { selector, raw: value, url: url.href } );
+						}
+					} catch ( error ) {
+						// Not a valid URL: ignore.
 					}
 				}
 			}
@@ -52,11 +61,10 @@ async function referencedUrls( page ) {
 	} );
 }
 
-function hostsOutside( urls ) {
-	return urls
-		.map( ( url ) => new URL( url ) )
-		.filter( ( url ) => /^https?:$/.test( url.protocol ) && ! ALLOWLIST.includes( url.hostname ) )
-		.map( ( url ) => url.href );
+// One place for the allowlist semantics: an http(s) URL on another origin than the test site and not on the allowlist.
+function isOutside( href, own ) {
+	const url = new URL( href );
+	return /^https?:$/.test( url.protocol ) && url.origin !== own && ! ALLOWLIST.includes( url.hostname );
 }
 
 test.describe( 'external hosts guard', () => {
@@ -65,17 +73,15 @@ test.describe( 'external hosts guard', () => {
 			await visit( page, path );
 			await page.waitForLoadState( 'networkidle' );
 
+			const own = new URL( baseURL ).origin;
+
 			// (a) Requests that the browser tried to send to other hosts (the fixture "page" blocks and records them).
-			expect( hostsOutside( page.externalRequests ), 'requests to hosts outside the allowlist' ).toEqual( [] );
+			expect( page.externalRequests.filter( ( href ) => isOutside( href, own ) ), 'requests to hosts outside the allowlist' ).toEqual( [] );
 			expect( page.externalRequests.filter( ( url ) => /\.js(\?|$)/.test( url ) ), 'external JavaScript' ).toEqual( [] );
 
 			// (b) Markup that would start a request later (lazy images, scripts that did not run, ...).
-			const own = new URL( baseURL ).origin;
 			const referenced = await referencedUrls( page );
-			const outside = referenced.filter( ( entry ) => {
-				const url = new URL( entry.url );
-				return /^https?:$/.test( url.protocol ) && url.origin !== own && ! ALLOWLIST.includes( url.hostname );
-			} );
+			const outside = referenced.filter( ( entry ) => isOutside( entry.url, own ) );
 			expect( outside, 'src/href/srcset outside the allowlist' ).toEqual( [] );
 			const externalScripts = referenced.filter( ( entry ) => 'script[src]' === entry.selector && new URL( entry.url ).origin !== own );
 			expect( externalScripts, 'external script[src]' ).toEqual( [] );
