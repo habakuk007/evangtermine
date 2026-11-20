@@ -90,6 +90,13 @@ Run the WordPress.org plugin check (needs WP-CLI and the plugin "Plugin Check"):
 wp plugin check evangtermine
 ```
 
+By default WP-CLI runs only the static checks. To include the runtime checks, load the
+Plugin Check CLI file, for example:
+
+```bash
+wp plugin check evangtermine --require=./wp-content/plugins/plugin-check/cli.php
+```
+
 ## Testing locally
 
 The easiest way is [WordPress Playground](https://wordpress.github.io/wordpress-playground/).
