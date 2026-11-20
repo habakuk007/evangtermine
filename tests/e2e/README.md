@@ -136,6 +136,7 @@ The control interface has no access check. Never copy the helper to a real websi
 | `security.spec.js` | XSS probes (`et_q`, unknown parameters, `etID`), cookies are not forwarded, https by default, unsafe hosts are not requested, `et_minical` with an apostrophe. |
 | `options.spec.js` | Options page: escaping, select fields, `ethost` is rejected for local addresses, output of the `css` option in the page head. |
 | `cache.spec.js` | Teaser and widget cache, `evangtermine_cache_ttl`, errors are not cached, default CSS of `et_teaser`. |
+| `external-hosts.spec.js` | Guard for issue #33: every shortcode page and the detail view contact only hosts of an explicit allowlist (requests and `src`/`href`/`srcset` in the markup, no external JavaScript). Each allowlist entry names the PR that removes it. |
 | `live.spec.js` | Structure of the output with the real calendar host (organiser `1474` and region `407`). |
 
 PHP messages: the test site runs with `WP_DEBUG`, `WP_DEBUG_DISPLAY` and `WP_DEBUG_LOG`. `visit()` and `site.requests()` fail when the page shows a PHP warning, notice, deprecation or error, or when `debug.log` has one.
