@@ -1,6 +1,6 @@
 # Readme translations (translate.wordpress.org)
 
-Translations of the `readme.txt` (plugin directory page). They are **not** part of the plugin: WordPress never loads a readme translation from a file, and this folder is excluded from the release (`.distignore`). It is not `languages/` on purpose, because `composer make:mo` compiles every `.po` there.
+Translations of the `readme.txt` (plugin directory page). They are **not** part of the plugin: WordPress never loads a readme translation from a file, and this folder is excluded from the release (`.distignore`). It is a subfolder of `languages/`; `composer make:mo` does not descend into it, so these files are not compiled.
 
 | File | Locale | Address |
 |------|--------|---------|

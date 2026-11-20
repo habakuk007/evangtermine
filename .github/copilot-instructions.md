@@ -24,7 +24,7 @@ application/
   helper/                   <- Evangtermine_IncludeCSS, Evangtermine_Debugging
   forms/                    <- options.php (Settings API), widget form
 assets/                     <- bundled Bootstrap, jQuery, Font Awesome, CSS
-readme-translations/     <- readme.txt translations (de, de formal) for translate.wordpress.org (not in the release)
+languages/readme-translations/     <- readme.txt translations (de, de formal) for translate.wordpress.org (not in the release)
 tests/e2e/                  <- Playwright tests against WordPress Playground (not in the release)
 readme.txt                  <- WordPress.org listing
 ```

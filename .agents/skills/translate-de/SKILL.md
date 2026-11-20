@@ -10,14 +10,14 @@ Rules for German translations of this plugin. Sources: [Style Guide](https://de.
 ## When to Use
 
 - New or changed strings in `evangtermine.pot` need a German translation
-- Reviewing existing `languages/evangtermine-de_DE*.po` or `readme-translations/readme-de_DE*.po`
+- Reviewing existing `languages/evangtermine-de_DE*.po` or `languages/readme-translations/readme-de_DE*.po`
 - Questions about Du/Sie, glossary terms, quotation marks, hyphenation of compounds
 - Before an import into translate.wordpress.org
 
 ## Prerequisites
 
 - `composer install` (WP-CLI i18n for `composer make:pot` and `composer make:mo`)
-- Files: `languages/evangtermine.pot` (template, English source), `languages/evangtermine-de_DE.po` (du), `languages/evangtermine-de_DE_formal.po` (Sie). Readme: see `readme-translations/README.md`.
+- Files: `languages/evangtermine.pot` (template, English source), `languages/evangtermine-de_DE.po` (du), `languages/evangtermine-de_DE_formal.po` (Sie). Readme: see `languages/readme-translations/README.md`.
 
 ## Workflows
 
@@ -88,4 +88,4 @@ If `msgfmt` is not installed, `composer make:mo` (WP-CLI) reports syntax errors 
 
 - `references/style-guide.md` — summary of the Style Guide (rules in our own words)
 - `references/glossary.md` — complete glossary export (520 entries, 2026-11-21) and how to refresh it
-- `readme-translations/README.md` — readme import into translate.wordpress.org
+- `languages/readme-translations/README.md` — readme import into translate.wordpress.org
