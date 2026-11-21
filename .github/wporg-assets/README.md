@@ -7,8 +7,10 @@ the icon tile with rounded transparent corners, crops and scales the banner, and
 - **Source:** `source/icon-source.jpg` and `source/banner-source.jpg` are AI-generated illustrations
   created for this plugin (calendar page with a plain cross, people at a gathering). They contain no
   logo of Evangelische Termine, Vernetzte Kirche, the EKD or a Landeskirche.
-- **Tool and terms:** TODO(maintainer): record the image generator, the date and confirm that its terms
-  allow publishing the output under GPL-2.0-or-later before the next deploy.
+- **Copyright:** Stefan Wagner, trumpkin.de, created with the help of AI. Published under
+  GPL-2.0-or-later, same as the plugin.
+- **Tool and terms:** TODO(maintainer): record the image generator and the date, and confirm that its
+  terms allow publishing the output under GPL-2.0-or-later.
 - **Banner text:** set in Arial (system font, rendered into the PNG; the font is not distributed).
 - Regenerate: `python .github/wporg-assets/make_assets.py` (needs Pillow).
 
