@@ -12,8 +12,6 @@ the icon tile with rounded transparent corners, crops and scales the banner, and
   under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/). It is not part of the plugin
   ZIP (`.distignore`), so the plugin itself stays GPL-2.0-or-later. `make_assets.py`, the blueprint and the
   rest of the repository are GPL-2.0-or-later as well.
-- **Tool and terms:** TODO(maintainer): record the image generator and the date, and confirm that its
-  terms allow publishing the output under CC BY-NC-SA 4.0.
 - **Banner text:** set in Arial (system font, rendered into the PNG; the font is not distributed).
 - Regenerate: `python .github/wporg-assets/make_assets.py` (needs Pillow).
 
