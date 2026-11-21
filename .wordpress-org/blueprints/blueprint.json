@@ -1,0 +1,38 @@
+{
+	"$schema": "https://playground.wordpress.net/blueprint-schema.json",
+	"meta": {
+		"title": "Evangelische Termine",
+		"author": "habakuk007",
+		"description": "Try the Evangelische Termine plugin: the Protestant events calendar from www.evangelische-termine.de, embedded with shortcodes and a widget. The demo pages load the events live."
+	},
+	"preferredVersions": {
+		"php": "8.3",
+		"wp": "latest"
+	},
+	"features": {
+		"networking": true
+	},
+	"login": true,
+	"landingPage": "/et-veranstalter/",
+	"siteOptions": {
+		"blogname": "Evangelische Termine – Demo",
+		"permalink_structure": "/%postname%/",
+		"vid": "3216"
+	},
+	"steps": [
+		{
+			"step": "installPlugin",
+			"pluginData": {
+				"resource": "wordpress.org/plugins",
+				"slug": "evangtermine"
+			},
+			"options": {
+				"activate": true
+			}
+		},
+		{
+			"step": "runPHP",
+			"code": "<?php\nrequire '/wordpress/wp-load.php';\n\n// One demo page per shortcode. vid 3216 is the organiser set in the plugin settings.\n$pages = array(\n\t'et-veranstalter' => array( 'Veranstaltungen', '[et_veranstalter]' ),\n\t'et-teaser'       => array( 'Teaser', '[et_teaser itemsperpage=\"5\"]' ),\n\t'et-panels'       => array( 'Panels', '[et_panels itemsperpage=\"6\"]' ),\n\t'et-minical'      => array( 'Minikalender', '[et_minical]' ),\n);\nforeach ( $pages as $slug => $page ) {\n\twp_insert_post(\n\t\tarray(\n\t\t\t'post_type'    => 'page',\n\t\t\t'post_status'  => 'publish',\n\t\t\t'post_name'    => $slug,\n\t\t\t'post_title'   => $page[0],\n\t\t\t'post_content' => '<!-- wp:shortcode -->' . $page[1] . '<!-- /wp:shortcode -->',\n\t\t)\n\t);\n}\nflush_rewrite_rules();\n"
+		}
+	]
+}
