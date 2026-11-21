@@ -13,8 +13,12 @@ The calendar is in German, so the output of the plugin and its settings page are
 ## Status
 
 The plugin was closed on WordPress.org on 2025-05-01 because of a security issue.
-This repository is the maintained continuation. The security issues are fixed in version 3.4,
-and the plugin is open again on WordPress.org: you can install it from the "Plugins" screen in WordPress.
+It is **open on WordPress.org again**. This repository is the maintained continuation, and the
+security issues are fixed in version 3.4.
+
+Install it from the "Plugins" screen in WordPress ("Add New Plugin", search for
+"Evangelische Termine"). The ZIP files on the [Releases page](https://github.com/habakuk007/evangtermine/releases)
+are for manual installation (see below).
 
 ## Requirements
 
@@ -23,15 +27,16 @@ and the plugin is open again on WordPress.org: you can install it from the "Plug
 - Your server must be allowed to open outgoing HTTPS connections to the calendar host
   (default: `www.evangelische-termine.de`)
 
-## Installation
+## Manual installation
 
-1. In WordPress, go to "Plugins" > "Add New Plugin", search for "Evangelische Termine" and install it.
-   Alternatively download the plugin from <https://wordpress.org/plugins/evangtermine/> and upload it to
-   `/wp-content/plugins/`.
-2. To try the newest, not yet released state, download
-   [master.zip](https://github.com/habakuk007/evangtermine/archive/refs/heads/master.zip),
-   rename the folder from `evangtermine-master` to `evangtermine` and upload it instead of the released version.
-3. Activate the plugin: click "Activate" after the install, or use the "Plugins" screen in WordPress.
+Usually you install the plugin from the "Plugins" screen. To install a release by hand:
+
+1. Download the ZIP file `evangtermine-<version>.zip` of the newest version from the
+   [Releases page](https://github.com/habakuk007/evangtermine/releases/latest).
+   It holds only the plugin files, in a folder called `evangtermine`.
+2. Upload the ZIP on the "Plugins" > "Add New Plugin" > "Upload Plugin" screen in WordPress,
+   or unpack it into `/wp-content/plugins/`.
+3. Activate the plugin on the "Plugins" screen in WordPress.
 4. Enter your organiser ID (Veranstalter-ID) under "Settings" > "Evangelische Termine".
    You find the ID at the top right after you log in at <https://www.evangelische-termine.de/>.
 5. Add a shortcode to a page or post, or add the widget to a widget area.

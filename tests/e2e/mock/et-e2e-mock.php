@@ -253,6 +253,24 @@ function et_e2e_set_options( $options ) {
 }
 
 /**
+ * Which options of the plugin exist: names of the options, the widget option and the cached answers (transients).
+ *
+ * @return array
+ */
+function et_e2e_uninstall_state() {
+	global $wpdb;
+	$names = array( 'vid', 'region', 'until', 'css', 'encoding', 'etprotocol', 'ethost', 'widget_etwidget', 'et_e2e_unrelated' );
+	$found = $wpdb->get_col( "SELECT option_name FROM {$wpdb->options} WHERE option_name IN ('" . implode( "','", $names ) . "') ORDER BY option_name" );
+	$cache = $wpdb->get_col( "SELECT option_name FROM {$wpdb->options} WHERE option_name LIKE '%transient%et_stream_%' ORDER BY option_name" );
+	$other = $wpdb->get_col( "SELECT option_name FROM {$wpdb->options} WHERE option_name LIKE '%transient%et_e2e_unrelated'" );
+	return array(
+		'options'   => $found,
+		'cache'     => $cache,
+		'unrelated' => $other,
+	);
+}
+
+/**
  * What happened since the last reset: the requests to the calendar host and the content of wp-content/debug.log.
  *
  * @return array
@@ -318,6 +336,44 @@ function et_e2e_control() {
 				file_put_contents( WP_CONTENT_DIR . '/debug.log', '' );
 			}
 			et_e2e_send( et_e2e_config() );
+			break;
+
+		// Runs uninstall.php the way WordPress does when the plugin is deleted (uninstall_plugin()).
+		// The folder of the plugin is mounted from the host, so the files are never really deleted here.
+		case 'uninstall':
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+			$widgets = get_option( 'widget_etwidget' );
+			et_e2e_set_options(
+				array(
+					'vid'        => '1474',
+					'region'     => '407',
+					'until'      => '30',
+					'css'        => 'nocss',
+					'encoding'   => 'utf-8',
+					'etprotocol' => 'https://',
+					'ethost'     => 'www.evangelische-termine.de',
+				)
+			);
+			// Cached answers of the plugin and data that does not belong to it.
+			set_transient( 'et_stream_e2e', 'cached', HOUR_IN_SECONDS );
+			update_option( 'et_e2e_unrelated', 'keep' );
+			set_transient( 'et_e2e_unrelated', 'keep', HOUR_IN_SECONDS );
+			$before = et_e2e_uninstall_state();
+
+			uninstall_plugin( plugin_basename( ET_BASE_PATH . '/evangtermine.php' ) );
+			wp_cache_flush();
+			$after = et_e2e_uninstall_state();
+
+			// Give the test site its widget back (the later tests need it).
+			update_option( 'widget_etwidget', $widgets );
+			delete_option( 'et_e2e_unrelated' );
+			delete_transient( 'et_e2e_unrelated' );
+			et_e2e_send(
+				array(
+					'before' => $before,
+					'after'  => $after,
+				)
+			);
 			break;
 
 		case 'config':
