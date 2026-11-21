@@ -66,7 +66,7 @@ around it (account, review, closure, re-opening, naming).
 - **Re-opening:** if it was closed for a **security** issue, **fix the issue, reply to the closure email, and the plugin is usually re-opened** (unless there are more security or severe guideline issues). For guideline closures it depends on severity and whether you are a repeat offender.
 - Expect the plugin to be re-reviewed against current standards before it is restored (see "Unverified" note below).
 - **For this plugin:** it was closed 2025-05-01 for a security issue and has been re-opened since. This was the path (kept as a reference):
-  1. Fixed the security issues (issues #1–#6), make it PHP 8 compatible and work through §8 (common review rejections) and §9 (automated security review).
+  1. Fixed the security issues (issues #1–#6), made it PHP 8 compatible and worked through §8 (common review rejections) and §9 (automated security review).
   2. **Replied to the closure thread** with `plugins@wordpress.org`, said what was fixed and asked for a re-review / re-opening. Do **not** use the Add page for this: the slug `evangtermine` is still taken by the closed plugin (an upload would fail with "name already exists"), and it must stay the same because the slug cannot be renamed.
   3. If the team had asked for a fresh upload, they would have said so in the thread — only then use the Add page, and follow the thread's instructions for the slug.
   4. Only after the team re-opened it: push to SVN (see the `wp-release` skill) and validate `readme.txt` at the [readme-validator](https://wordpress.org/plugins/developers/readme-validator/).

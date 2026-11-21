@@ -30,8 +30,8 @@ and the plugin is open again on WordPress.org: you can install it from the "Plug
    `/wp-content/plugins/`.
 2. To try the newest, not yet released state, download
    [master.zip](https://github.com/habakuk007/evangtermine/archive/refs/heads/master.zip),
-   rename the folder from `evangtermine-master` to `evangtermine` and upload it instead.
-3. Activate the plugin on the "Plugins" screen in WordPress (the "Activate" button after the install in step 1 does the same).
+   rename the folder from `evangtermine-master` to `evangtermine` and upload it instead of the released version.
+3. Activate the plugin: click "Activate" after the install, or use the "Plugins" screen in WordPress.
 4. Enter your organiser ID (Veranstalter-ID) under "Settings" > "Evangelische Termine".
    You find the ID at the top right after you log in at <https://www.evangelische-termine.de/>.
 5. Add a shortcode to a page or post, or add the widget to a widget area.

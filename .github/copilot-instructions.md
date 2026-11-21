@@ -8,8 +8,9 @@ It provides shortcodes and a sidebar widget; the event HTML is fetched live from
 with the WordPress HTTP API (`wp_remote_get()`).
 
 The codebase is object-oriented PHP with an autoloader, no build tools, no runtime Composer dependencies (Composer and npm are dev tooling only: PHPCS and the end-to-end tests).
-The plugin was closed on WordPress.org in 2025 (security issue); issues #1–#6 are fixed,
+The plugin was closed on WordPress.org on 2025-05-01 (security issue); issues #1–#6 are fixed,
 PHP 8 is supported and the plugin has been re-opened (version 3.4).
+Further work is tracked in the GitHub issues (milestones 3.5 and 3.6).
 
 ## File Map
 
