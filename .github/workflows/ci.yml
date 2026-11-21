@@ -34,8 +34,10 @@ jobs:
 
   # ── Release files: what the deploy workflow would ship ───────────
   # Builds the file set the same way as 10up/action-wordpress-plugin-deploy
-  # (rsync with .distignore as the exclude list), lists it and fails if
-  # development or tooling files are in it. Needs no secrets and no SVN.
+  # (rsync with .distignore as the exclude list), fails if development or
+  # tooling files are in it, and builds the release ZIP that the release
+  # workflow attaches to the GitHub Release (same script, issue #71).
+  # Needs no secrets and no SVN.
   release-files:
     name: Release files
     runs-on: ubuntu-latest
@@ -46,54 +48,16 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Build the release file set
-        run: |
-          if [ ! -f .distignore ]; then
-            echo "::error::.distignore is missing. The deploy action would fall back to .gitattributes."
-            exit 1
-          fi
-          mkdir -p "${RUNNER_TEMP}/release/evangtermine"
-          # Same command as in deploy.sh of the 10up action.
-          rsync -rc --exclude-from="${GITHUB_WORKSPACE}/.distignore" "${GITHUB_WORKSPACE}/" "${RUNNER_TEMP}/release/evangtermine/" --delete --delete-excluded
+      - name: Build and check the release file set and the ZIP
+        run: bash .github/scripts/build-release.sh "${RUNNER_TEMP}/release"
 
-      - name: List the release files
-        working-directory: ${{ runner.temp }}/release
-        run: |
-          find evangtermine -type f | sort
-          echo "Files: $(find evangtermine -type f | wc -l), size: $(du -sh evangtermine | cut -f1)"
-
-      - name: Check that no tooling files are in the release
-        working-directory: ${{ runner.temp }}/release/evangtermine
-        run: |
-          status=0
-
-          # Must not be shipped, at any depth: hidden files and folders,
-          # dependency folders, tests, tool configuration, Markdown documents.
-          unwanted="$(find . -mindepth 1 \( \
-            -name '.*' -o -name 'vendor' -o -name 'node_modules' -o -name 'tests' \
-            -o -name 'composer.lock' \
-            -o -name 'package.json' -o -name 'package-lock.json' \
-            -o -name 'phpcs.xml*' -o -name 'phpunit.xml*' -o -name 'opencode.json' \
-            -o -name '*.md' -o -name '*.zip' -o -name '*.log' \
-            \) -print | sort)"
-          if [ -n "${unwanted}" ]; then
-            echo "::error::Tooling files are in the release file set. Add them to .distignore."
-            echo "${unwanted}"
-            status=1
-          fi
-
-          # Must be shipped.
-          for required in evangtermine.php readme.txt uninstall.php autoloader.php application assets; do
-            if [ ! -e "${required}" ]; then
-              echo "::error::${required} is missing in the release file set."
-              status=1
-            fi
-          done
-
-          if [ "${status}" -eq 0 ]; then
-            echo "The release file set is clean."
-          fi
-          exit "${status}"
+      - name: Upload the release ZIP
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: evangtermine-release-zip
+          path: ${{ runner.temp }}/release/evangtermine-*.zip
+          retention-days: 14
+          if-no-files-found: error
 
   # ── PHPCS: PHP compatibility (blocking) and coding standards ─────
   phpcs:
