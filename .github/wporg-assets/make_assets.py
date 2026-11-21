@@ -5,7 +5,7 @@ Sources (AI-generated illustrations, see README.md) are in .github/wporg-assets/
   banner-source.jpg  1792x592, illustration on the left, empty paper on the right for the title
 
 Run from the repository root:  python .github/wporg-assets/make_assets.py
-Needs Python 3 and Pillow. The title uses Arial Bold / Arial if found, else a fallback font.
+Needs Python 3 and Pillow. The title uses Vollkorn if installed, else Arial or another fallback font.
 """
 import os
 from PIL import Image, ImageDraw, ImageFont
@@ -20,13 +20,22 @@ BANNER_SOURCE_SIZE = (1792, 592)
 
 
 def font(size, bold):
-    names = ['arialbd.ttf', 'Arial Bold.ttf', 'LiberationSans-Bold.ttf', 'DejaVuSans-Bold.ttf'] if bold else \
-            ['arial.ttf', 'Arial.ttf', 'LiberationSans-Regular.ttf', 'DejaVuSans.ttf']
+    # Vollkorn (SIL Open Font License) is the preferred font; install it from Google Fonts.
+    names = ['Vollkorn-Bold.otf', 'Vollkorn-Bold.ttf', 'arialbd.ttf', 'LiberationSans-Bold.ttf', 'DejaVuSans-Bold.ttf'] if bold else \
+            ['Vollkorn-Regular.otf', 'Vollkorn-Regular.ttf', 'arial.ttf', 'LiberationSans-Regular.ttf', 'DejaVuSans.ttf']
+    # Pillow only searches the system font folders; also look in the per-user ones.
+    user_dirs = [
+        os.path.expandvars(r'%LOCALAPPDATA%\Microsoft\Windows\Fonts'),  # Windows, per-user install
+        os.path.expanduser('~/Library/Fonts'),                          # macOS
+        os.path.expanduser('~/.local/share/fonts'),                     # Linux
+        os.path.expanduser('~/.fonts'),
+    ]
     for n in names:
-        try:
-            return ImageFont.truetype(n, size)
-        except OSError:
-            continue
+        for candidate in [n] + [os.path.join(dd, n) for dd in user_dirs]:
+            try:
+                return ImageFont.truetype(candidate, size)
+            except OSError:
+                continue
     try:
         return ImageFont.load_default(size=size)  # scalable, Pillow >= 10.1
     except TypeError:

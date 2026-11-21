@@ -12,7 +12,7 @@ the icon tile with rounded transparent corners, crops and scales the banner, and
   under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/). It is not part of the plugin
   ZIP (`.distignore`), so the plugin itself stays GPL-2.0-or-later. `make_assets.py`, the blueprint and the
   rest of the repository are GPL-2.0-or-later as well.
-- **Banner text:** set in Arial (system font, rendered into the PNG; the font is not distributed).
+- **Banner text:** set in Vollkorn (Stefan Wagner's signature font, SIL Open Font License; rendered into the PNG, the font file is not distributed). Without Vollkorn installed the script falls back to Arial or another system font.
 - Regenerate: `python .github/wporg-assets/make_assets.py` (needs Pillow).
 
 `.wordpress-org/blueprints/blueprint.json` is the Live Preview blueprint (WordPress Playground). The
