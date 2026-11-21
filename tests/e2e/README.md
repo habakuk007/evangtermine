@@ -38,7 +38,7 @@ npm run test:e2e:report
 ```
 
 ```bash
-# Optional: a few checks against the real www.evangelische-termine.de
+# Optional: a few checks against the real www.evangelische-termine.de (or another host, see below)
 npm run test:e2e:live
 ```
 
@@ -68,7 +68,23 @@ ET_E2E_PHP=7.4 ET_E2E_WP=6.8 npm run test:e2e
 | `ET_E2E_WP` | `latest` | WordPress version of Playground |
 | `ET_E2E_PORT` | `8881` | Port of the test site |
 
-The variables are used only when the tests start Playground themselves, not when a test site is already running. The tests stop with an error if the running site has another PHP version than `ET_E2E_PHP`.
+Variables of the optional live checks (`npm run test:e2e:live`, read by `specs/live.spec.js`; they are not used by the default run):
+
+| Variable | Default | Meaning |
+|----------|---------|---------|
+| `ET_E2E_LIVE_HOST` | `www.evangelische-termine.de` | Calendar host (option `ethost`) for the structure checks |
+| `ET_E2E_LIVE_VID` | `1474` | Organiser of the check with the filter form |
+| `ET_E2E_LIVE_REGION` | `407` | Region of the list checks |
+| `ET_E2E_LIVE_ALT_HOST` | `termine.ekir.de` | Host of the two alternate-host tests ("the plugin queries the host from the option" and "serves list, detail, teaser and panels") |
+
+```bash
+# Live checks against another calendar host (bash; in PowerShell: $env:ET_E2E_LIVE_HOST = '...')
+ET_E2E_LIVE_HOST=termine.ekir.de ET_E2E_LIVE_VID=all ET_E2E_LIVE_REGION=1 npm run test:e2e:live
+```
+
+The live checks are not run in CI: a third-party host can be slow or unavailable. The host must be public, because the plugin refuses `localhost` and private addresses. With another host the test of `et_teaser`, `et_panels` and the widget is skipped (the test pages have region 407 in their shortcodes).
+
+The variables for PHP, WordPress and the port are used only when the tests start Playground themselves, not when a test site is already running. The tests stop with an error if the running site has another PHP version than `ET_E2E_PHP`.
 
 Playground CLI 3.1 ignores `--php` and `--wp` when the blueprint is a file; only `preferredVersions` in the blueprint counts. So `playwright.config.js` writes a copy of `blueprint.json` with the wanted versions to `tests/e2e/.tmp/` and starts Playground with this copy. `npm run playground` uses `blueprint.json` itself (PHP 8.3, latest WordPress).
 
@@ -110,6 +126,7 @@ The tests talk to the helper with `POST /?et_e2e=<action>` and a JSON body. In t
 
 | Action | In the tests | Meaning |
 |--------|--------------|---------|
+| `uninstall` | `site.call( 'uninstall' )` | Sets the plugin data, runs `uninstall_plugin()`, returns the data `before` and `after`, restores the widget option. The plugin files are not deleted (the folder is mounted from the host). |
 | `reset` | `site.reset( setup )` (runs before every test) | Mock on, empty request log, empty teaser cache, default options (`vid` = `1474`), empty `debug.log`. `setup` can change the mock (`mode`, `fail`, `ttl`, `session`) and write plugin options directly into the database (`options`). |
 | `config` | `site.config( { fail: '' } )` | Change settings of the mock without a reset. |
 | `state` | `site.phpMessages()` | Request log and content of `wp-content/debug.log`. |
@@ -137,7 +154,8 @@ The control interface has no access check. Never copy the helper to a real websi
 | `options.spec.js` | Options page: escaping, select fields, `ethost` is rejected for local addresses, output of the `css` option in the page head. |
 | `cache.spec.js` | Teaser and widget cache, `evangtermine_cache_ttl`, errors are not cached, default CSS of `et_teaser`. |
 | `external-hosts.spec.js` | Guard for issue #33: every shortcode page and the detail view contact only hosts of an explicit allowlist (requests and `src`/`href`/`srcset` in the markup, no external JavaScript). Each allowlist entry names the PR that removes it. |
-| `live.spec.js` | Structure of the output with the real calendar host (organiser `1474` and region `407`). |
+| `uninstall.spec.js` | Deleting the plugin (`uninstall.php`, run by `uninstall_plugin()` of WordPress) removes the seven options, `widget_etwidget` and the cached `et_stream_*` transients, and leaves other data alone. |
+| `live.spec.js` | Structure of the output with the real calendar host (default: organiser `1474` and region `407`; configurable, see above). A test with `ET_E2E_LIVE_ALT_HOST` checks in the request log that the plugin asks the host from the option `ethost`. A second one fetches list, detail, teaser and panels from that host. |
 
 PHP messages: the test site runs with `WP_DEBUG`, `WP_DEBUG_DISPLAY` and `WP_DEBUG_LOG`. `visit()` and `site.requests()` fail when the page shows a PHP warning, notice, deprecation or error, or when `debug.log` has one.
 
