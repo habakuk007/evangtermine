@@ -9,14 +9,14 @@ test.describe( 'uninstall', () => {
 		const { before, after } = await site.call( 'uninstall' );
 
 		// The test data was really there ...
-		expect( before.options ).toEqual(
-			[ 'css', 'encoding', 'et_e2e_unrelated', 'ethost', 'etprotocol', 'region', 'until', 'vid', 'widget_etwidget' ]
+		expect( [ ...before.options ].sort() ).toEqual(
+			[ 'css', 'encoding', 'et_e2e_unrelated', 'ethost', 'etprotocol', 'region', 'until', 'vid', 'widget_etwidget' ].sort()
 		);
 		expect( before.cache.length ).toBeGreaterThan( 0 );
 		expect( before.unrelated.length ).toBeGreaterThan( 0 );
 
 		// ... and is gone, but data of other plugins is not touched.
-		expect( after.options ).toEqual( [ 'et_e2e_unrelated' ] );
+		expect( [ ...after.options ].sort() ).toEqual( [ 'et_e2e_unrelated' ] );
 		expect( after.cache ).toEqual( [] );
 		expect( after.unrelated.length ).toBeGreaterThan( 0 );
 	} );

@@ -75,7 +75,7 @@ Variables of the optional live checks (`npm run test:e2e:live`, read by `specs/l
 | `ET_E2E_LIVE_HOST` | `www.evangelische-termine.de` | Calendar host (option `ethost`) for the structure checks |
 | `ET_E2E_LIVE_VID` | `1474` | Organiser of the check with the filter form |
 | `ET_E2E_LIVE_REGION` | `407` | Region of the list checks |
-| `ET_E2E_LIVE_ALT_HOST` | `termine.ekir.de` | Host of the test "the plugin queries the host from the option" |
+| `ET_E2E_LIVE_ALT_HOST` | `termine.ekir.de` | Host of the two alternate-host tests ("the plugin queries the host from the option" and "serves list, detail, teaser and panels") |
 
 ```bash
 # Live checks against another calendar host (bash; in PowerShell: $env:ET_E2E_LIVE_HOST = '...')

@@ -93,12 +93,11 @@ test.describe( 'live calendar host', () => {
 		// Not checked: an adapted host puts its own stylesheet link into the markup (termine.ekir.de: publicintegration.css).
 	} );
 
-
 	// All four endpoints of an adapted host (issue #87): list, detail, teaser and panels are fetched from ALT_HOST.
 	test( `${ ALT_HOST } serves list, detail, teaser and panels`, async ( { page, site } ) => {
 		await site.reset( { mode: 'live', options: { ethost: ALT_HOST, vid: 'all' } } );
 
-		await visit( page, '/et-veranstalter/?region=' + REGION );
+		await visit( page, `/et-veranstalter/?region=${ REGION }` );
 		const list = page.locator( '.et_veranstalter' );
 		await expect( list ).not.toContainText( UNAVAILABLE );
 		const link = list.locator( '.et_link_title' ).first();
