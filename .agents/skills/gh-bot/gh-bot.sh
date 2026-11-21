@@ -114,8 +114,10 @@ cmd_comment() {
   case "$1" in *[!0-9]*) usage ;; esac
   # comment <pr> --body-file <path>  -> body read from a file (avoids arg mangling)
   if [ $# -eq 3 ] && [ "$2" = "--body-file" ]; then
+    # Existence check runs in this shell (may be WSL); the path handed to the
+    # Windows gh.exe must be converted to a Windows path via winpath().
     [ -f "$3" ] || { printf 'ERROR: --body-file: %s not found\n' "$3" >&2; exit 64; }
-    bot_gh pr comment "$1" --repo "$REPO" --body-file "$3"
+    bot_gh pr comment "$1" --repo "$REPO" --body-file "$(winpath "$3")"
     return
   fi
   # comment <pr> "<text>"  -> body passed as an argument

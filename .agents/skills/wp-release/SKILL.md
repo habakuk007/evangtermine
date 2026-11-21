@@ -131,7 +131,7 @@ Before tagging:
 - Run Plugin Check including the runtime checks (`wp plugin check evangtermine --require=./wp-content/plugins/plugin-check/cli.php`, see `wordpress-org-submission.instructions.md` §8) and fix everything in the "Plugin repo" category.
 - Make sure the wordpress.org account that pushes to SVN has two-factor authentication enabled (human task, cannot be checked from here).
 - Run `/wp-security-review` on the release diff. Since June 2026 every release goes through an automated AI/Jetpack Scan review, and a version above the blocking threshold is withheld from the update API (fix and release a new version).
-- **Pushing to SVN makes the release live immediately.** While the plugin is closed on WordPress.org, do **not** push; get it re-opened by the Plugins team first.
+- **Pushing to SVN makes the release live immediately.** The plugin is open on WordPress.org again, so a pushed tag reaches all users with the next update check.
 
 Only if the workflow cannot be used, manually (never copy dev files — respect `.distignore`):
 
