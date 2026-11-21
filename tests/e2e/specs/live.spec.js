@@ -92,4 +92,37 @@ test.describe( 'live calendar host', () => {
 		await expect( list.locator( '#et_content_container' ) ).toHaveCount( 1 );
 		// Not checked: an adapted host puts its own stylesheet link into the markup (termine.ekir.de: publicintegration.css).
 	} );
+
+
+	// All four endpoints of an adapted host (issue #87): list, detail, teaser and panels are fetched from ALT_HOST.
+	test( `${ ALT_HOST } serves list, detail, teaser and panels`, async ( { page, site } ) => {
+		await site.reset( { mode: 'live', options: { ethost: ALT_HOST, vid: 'all' } } );
+
+		await visit( page, '/et-veranstalter/?region=' + REGION );
+		const list = page.locator( '.et_veranstalter' );
+		await expect( list ).not.toContainText( UNAVAILABLE );
+		const link = list.locator( '.et_link_title' ).first();
+		// A host may have no events in this region: then only the list request is checked.
+		if ( await link.count() ) {
+			await link.click();
+			await expect( page ).toHaveURL( /etID=\d+/ );
+			await expect( list.locator( '#et_detail_title' ) ).toBeVisible();
+			const detail = await site.requests( page, { module: 'detail-php' } );
+			expect( detail ).toHaveLength( 1 );
+			expect( detail[ 0 ].host ).toBe( ALT_HOST );
+		}
+
+		// The shortcodes of these pages have region 407; the host answers, even with an empty list.
+		await visit( page, '/et-teaser/' );
+		await expect( page.locator( '.et_teaser' ) ).not.toContainText( UNAVAILABLE );
+		const teaser = await site.requests( page, { module: 'teaser' } );
+		expect( teaser.length ).toBeGreaterThan( 0 );
+		expect( teaser.every( ( entry ) => ALT_HOST === entry.host ) ).toBe( true );
+
+		await visit( page, '/et-panels/' );
+		await expect( page.locator( '.et_panel, .et_panels' ).first() ).toBeAttached();
+		const panels = await site.requests( page, { module: 'panels' } );
+		expect( panels ).toHaveLength( 1 );
+		expect( panels[ 0 ].host ).toBe( ALT_HOST );
+	} );
 } );

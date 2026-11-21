@@ -155,7 +155,7 @@ The control interface has no access check. Never copy the helper to a real websi
 | `cache.spec.js` | Teaser and widget cache, `evangtermine_cache_ttl`, errors are not cached, default CSS of `et_teaser`. |
 | `external-hosts.spec.js` | Guard for issue #33: every shortcode page and the detail view contact only hosts of an explicit allowlist (requests and `src`/`href`/`srcset` in the markup, no external JavaScript). Each allowlist entry names the PR that removes it. |
 | `uninstall.spec.js` | Deleting the plugin (`uninstall.php`, run by `uninstall_plugin()` of WordPress) removes the seven options, `widget_etwidget` and the cached `et_stream_*` transients, and leaves other data alone. |
-| `live.spec.js` | Structure of the output with the real calendar host (default: organiser `1474` and region `407`; configurable, see above). A test with `ET_E2E_LIVE_ALT_HOST` checks in the request log that the plugin asks the host from the option `ethost`. |
+| `live.spec.js` | Structure of the output with the real calendar host (default: organiser `1474` and region `407`; configurable, see above). A test with `ET_E2E_LIVE_ALT_HOST` checks in the request log that the plugin asks the host from the option `ethost`. A second one fetches list, detail, teaser and panels from that host. |
 
 PHP messages: the test site runs with `WP_DEBUG`, `WP_DEBUG_DISPLAY` and `WP_DEBUG_LOG`. `visit()` and `site.requests()` fail when the page shows a PHP warning, notice, deprecation or error, or when `debug.log` has one.
 
