@@ -30,7 +30,8 @@ phpunit.xml.dist
 tests
 
 # Translations of the readme.txt (for the import at translate.wordpress.org), not loaded by WordPress.
-readme-translations
+languages/readme-translations
+languages/3.4
 
 # The .pot template is only for translators and the i18n tooling, not needed at runtime (the .po/.mo files are shipped).
 languages/evangtermine.pot

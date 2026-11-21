@@ -65,7 +65,7 @@ application/
   forms/class.evangtermine_pluginoptionspage.php      ← "Einstellungen" link on the plugins page
   forms/form.etwidget.php                ← widget form
 assets/                                  ← bundled Bootstrap 3.3.7, jQuery, Font Awesome 4.7.0, CSS
-readme-translations/                     ← readme.txt translations (de, de formal) for translate.wordpress.org; not in the release
+languages/readme-translations/                     ← readme.txt translations (de, de formal) for translate.wordpress.org; not in the release
 tests/e2e/                               ← Playwright tests against WordPress Playground (blueprint, mock of the calendar host, fixtures); not in the release
 ```
 
@@ -136,5 +136,6 @@ Invoke via Claude Code slash commands (e.g. `/gh issue create`).
 | `/gh` | [gh/SKILL.md](.agents/skills/gh/SKILL.md) | GitHub CLI: issues, PRs, releases |
 | `/gh-bot` | [gh-bot/SKILL.md](.agents/skills/gh-bot/SKILL.md) | Open PRs and PR comments as bot identity `habakuk-ai` (commits/pushes stay `habakuk007`) |
 | `/php-lint` | [php-lint/SKILL.md](.agents/skills/php-lint/SKILL.md) | PHPCS/PHPCBF for WordPress Coding Standard |
+| `/translate-de` | [translate-de/SKILL.md](.agents/skills/translate-de/SKILL.md) | German translation (du/Sie) per WordPress Polyglots Style Guide and Glossary |
 | `/wp-release` | [wp-release/SKILL.md](.agents/skills/wp-release/SKILL.md) | Full plugin release workflow |
 | `/grill-me` | [grill-me/SKILL.md](.agents/skills/grill-me/SKILL.md) | Stress-test a plan through relentless questions |

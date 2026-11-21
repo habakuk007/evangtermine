@@ -58,7 +58,7 @@ application/
   helper/                 <- Evangtermine_IncludeCSS (wp_head), Evangtermine_Debugging
   forms/                  <- options.php (Settings API, et_group), widget form
 assets/                   <- bundled Bootstrap 3.3.7, jQuery, Font Awesome 4.7.0, CSS
-readme-translations/   <- readme.txt translations (de, de formal) for translate.wordpress.org (not in the release)
+languages/readme-translations/   <- readme.txt translations (de, de formal) for translate.wordpress.org (not in the release)
 tests/e2e/                <- Playwright tests against WordPress Playground (not in the release)
 readme.txt                <- WordPress.org plugin listing
 ```
@@ -130,6 +130,7 @@ Each skill has a corresponding Claude Code slash command in `.claude/commands/`.
 | [gh/SKILL.md](.agents/skills/gh/SKILL.md) | `/gh` | GitHub CLI: issues, PRs, releases, labels |
 | [gh-bot/SKILL.md](.agents/skills/gh-bot/SKILL.md) | `/gh-bot` | Open PRs and PR comments as the bot identity `habakuk-ai`; commits and pushes stay `habakuk007` |
 | [php-lint/SKILL.md](.agents/skills/php-lint/SKILL.md) | `/php-lint` | PHPCS/PHPCBF for WordPress Coding Standard |
+| [translate-de/SKILL.md](.agents/skills/translate-de/SKILL.md) | `/translate-de` | German translation (du/Sie) per WordPress Polyglots Style Guide and Glossary |
 | [wp-release/SKILL.md](.agents/skills/wp-release/SKILL.md) | `/wp-release` | Full plugin release workflow (version bump → tag → GitHub release) |
 | [grill-me/SKILL.md](.agents/skills/grill-me/SKILL.md) | `/grill-me` | Stress-test a plan through relentless questions |
 
