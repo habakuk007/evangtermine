@@ -11,7 +11,6 @@ on:
     tags:
       - '[0-9]+.[0-9]+'
       - '[0-9]+.[0-9]+.[0-9]+'
-      - '[0-9]+.[0-9]+.[0-9]+-*'
   workflow_dispatch:
 
 permissions:
@@ -33,18 +32,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          # Full history, needed for the "is on master" check below.
-          fetch-depth: 0
           persist-credentials: false
 
+      # Asks the GitHub API (authenticated with the job token) instead of
+      # fetching master with git, so the checkout needs no stored credentials.
+      # "identical" or "behind" means the tagged commit is contained in master.
       - name: Check that the tagged commit is on master
         if: github.event_name == 'push'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          git fetch --no-tags origin '+refs/heads/master:refs/remotes/origin/master'
-          if ! git merge-base --is-ancestor HEAD origin/master; then
-            echo "::error::Tag ${GITHUB_REF_NAME} ($(git rev-parse HEAD)) is not contained in origin/master. Refusing to publish a release ZIP."
+          status="$(gh api "repos/${GITHUB_REPOSITORY}/compare/master...${GITHUB_SHA}" --jq .status)"
+          if [ "${status}" != "identical" ] && [ "${status}" != "behind" ]; then
+            echo "::error::Tag ${GITHUB_REF_NAME} (${GITHUB_SHA}) is not contained in master (compare status: ${status}). Refusing to publish a release ZIP."
             exit 1
           fi
+          echo "Tag ${GITHUB_REF_NAME} is contained in master (${status})."
 
       - name: Build the release ZIP
         id: build
@@ -70,7 +73,7 @@ jobs:
 
       # Uses the preinstalled GitHub CLI. If the release exists already (the
       # maintainer created it first), only the asset is uploaded; otherwise a
-      # release with generated notes is created. Tags with a "-" are pre-releases.
+      # release with generated notes is created.
       - name: Attach the ZIP to the GitHub Release
         if: github.event_name == 'push'
         env:
@@ -80,7 +83,5 @@ jobs:
           if gh release view "${GITHUB_REF_NAME}" >/dev/null 2>&1; then
             gh release upload "${GITHUB_REF_NAME}" "${ZIP}" --clobber
           else
-            prerelease=""
-            case "${GITHUB_REF_NAME}" in *-*) prerelease="--prerelease" ;; esac
-            gh release create "${GITHUB_REF_NAME}" "${ZIP}" --verify-tag --title "${GITHUB_REF_NAME}" --generate-notes ${prerelease}
+            gh release create "${GITHUB_REF_NAME}" "${ZIP}" --verify-tag --title "${GITHUB_REF_NAME}" --generate-notes
           fi

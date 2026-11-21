@@ -147,7 +147,7 @@ More details about the architecture are in [CLAUDE.md](CLAUDE.md).
 By contributing you agree that your contribution is licensed under the GPL, version 2 or later
 (see [LICENSE](LICENSE)).
 
-Build the release ZIP locally (needs `rsync` and `zip` or `python3`; on Windows use WSL). It uses the
+Build the release ZIP locally (needs `rsync`, `unzip` and `zip` or `python3`; on Windows use WSL). It uses the
 same file set as the WordPress.org package (`.distignore`), checks it and writes
 `build/evangtermine-<version>.zip` with the top-level folder `evangtermine/`:
 

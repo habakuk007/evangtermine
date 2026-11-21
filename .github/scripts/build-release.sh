@@ -10,7 +10,7 @@
 # Usage: bash .github/scripts/build-release.sh [output-dir]
 #   output-dir  default: build/ (ignored by git and excluded by .distignore)
 #
-# Needs: bash, rsync, find, and zip or python3 (or python). Run it from the
+# Needs: bash, rsync, find, unzip, and zip or python3 (or python). Run it from the
 # repository root or from anywhere inside the checkout.
 set -euo pipefail
 
@@ -24,10 +24,12 @@ if [ ! -f "${ROOT}/.distignore" ]; then
 	echo "::error::.distignore is missing. The deploy action would fall back to .gitattributes."
 	exit 1
 fi
-if ! command -v rsync >/dev/null 2>&1; then
-	echo "::error::rsync is required (on Windows use WSL)."
-	exit 1
-fi
+for tool in rsync unzip; do
+	if ! command -v "${tool}" >/dev/null 2>&1; then
+		echo "::error::${tool} is required (on Windows use WSL)."
+		exit 1
+	fi
+done
 
 VERSION="$(sed -n 's/^ \* Version:[[:space:]]*//p' "${ROOT}/${SLUG}.php" | head -n 1 | tr -d '\r')"
 if [ -z "${VERSION}" ]; then
