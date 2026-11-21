@@ -12,3 +12,6 @@
 /tests/e2e/test-results/
 /tests/e2e/playwright-report/
 /tests/e2e/.tmp/
+
+# Release ZIP and file set built by .github/scripts/build-release.sh
+/build/

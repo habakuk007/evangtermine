@@ -92,20 +92,32 @@ git tag X.Y.Z
 git push && git push --tags
 ```
 
-### Step 7: Create the GitHub release
+### Step 7: GitHub release and release ZIP
+
+Pushing the tag also starts `.github/workflows/release-zip.yml` (no approval needed). It builds
+`evangtermine-X.Y.Z.zip` with `.github/scripts/build-release.sh` (same file set as the WordPress.org
+package, top-level folder `evangtermine/`), checks (via the GitHub API) that the tag is on `master` and equals the plugin
+version, and creates the GitHub release with generated notes and the ZIP attached. Only plain version tags (`X.Y` or `X.Y.Z`) are built; there are no pre-release tags. Do **not** run `gh release create` yourself right after the push (the two would race).
+Wait for the workflow, then replace the generated notes if you want:
 
 ```bash
-gh release create X.Y.Z \
-  --title "v X.Y.Z" \
-  --notes "$(cat <<'EOF'
+gh release edit X.Y.Z --title "v X.Y.Z" --notes-file release-notes.md
+```
+
+Notes template (`release-notes.md`):
+
+```markdown
 ## What's Changed
 * Fixed: <description>
 * Added: <description>
 
-**Full Changelog:** https://github.com/<owner>/evangtermine/compare/<prev-tag>...X.Y.Z
-EOF
-)"
+**Full Changelog:** https://github.com/habakuk007/evangtermine/compare/<prev-tag>...X.Y.Z
 ```
+
+If the release already exists, the workflow only uploads the ZIP (`--clobber`). Check that the asset
+`evangtermine-X.Y.Z.zip` is on the release page. To try the build before tagging, run
+`bash .github/scripts/build-release.sh` (needs rsync, unzip and zip or python3; on Windows use WSL). The ZIP lands in
+`build/`. CI builds and checks it on every PR (job "Release files", ZIP as workflow artifact).
 
 ### Step 8: Validate readme.txt (optional but recommended)
 
