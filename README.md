@@ -12,13 +12,9 @@ The calendar is in German, so the output of the plugin and its settings page are
 
 ## Status
 
-The plugin was **closed on WordPress.org on 2025-05-01** because of a security issue.
-This repository is the maintained continuation. The security issues are fixed in version 3.4.
-The work to get the plugin re-opened on WordPress.org is tracked in
-[issue #17](https://github.com/habakuk007/evangtermine/issues/17).
-
-Until the plugin is open again, it cannot be installed from the "Plugins" screen in WordPress.
-Install it from this repository instead (see below).
+The plugin was closed on WordPress.org on 2025-05-01 because of a security issue.
+This repository is the maintained continuation. The security issues are fixed in version 3.4,
+and the plugin is open again on WordPress.org: you can install it from the "Plugins" screen in WordPress.
 
 ## Requirements
 
@@ -29,12 +25,13 @@ Install it from this repository instead (see below).
 
 ## Installation
 
-1. Download the released state as a ZIP file:
-   [master.zip](https://github.com/habakuk007/evangtermine/archive/refs/heads/master.zip).
-   The `master` branch always holds the newest released version.
-2. Unpack it, rename the folder from `evangtermine-master` to `evangtermine` and upload it to
+1. In WordPress, go to "Plugins" > "Add New Plugin", search for "Evangelische Termine" and install it.
+   Alternatively download the plugin from <https://wordpress.org/plugins/evangtermine/> and upload it to
    `/wp-content/plugins/`.
-3. Activate the plugin on the "Plugins" screen in WordPress.
+2. To try the newest, not yet released state, download
+   [master.zip](https://github.com/habakuk007/evangtermine/archive/refs/heads/master.zip),
+   rename the folder from `evangtermine-master` to `evangtermine` and upload it instead.
+3. Activate the plugin on the "Plugins" screen in WordPress (the "Activate" button after the install in step 1 does the same).
 4. Enter your organiser ID (Veranstalter-ID) under "Settings" > "Evangelische Termine".
    You find the ID at the top right after you log in at <https://www.evangelische-termine.de/>.
 5. Add a shortcode to a page or post, or add the widget to a widget area.
