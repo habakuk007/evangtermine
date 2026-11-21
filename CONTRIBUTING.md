@@ -26,6 +26,7 @@ Both branches are protected: changes come in only through a pull request, and th
 
 Releases are made by the maintainer: a pull request from `develop` to `master`, then a version tag.
 Urgent security fixes may go to `master` first and are merged back into `develop`.
+The version tag also builds the release ZIP and attaches it to the GitHub release (see below).
 
 ## Commit identity
 
@@ -145,3 +146,13 @@ More details about the architecture are in [CLAUDE.md](CLAUDE.md).
 
 By contributing you agree that your contribution is licensed under the GPL, version 2 or later
 (see [LICENSE](LICENSE)).
+
+Build the release ZIP locally (needs `rsync` and `zip` or `python3`; on Windows use WSL). It uses the
+same file set as the WordPress.org package (`.distignore`), checks it and writes
+`build/evangtermine-<version>.zip` with the top-level folder `evangtermine/`:
+
+```bash
+bash .github/scripts/build-release.sh
+```
+
+CI runs the same script on every pull request (job "Release files").

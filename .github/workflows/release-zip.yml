@@ -1,0 +1,86 @@
+name: Release ZIP
+
+# Builds the release ZIP (same file set as the WordPress.org package, folder
+# "evangtermine/") and attaches it to the GitHub Release of the version tag.
+# It does not need the approval of the "Deploy" environment: it only writes to
+# GitHub and never touches the WordPress.org SVN.
+#
+# Manual run: builds the ZIP and keeps it as a workflow artifact only.
+on:
+  push:
+    tags:
+      - '[0-9]+.[0-9]+'
+      - '[0-9]+.[0-9]+.[0-9]+'
+      - '[0-9]+.[0-9]+.[0-9]+-*'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-zip-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release-zip:
+    name: Build and attach the release ZIP
+    runs-on: ubuntu-latest
+    permissions:
+      # Create the release and upload the asset.
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # Full history, needed for the "is on master" check below.
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Check that the tagged commit is on master
+        if: github.event_name == 'push'
+        run: |
+          git fetch --no-tags origin '+refs/heads/master:refs/remotes/origin/master'
+          if ! git merge-base --is-ancestor HEAD origin/master; then
+            echo "::error::Tag ${GITHUB_REF_NAME} ($(git rev-parse HEAD)) is not contained in origin/master. Refusing to publish a release ZIP."
+            exit 1
+          fi
+
+      - name: Build the release ZIP
+        id: build
+        run: bash .github/scripts/build-release.sh "${RUNNER_TEMP}/release"
+
+      - name: Check that the tag matches the plugin version
+        if: github.event_name == 'push'
+        env:
+          VERSION: ${{ steps.build.outputs.version }}
+        run: |
+          if [ "${VERSION}" != "${GITHUB_REF_NAME}" ]; then
+            echo "::error::Tag ${GITHUB_REF_NAME} does not match the plugin header version ${VERSION}."
+            exit 1
+          fi
+
+      - name: Keep the ZIP as workflow artifact
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: evangtermine-release-zip
+          path: ${{ steps.build.outputs.zip }}
+          retention-days: 30
+          if-no-files-found: error
+
+      # Uses the preinstalled GitHub CLI. If the release exists already (the
+      # maintainer created it first), only the asset is uploaded; otherwise a
+      # release with generated notes is created. Tags with a "-" are pre-releases.
+      - name: Attach the ZIP to the GitHub Release
+        if: github.event_name == 'push'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ZIP: ${{ steps.build.outputs.zip }}
+        run: |
+          if gh release view "${GITHUB_REF_NAME}" >/dev/null 2>&1; then
+            gh release upload "${GITHUB_REF_NAME}" "${ZIP}" --clobber
+          else
+            prerelease=""
+            case "${GITHUB_REF_NAME}" in *-*) prerelease="--prerelease" ;; esac
+            gh release create "${GITHUB_REF_NAME}" "${ZIP}" --verify-tag --title "${GITHUB_REF_NAME}" --generate-notes ${prerelease}
+          fi

@@ -29,11 +29,11 @@ Install it from this repository instead (see below).
 
 ## Installation
 
-1. Download the released state as a ZIP file:
-   [master.zip](https://github.com/habakuk007/evangtermine/archive/refs/heads/master.zip).
-   The `master` branch always holds the newest released version.
-2. Unpack it, rename the folder from `evangtermine-master` to `evangtermine` and upload it to
-   `/wp-content/plugins/`.
+1. Download the ZIP file `evangtermine-<version>.zip` of the newest version from the
+   [Releases page](https://github.com/habakuk007/evangtermine/releases/latest).
+   It holds only the plugin files, in a folder called `evangtermine`.
+2. Upload the ZIP on the "Plugins" > "Add New Plugin" > "Upload Plugin" screen in WordPress,
+   or unpack it into `/wp-content/plugins/`.
 3. Activate the plugin on the "Plugins" screen in WordPress.
 4. Enter your organiser ID (Veranstalter-ID) under "Settings" > "Evangelische Termine".
    You find the ID at the top right after you log in at <https://www.evangelische-termine.de/>.
