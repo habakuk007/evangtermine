@@ -12,13 +12,13 @@ The calendar is in German, so the output of the plugin and its settings page are
 
 ## Status
 
-The plugin was **closed on WordPress.org on 2025-05-01** because of a security issue.
-This repository is the maintained continuation. The security issues are fixed in version 3.4.
-The work to get the plugin re-opened on WordPress.org is tracked in
-[issue #17](https://github.com/habakuk007/evangtermine/issues/17).
+The plugin was closed on WordPress.org on 2025-05-01 because of a security issue.
+It is **open on WordPress.org again**. This repository is the maintained continuation, and the
+security issues are fixed in version 3.4.
 
-Until the plugin is open again, it cannot be installed from the "Plugins" screen in WordPress.
-Install it from this repository instead (see below).
+Install it from the "Plugins" screen in WordPress ("Add New Plugin", search for
+"Evangelische Termine"). The ZIP files on the [Releases page](https://github.com/habakuk007/evangtermine/releases)
+are for manual installation (see below).
 
 ## Requirements
 
@@ -27,7 +27,9 @@ Install it from this repository instead (see below).
 - Your server must be allowed to open outgoing HTTPS connections to the calendar host
   (default: `www.evangelische-termine.de`)
 
-## Installation
+## Manual installation
+
+Usually you install the plugin from the "Plugins" screen. To install a release by hand:
 
 1. Download the ZIP file `evangtermine-<version>.zip` of the newest version from the
    [Releases page](https://github.com/habakuk007/evangtermine/releases/latest).
