@@ -64,7 +64,7 @@ msgstr "Eventtype-ID (kommaseparierte Liste, keine Leerzeichen):"
 
 #: application/forms/form.etwidget.php:25
 msgid "Highlight (all/high):"
-msgstr "Hervorhebung (alle/hervorgehoben):"
+msgstr "Highlight (alle/Highlights):"
 
 #: application/forms/form.etwidget.php:29
 msgctxt "widget highlight option"
@@ -74,7 +74,7 @@ msgstr "alle"
 #: application/forms/form.etwidget.php:30
 msgctxt "widget highlight option"
 msgid "high"
-msgstr "hervorgehoben"
+msgstr "Highlights"
 
 #: application/forms/form.etwidget.php:38
 msgid "Venue ID (comma-separated list, no spaces):"

@@ -265,7 +265,7 @@ msgstr "<strong>eventtype</strong>: ID der Veranstaltungskategorie. Ein voranges
 
 #. Found in description paragraph.
 msgid "<strong>highlight</strong>: <code>all</code> or <code>high</code> (only highlighted events)."
-msgstr "<strong>highlight</strong>: <code>all</code> oder <code>high</code> (nur hervorgehobene Termine)."
+msgstr "<strong>highlight</strong>: <code>all</code> oder <code>high</code> (nur Highlight-Termine)."
 
 #. Found in description paragraph.
 msgid "<strong>people</strong>, <strong>person</strong>, <strong>place</strong>, <strong>ipm</strong>, <strong>cha</strong>: comma-separated IDs of target groups, contact persons, venues, event types (input masks) and channels."
