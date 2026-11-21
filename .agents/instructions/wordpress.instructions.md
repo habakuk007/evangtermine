@@ -176,7 +176,7 @@ echo '<h1>' . esc_html( $heading ) . '</h1>';
 
 ## 3) Security & Data Handling
 
-*Official references: [Security](https://developer.wordpress.org/apis/security/) · [Escaping](https://developer.wordpress.org/apis/security/escaping/) · [Sanitizing](https://developer.wordpress.org/apis/security/sanitizing/) · [Nonces](https://developer.wordpress.org/apis/security/nonces/)*
+*Official references: [Security](https://developer.wordpress.org/apis/security/) · [Escaping](https://developer.wordpress.org/apis/security/escaping/) · [Sanitizing](https://developer.wordpress.org/apis/security/sanitizing/) · [Data validation](https://developer.wordpress.org/apis/security/data-validation/) · [Nonces](https://developer.wordpress.org/apis/security/nonces/) · [Roles and capabilities](https://developer.wordpress.org/apis/security/user-roles-and-capabilities/) · [Tutorial: Introduction to securely developing plugins](https://learn.wordpress.org/tutorial/introduction-to-securely-developing-plugins/) (sanitize and validate early, escape late, nonces, capability checks; its code samples are simplified, do not copy them)*
 
 - **Escape on output — escape late.** Escape at the point of output, not earlier. Escaping too early and then concatenating can silently double-escape data.
   - HTML element content: `esc_html()` · HTML attribute: `esc_attr()` · URL in `href`/`src`: `esc_url()`
