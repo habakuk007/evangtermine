@@ -78,6 +78,19 @@ Fix what can be fixed automatically:
 composer fix:php
 ```
 
+Run the unit tests (PHPUnit + Brain Monkey, no WordPress, no database, no network needed):
+
+```bash
+composer test:unit
+```
+
+The tests are in `tests/unit/` and cover the pure logic: the query string, the host check, the
+replacements in the fetched HTML, the settings sanitizers and the widget `update()`. WordPress functions
+are mocked with Brain Monkey (see `tests/unit/class-et-test-case.php`), so the tests only prove what the plugin
+code does with the values WordPress returns. Whether it works in a real WordPress is covered by the end-to-end tests
+below. `composer install` picks the PHPUnit version that fits your PHP (9.6 for PHP 7.4 and 8.0, 10 or 11 for newer
+versions). New test code should follow the WordPress Coding Standards; do not reformat plugin files in a test PR.
+
 Create the translation template and compile the translations (WP-CLI i18n comes from Composer, no global `wp` needed):
 
 ```bash
