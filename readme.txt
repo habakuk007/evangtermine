@@ -25,7 +25,7 @@ The calendar itself is in German, so its output is in German.
 * `[et_panels]`: events as panels with their images, for example `[et_panels vid="952"]`
 * `[et_minical]`: the mini calendar of Evangelische Termine, for example `[et_minical vid="952"]`
 
-The widget "Evangelische Termine" shows the next events in a widget area. Every default from the settings can be overridden per shortcode and per widget.
+The widget "Evangelische Termine" shows the next events in a widget area. Every default from the settings can be overridden per shortcode and per widget. Documentation (German): https://github.com/habakuk007/evangtermine/tree/master/docs
 
 To hide the "Mehr laden" (load more) panel of `[et_panels]`, add `#load1 { display: none; }` to your CSS.
 
@@ -80,7 +80,7 @@ The settings are under "Settings" > "Evangelische Termine". Several organiser ID
 
 = Parameters =
 
-The parameters are described in the [manual of Evangelische Termine](http://handbuch.evangelische-termine.de/Ausgabe-Parameter/) (German). The plugin supports:
+The parameters are described in the [manual of Evangelische Termine](https://handbuch.evangelische-termine.de/anzeige-im-internet/ausgabe-parameter) (German). The plugin supports:
 
 **vid**: organiser ID or several IDs separated by commas, for example `[et_teaser vid="952,988"]`.
 
@@ -98,18 +98,18 @@ The parameters are described in the [manual of Evangelische Termine](http://hand
 
 **until**: show an event until its end date (`yes`, default) or not (`no`).
 
-**q**: search terms, separated by spaces.
+**q**: search term.
 
 **auswahl**: `eb` shows adult education events in Bavaria (input mask or channel "Erwachsenenbildung").
 
 = Widget =
 
-The widget form offers the same parameters, plus a field for additional parameters in the form `param1=value1&param2=value2`.
+The widget form offers these parameters except `people` and `person`, plus a field for additional parameters in the form `param1=value1&param2=value2`.
 
 = Filters for developers =
 
-* `evangtermine_http_timeout`: timeout of the request to the calendar in seconds (default 15, limited to 1 to 30).
-* `evangtermine_cache_ttl`: lifetime of the cache for `[et_teaser]` and the widget in seconds (default 300, 0 switches it off).
+* `evangtermine_http_timeout`: request timeout in seconds (default 15, 1 to 30).
+* `evangtermine_cache_ttl`: cache lifetime of `[et_teaser]` and the widget in seconds (default 300, 0 = off).
 
 = Bundled libraries =
 
@@ -122,7 +122,7 @@ jQuery, the date picker and moment come from WordPress.
 
 = Alternative =
 
-Evangelische Termine also offers its own widget for any CMS, under "Information" > "Widgets" after logging in at https://www.evangelische-termine.de/.
+Evangelische Termine also has its own widget for any CMS (after login at the service: "Information" > "Widgets").
 
 = Credits =
 
@@ -140,7 +140,7 @@ Originally developed by Norbert Räbiger (https://profiles.wordpress.org/regibae
 
 = 3.5 =
 * Changed: the settings page explains every setting below its field, and all labels and values are translated. The stored values do not change.
-* Changed: the source strings of the plugin are English now (WordPress.org convention); German translations for `de_DE` and `de_DE_formal` are included. Translations can be contributed at translate.wordpress.org.
+* Changed: the source strings of the plugin are English now (WordPress.org convention); German translations for `de_DE` and `de_DE_formal` are included.
 
 = 3.4 =
 * Security: fixed cross-site scripting and further security issues (including CVE-2025-28960). Request parameters are sanitized and URL-encoded, options and output are escaped, the widget settings are sanitized, and the calendar host is checked against local and private addresses.

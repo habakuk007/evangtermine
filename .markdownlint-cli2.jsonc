@@ -1,0 +1,16 @@
+{
+  // Config of markdownlint-cli2 for docs/ and README.md (CI job "Docs", see .github/workflows/ci.yml).
+  "config": {
+    "default": true,
+    // Long lines are fine: tables and German sentences are not wrapped.
+    "MD013": false,
+    // The same heading text may appear under different parents (for example "Hinweise").
+    "MD024": { "siblings_only": true },
+    // Inline HTML is not used in the docs; allow nothing by default.
+    "MD033": true,
+    // Ordered lists use 1. 2. 3.
+    "MD029": { "style": "ordered" }
+  },
+  "globs": ["README.md", "docs/**/*.md"],
+  "gitignore": true
+}
