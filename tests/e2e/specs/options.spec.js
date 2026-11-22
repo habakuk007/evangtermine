@@ -19,6 +19,17 @@ test.describe( 'options page', () => {
 		await expect( page.locator( 'input[name="vid"]' ) ).toHaveValue( '1474' );
 	} );
 
+	test( 'links to the documentation on the settings page and in the plugin row', async ( { page } ) => {
+		const DOCS = 'https://github.com/habakuk007/evangtermine/blob/master/docs/README.md';
+		for ( const url of [ OPTIONS_PAGE, '/wp-admin/plugins.php' ] ) {
+			await visit( page, url );
+			const link = page.locator( `a[href="${ DOCS }"]` );
+			await expect( link ).toHaveCount( 1 );
+			await expect( link ).toHaveAttribute( 'target', '_blank' );
+			await expect( link ).toHaveAttribute( 'rel', 'noopener noreferrer' );
+		}
+	} );
+
 	test( 'values with quotes and HTML are cleaned when saved and escaped when shown', async ( { page } ) => {
 		await visit( page, OPTIONS_PAGE );
 		await page.locator( 'input[name="vid"]' ).fill( '12" onfocus="window.__xss=1" autofocus="' );

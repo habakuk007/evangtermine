@@ -26,6 +26,9 @@ if(!defined('ET_DEFAULT_CHARSET')) {
 	define( 'ET_DEFAULT_CHARSET', 'utf8' );
 }
 
+// Index der Dokumentation (nur ein Link in der Administration, es wird nichts von dort geladen).
+define( 'ET_DOCS_URL', 'https://github.com/habakuk007/evangtermine/blob/master/docs/README.md' );
+
 define( 'ET_OPTION_AID', '');
 define( 'ET_OPTION_EVENTTYPE', '' );
 define( 'ET_OPTION_HIGHLIGHT', 'all' );

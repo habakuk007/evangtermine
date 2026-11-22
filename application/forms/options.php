@@ -125,6 +125,7 @@ function evangtermine_options() {
 	?>
 <div class="wrap">
 	<h1>Evangelische Termine</h1>
+	<p><a href="<?php echo esc_url( ET_DOCS_URL ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Documentation', 'evangtermine' ); ?></a></p>
 	<form method="post" action="options.php">
 		<?php settings_fields( 'et_group' ); ?>
 		<?php do_settings_sections( 'et_menu_slug' ); ?>

@@ -42,6 +42,11 @@ msgstr ""
 msgid "Upcoming events"
 msgstr ""
 
+#: application/forms/class.evangtermine_pluginoptionspage.php:16
+#: application/forms/options.php:128
+msgid "Documentation"
+msgstr ""
+
 #: application/forms/class.pluginoptionspage.php:10
 msgid "Settings"
 msgstr ""
