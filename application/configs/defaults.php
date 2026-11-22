@@ -30,7 +30,6 @@ define( 'ET_OPTION_AID', '');
 define( 'ET_OPTION_EVENTTYPE', '' );
 define( 'ET_OPTION_HIGHLIGHT', 'all' );
 define( 'ET_OPTION_PEOPLE', '0' );
-define( 'ET_OPTION_PERSON', 'all' );
 define( 'ET_OPTION_PLACE', 'all' );
 define( 'ET_OPTION_IPM', 'all' );
 define( 'ET_OPTION_CHA', 'all' );
