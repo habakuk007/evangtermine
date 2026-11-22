@@ -147,10 +147,7 @@ test.describe( 'et_veranstalter: known bugs', () => {
 	} );
 
 	test( 'the <h1> of the detail view becomes an <h2>', async ( { page } ) => {
-		// Evangtermine_Query::filterStream() replaces only "<h1>" without attributes. The calendar host sends
-		// <h1 id="et_detail_title">, so the output is <h1 id="et_detail_title">...</h2>.
-		test.fail();
-
+		// The calendar host sends <h1 id="et_detail_title">; filterStream() must keep the id and match the closing tag.
 		await visit( page, `${ PAGE }?etID=1001` );
 		await expect( page.locator( '.et_veranstalter #et_detail_title' ) ).toHaveText( 'Offener Kreis' );
 		await expect( page.locator( '.et_veranstalter h2#et_detail_title' ) ).toHaveCount( 1, { timeout: 2000 } );
