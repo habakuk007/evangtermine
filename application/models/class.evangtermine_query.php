@@ -487,8 +487,20 @@ class Evangtermine_Query
             'css/panels/bootstrap3.3.7.min.css' => 'styles/bootstrap3.3.7.min.css',
             'css/panels/bootstrap-theme3.3.7.min.css' => 'styles/bootstrap-theme3.3.7.min.css',
             'css/font-awesome.min.css' => 'font-awesome-4.7.0/css/font-awesome.min.css',
-            'css/jquery-ui.min.css' => 'ui/1.12.1/themes/base/jquery-ui.css'
+            'css/jquery-ui.min.css' => 'ui/1.12.1/themes/base/jquery-ui.css',
+            // Standard-CSS der Evangelischen Termine (Kopie, Hintergrundbild liegt in styles/images/) und Platzhalterbild (#33)
+            'css/publicintegration.css' => 'styles/publicintegration.css',
+            'images/placeholder.png' => 'images/placeholder.png'
         );
+        // Soll das CSS der Evangelischen Termine nicht geladen werden (eigenes CSS in den Einstellungen), wird der Link entfernt.
+        if (! $this->etLoadCSS) {
+            // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet -- Suchmuster: das Tag wird aus dem empfangenen HTML entfernt, nicht ausgegeben
+            $stream = preg_replace(
+                '#<link\b[^>]*\bhref=(["\'])' . self::REMOTE_BUNDLE_PREFIX . 'css/publicintegration\.css(?:\?[^"\']*)?\1[^>]*>#i',
+                '',
+                $stream
+            );
+        }
         // Das Bootstrap-JavaScript des Panels-Moduls wird nicht mitgeliefert: das Markup nutzt keine Bootstrap-Komponenten (#67).
         $stream = preg_replace(
             '#<script\b[^>]*\bsrc=(["\'])' . self::REMOTE_BUNDLE_PREFIX . 'css/panels/bootstrap3\.3\.7\.min\.js(?:\?[^"\']*)?\1[^>]*>\s*</script>#i',
@@ -501,14 +513,6 @@ class Evangtermine_Query
                 '$1="' . esc_url($assetsUrl . $localPath) . '"',
                 $stream
             );
-        }
-
-        // CSS der Evangelischen Termine entfernen, damit das eigene CSS verwendet werden kann.
-        if (! $this->etLoadCSS) {
-            // phpcs:disable WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet, PluginCheck.CodeAnalysis.Offloading.OffloadedContent -- Suchmuster: die Tags werden aus dem empfangenen HTML entfernt, nicht ausgegeben
-            $stream = str_replace('<link rel="stylesheet" type="text/css" href="http://www.evangelische-termine.de/bundles/vket/css/publicintegration.css"  />', '', $stream);
-            $stream = str_replace('<link rel="stylesheet" type="text/css" href="https://www.evangelische-termine.de/bundles/vket/css/publicintegration.css"  />', '', $stream);
-            // phpcs:enable WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet, PluginCheck.CodeAnalysis.Offloading.OffloadedContent
         }
 
         // Detailansicht des Teasermoduls im Hauptfenster

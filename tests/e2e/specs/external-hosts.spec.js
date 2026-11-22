@@ -6,8 +6,8 @@
 const { test, expect, visit } = require( '../helpers' );
 
 const ALLOWLIST = [
-	// publicintegration.css and the placeholder image (/bundles/vket/images/placeholder.png), and images of the detail
-	// view that the plugin points to the calendar host. Removed by PR C (#33).
+	// Images of the detail view that the plugin points to the calendar host (/Upload/ rewrite). The default stylesheet
+	// and the placeholder image are bundled since #33. Removed with the image decision (4.0, #121).
 	'www.evangelische-termine.de',
 	// Event images in panels and minical output (disclosed). Removed by PR E (#33).
 	'et-live.obsv3.de-global-1.spacenet.cloud',
@@ -87,4 +87,28 @@ test.describe( 'external hosts guard', () => {
 			expect( externalScripts, 'external script[src]' ).toEqual( [] );
 		} );
 	}
+
+	test( 'the default stylesheet and the placeholder image come from the plugin, not from the calendar host', async ( { page, baseURL } ) => {
+		const own = new URL( baseURL ).origin;
+
+		await visit( page, '/et-veranstalter/' );
+		let referenced = await referencedUrls( page );
+		const sheets = referenced.filter( ( entry ) => 'link[rel~="stylesheet"][href]' === entry.selector );
+		expect( sheets.filter( ( entry ) => new URL( entry.url ).origin !== own ), 'external stylesheets' ).toEqual( [] );
+		expect( sheets.some( ( entry ) => /\/assets\/styles\/publicintegration\.css/.test( entry.url ) ), 'bundled publicintegration.css' ).toBe( true );
+
+		await visit( page, '/et-panels/' );
+		referenced = await referencedUrls( page );
+		const placeholders = referenced.filter( ( entry ) => /placeholder\.png/.test( entry.url ) );
+		expect( placeholders.length, 'placeholder image in the panels' ).toBeGreaterThan( 0 );
+		expect( placeholders.filter( ( entry ) => new URL( entry.url ).origin !== own ), 'external placeholder image' ).toEqual( [] );
+	} );
+
+	test( 'with a custom CSS file the default stylesheet is not loaded at all', async ( { page, site } ) => {
+		await site.reset( { options: { css: 'https://example.org/my.css' } } );
+
+		await visit( page, '/et-veranstalter/' );
+		const referenced = await referencedUrls( page );
+		expect( referenced.filter( ( entry ) => /publicintegration\.css/.test( entry.url ) ), 'publicintegration.css' ).toEqual( [] );
+	} );
 } );
