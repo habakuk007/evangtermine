@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<p><?php esc_html_e( 'Deanery ID (comma-separated list, no spaces):', 'evangtermine' ); ?>
 		<input name="<?php echo esc_attr( $this->get_field_name( 'region' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['region'] ); ?>" />
 	</p>
-	<p><?php esc_html_e( 'Eventtype ID (comma-separated list, no spaces):', 'evangtermine' ); ?>
+	<p><?php esc_html_e( 'Event category ID (comma-separated list, no spaces):', 'evangtermine' ); ?>
 		<input name="<?php echo esc_attr( $this->get_field_name( 'eventtype' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['eventtype' ] ); ?>" />
 	</p>
 	<p><?php esc_html_e( 'Highlight (all/high):', 'evangtermine' ); ?>
@@ -38,7 +38,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<p><?php esc_html_e( 'Venue ID (comma-separated list, no spaces):', 'evangtermine' ); ?>
 		<input name="<?php echo esc_attr( $this->get_field_name( 'place' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['place'] ); ?>" />
 	</p>
-	<p><?php esc_html_e( 'Event type ID (comma-separated list, no spaces):', 'evangtermine' ); ?>
+	<p><?php esc_html_e( 'Event type ID (input mask, comma-separated list, no spaces):', 'evangtermine' ); ?>
 		<input name="<?php echo esc_attr( $this->get_field_name( 'ipm' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['ipm'] ); ?>" />
 	</p>
 	<p><?php esc_html_e( "Adult education (if 'eb' is selected, the fields Event type ID and Channels are ignored):", 'evangtermine' ); ?>

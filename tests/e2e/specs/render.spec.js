@@ -127,10 +127,6 @@ test.describe( 'widget settings', () => {
 	} );
 
 	test( 'the form shows the saved title', async ( { page, request } ) => {
-		// Known bug in the plugin (not fixed here): EtWidget::form() always replaces the saved title
-		// with "Nächste Veranstaltungen". Remove test.fail() when the bug is fixed.
-		test.fail();
-
 		const response = await request.post( '/?et_e2e=widget-form', { data: { title: 'Termine "heute" <b>fett</b>' } } );
 		await page.setContent( await response.text() );
 		await expect( page.locator( '[name="widget-etwidget[2][title]"]' ) ).toHaveValue( 'Termine "heute" <b>fett</b>', { timeout: 2000 } );

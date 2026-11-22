@@ -26,7 +26,10 @@ class EtWidget extends WP_Widget {
 		$etstream = new Evangtermine_Query(ET_TEMPLATE_TEASER_WIDGET);
 		$etstream->setEtParameters($instance);
 
-		$etstream->setEtParameter('title', __('Upcoming events', 'evangtermine'));
+		// Der Standardtitel gilt nur für ein neues Widget, ein gespeicherter (auch leerer) Titel bleibt erhalten.
+		if (! is_array($instance) || ! array_key_exists('title', $instance)) {
+			$etstream->setEtParameter('title', __('Upcoming events', 'evangtermine'));
+		}
 		// Felder, die nicht in den Grundeinstellungen vorkommen, vorbelegen (sonst "Undefined array key" ab PHP 8)
 		$instance = wp_parse_args($etstream->getEtParameters(), array(
 			'auswahl'              => '',
