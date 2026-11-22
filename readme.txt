@@ -98,7 +98,7 @@ The parameters are described in the [manual of Evangelische Termine](https://han
 
 **until**: show an event until its end date (`yes`, default) or not (`no`).
 
-**q**: search term.
+**q**: search terms, separated by spaces.
 
 **auswahl**: `eb` shows adult education events in Bavaria (input mask or channel "Erwachsenenbildung").
 

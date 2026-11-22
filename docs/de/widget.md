@@ -22,7 +22,7 @@ Die Felder eines neuen Widgets sind mit den [Einstellungen](einstellungen.md) vo
 | itemsPerPage | `itemsPerPage` | `20` |
 | Anzeige (extern/intern/alle) | `dest` | `extern` |
 | Anzeige der Veranstaltung bis zum Enddatum (ja/nein) | `until` | aus den Einstellungen (ja) |
-| Suchbegriffe | `q` | leer |
+| Suchbegriffe (durch Leerzeichen getrennt) | `q` | leer |
 | Weitere Parameter | `additionalParameters` | leer |
 
 Das Widget hat keine Felder für `people` (Zielgruppe) und `person` (Ansprechpartner). Verwenden Sie dafür das Feld „Weitere Parameter“.

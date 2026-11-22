@@ -79,7 +79,7 @@ for this one shortcode. The plugin passes the attributes on to the calendar as q
 | `itemsperpage` | Number of events to show | `20` |
 | `dest` | `extern` (public events), `intern` (internal events) or `all` | `extern` |
 | `until` | Show an event until its end date: `yes` or `no` | `yes` |
-| `q` | Search term | empty |
+| `q` | Search terms, separated by spaces | empty |
 | `auswahl` | Predefined selection, for example `eb` (adult education in Bavaria) | not set |
 
 A `vid` is needed, in the settings or in the shortcode. Without it `[et_veranstalter]`, `[et_teaser]`

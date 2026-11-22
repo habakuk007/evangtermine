@@ -22,7 +22,7 @@ Diese Attribute gelten für alle vier Shortcodes: `[et_veranstalter]`, `[et_teas
 | `itemsperpage` | Anzahl der Termine je Seite. Bei `[et_veranstalter]` sind 5, 10, 20, 30, 40, 50 und 100 vorgesehen | `20` | `itemsperpage="5"` |
 | `dest` | `extern` (öffentliche Termine), `intern` oder `all` | `extern` | `dest="all"` |
 | `until` | `yes`: Termin bis zu seinem Ende anzeigen; `no`: nur bis zum Beginn | Einstellung „Termine bis zu ihrem Ende anzeigen“ (`yes`) | `until="no"` |
-| `q` | Suchbegriff; durchsucht unter anderem Titel, Beschreibung, Ort und Person | leer | `q="Senioren"` |
+| `q` | Suchbegriffe, durch Leerzeichen getrennt (nicht durch Komma); durchsucht unter anderem Titel, Beschreibung, Ort und Person | leer | `q="Senioren Konzert"` |
 | `auswahl` | Vordefinierte Auswahl; `eb` zeigt die Termine der Erwachsenenbildung in Bayern (Veranstaltungstyp oder Kanal „Erwachsenenbildung“) | nicht gesetzt | `auswahl="eb"` |
 
 Beispiel mit mehreren Attributen:
