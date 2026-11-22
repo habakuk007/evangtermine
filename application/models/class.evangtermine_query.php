@@ -124,19 +124,19 @@ class Evangtermine_Query
     }
 
     /**
-     * Adresse der Evangelischen Termine für Abrufe aus dem Browser der Besucher (Mini-Kalender), ohne abschließenden
-     * Schrägstrich. Immer https, weil Browser auf https-Seiten keine http-Abrufe zulassen. Leer, wenn der Host aus den
-     * Einstellungen nicht zulässig ist.
+     * Adresse der Evangelischen Termine für Abrufe des Servers (Protokoll und Host aus den Einstellungen), ohne abschließenden
+     * Schrägstrich. Leer, wenn der Host aus den Einstellungen nicht zulässig ist.
      *
      * @return string
      */
-    public function getBrowserBaseUrl()
+    public function getRemoteBaseUrl()
     {
         $host = strtolower(trim((string) $this->etHost));
+        $protocol = in_array($this->etProtocol, array('http://', 'https://'), true) ? $this->etProtocol : ET_DEFAULT_PROTOCOL;
         if (! preg_match('/^[a-z0-9.-]+(:[0-9]{1,5})?$/', $host) || ! self::isSafeHost($host)) {
             return '';
         }
-        return 'https://' . $host;
+        return $protocol . $host;
     }
 
     /**

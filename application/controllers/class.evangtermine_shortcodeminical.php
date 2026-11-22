@@ -59,11 +59,11 @@ class Evangtermine_ShortcodeMinical
         wp_enqueue_style('evangtermine-minical');
         wp_enqueue_script('evangtermine-minical');
 
-        // Parameter und Adresse der Evangelischen Termine an das Skript übergeben (nur einmal je Seite).
+        // Parameter und Adressen des Proxys (REST-Routen der eigenen Website) an das Skript übergeben (nur einmal je Seite).
         if (! wp_script_is('evangtermine-minical', 'done') && ! wp_scripts()->get_data('evangtermine-minical', 'before')) {
-            $data = array(
-                'parameters' => $etstream->getEtParameters(),
-                'baseUrl'    => $etstream->getBrowserBaseUrl()
+            $data = array_merge(
+                array('parameters' => $etstream->getEtParameters()),
+                Evangtermine_MinicalProxy::getUrls()
             );
             wp_add_inline_script(
                 'evangtermine-minical',
