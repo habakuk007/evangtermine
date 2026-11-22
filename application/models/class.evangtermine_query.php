@@ -301,6 +301,7 @@ class Evangtermine_Query
 
             // Ziel prüfen (Host aus den Einstellungen): keine lokalen/privaten Adressen
             if (! self::isSafeHost($host)) {
+                self::logFetchFailure($host, 'host rejected (local or private address)');
                 return '<div>' . esc_html__('The event calendar is currently unavailable.', 'evangtermine') . '</div>';
             }
 
@@ -330,6 +331,11 @@ class Evangtermine_Query
                     }
                 } else {
                     // Fehlermeldung $host ist vorübergehend nicht erreichbar (wird nicht zwischengespeichert)
+                    if (is_wp_error($response)) {
+                        self::logFetchFailure($host, $response->get_error_code() . ': ' . $response->get_error_message());
+                    } else {
+                        self::logFetchFailure($host, 'HTTP status ' . (int) wp_remote_retrieve_response_code($response));
+                    }
                     $stream = '<div>' . esc_html__('The event calendar is currently unavailable.', 'evangtermine') . '</div>';
                 }
             }
@@ -441,6 +447,25 @@ class Evangtermine_Query
     }
 
     /**
+     * Schreibt den Grund eines fehlgeschlagenen Abrufs ins Debug-Log (nur bei WP_DEBUG).
+     * Ohne Query-String und ohne Request-Daten. Die Ausgabe für Besucher bleibt unverändert.
+     *
+     * @param string $host   Host der Evangelischen Termine.
+     * @param string $reason Fehlercode/-meldung oder HTTP-Status.
+     */
+    private static function logFetchFailure($host, $reason)
+    {
+        if (! defined('WP_DEBUG') || ! WP_DEBUG) {
+            return;
+        }
+        $clean = static function ($value) {
+            return substr(preg_replace('/[^ -~]/', '?', (string) $value), 0, 300);
+        };
+        // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+        error_log('evangtermine: fetch failed for host ' . $clean($host) . ' - ' . $clean($reason));
+    }
+
+    /**
      * Baut den von den Evangelischen Terminen empfangenen Stream sinnvoll um
      *
      * @param string $stream
@@ -500,8 +525,9 @@ class Evangtermine_Query
 
         // Überschrift "Veranstaltungen" entfernen und <h1>-Überschrift der Evangelischen Termine in ein <h2> umwandeln
         $stream = str_replace('<div id="et_headline"><h1>Veranstaltungen</h1></div>', '', $stream);
-        $stream = str_replace('<h1>', '<h2>', $stream);
-        $stream = str_replace('</h1>', '</h2>', $stream);
+        // Öffnende Tags auch mit Attributen (z. B. id="et_detail_title"), damit öffnendes und schließendes Tag zusammenpassen
+        $stream = preg_replace('/<h1(\s[^>]*)?>/i', '<h2$1>', $stream);
+        $stream = preg_replace('/<\/h1\s*>/i', '</h2>', $stream);
 
         // Doppelpunkte nach dem Titel korrigieren
         $stream = str_replace(' : <span class="et_content_subtitle">', ': <span class="et_content_subtitle">', $stream);
