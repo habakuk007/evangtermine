@@ -35,7 +35,8 @@ Everything that is not needed at runtime is listed in `.distignore` and stays ou
 | `Evangtermine_Query` | Merges settings, defaults and attributes; builds the query string; fetches and filters the remote HTML; host check; timeout and cache filters |
 | `Evangtermine_ShortcodeVeranstalter` | List with filter form: reads the allowed request parameters |
 | `Evangtermine_ShortcodeTeaser`, `Evangtermine_ShortcodePanels` | Teaser and panels: no request parameters |
-| `Evangtermine_ShortcodeMinical` | Registers and enqueues scripts and styles; hands the parameters and the browser base URL to the script |
+| `Evangtermine_ShortcodeMinical` | Registers and enqueues scripts and styles; hands the parameters and the URLs of the two REST routes to the script |
+| `Evangtermine_MinicalProxy` | REST routes `evangtermine/v1/minical/events` (JSON) and `…/detail` (HTML, sent with a CSP `sandbox`): allowlisted parameters, fetch with `wp_remote_get()`, short transient cache |
 | `EtWidget` | `WP_Widget`; the class name is stored by WordPress in the database and must not change |
 | `Evangtermine_View` | Wraps the output in a `<div>` with the class `et_veranstalter`, `et_teaser`, `et_panel` or `et_sidebar` |
 | `Evangtermine_IncludeCSS` | Enqueues the custom CSS file from the settings |
@@ -72,7 +73,7 @@ Evangtermine_View::buildView          wraps in <div class="...">
 
 Modules (`application/configs/defaults.php`): `veranstaltungen-php` (list), `teaser`, `detail-php`, `panels`. The widget and `[et_teaser]` use the `teaser` module with the template ids 2 and 1 (`ET_TEMPLATE_TEASER_WIDGET`, `ET_TEMPLATE_TEASER_SHORTCODE`).
 
-`[et_minical]` is the exception: PHP does not fetch anything. It outputs `<div id="et_minicalendar">` and a script with the parameters (`etMinicalData`); `assets/scripts/et_minical.js` loads the data in the visitor's browser.
+`[et_minical]` is the exception: the shortcode itself does not fetch anything. It outputs `<div id="et_minicalendar">` and a script with the parameters (`etMinicalData`); `assets/scripts/et_minical.js` loads the data from the same-origin REST routes of `Evangtermine_MinicalProxy`, which fetch it from the calendar host on the server.
 
 ### Parameter handling
 

@@ -31,7 +31,7 @@ The plan for 4.0 replaces this by JSON data and templates owned by the plugin (s
 
 ## What the visitor's browser contacts
 
-Besides your site, the visitor's browser can contact external servers directly (for example for event images or the data of the mini calendar). The list is in the section "External service" of `readme.txt` and is kept there; it is the source of truth.
+Besides your site, the visitor's browser can contact external servers directly (for example for event images; the mini calendar goes through a same-origin REST route and does not contact the calendar host from the browser). The list is in the section "External service" of `readme.txt` and is kept there; it is the source of truth.
 
 ## Reviewing a change
 

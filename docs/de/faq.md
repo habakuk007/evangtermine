@@ -73,13 +73,14 @@ Mehr dazu in [Eigenes CSS](eigenes-css.md).
 
 ## Der Mini-Kalender bleibt leer
 
-Der Mini-Kalender wird im Browser der Besucher aufgebaut. Er bleibt leer, wenn
+Der Mini-Kalender wird im Browser der Besucher aufgebaut, seine Daten holt Ihr Server. Er bleibt leer, wenn
 
 - der Host in den Einstellungen nicht zulässig ist (lokale oder private Adresse),
-- der Browser die Verbindung zum Kalender blockiert (zum Beispiel durch einen Werbeblocker oder eine strenge Datenschutz-Einstellung) oder
+- Ihr Server den Kalender nicht erreicht (die Route antwortet dann mit einem Fehler),
+- die REST-API Ihrer Website gesperrt ist (zum Beispiel durch ein Sicherheits-Plugin) oder
 - JavaScript ausgeschaltet ist.
 
-Öffnen Sie die Entwicklerwerkzeuge des Browsers (Taste F12), Reiter „Konsole“ und „Netzwerk“, um zu sehen, welche Abfrage fehlschlägt.
+Öffnen Sie die Entwicklerwerkzeuge des Browsers (Taste F12), Reiter „Netzwerk“, und prüfen Sie die Abfragen an `/wp-json/evangtermine/v1/minical/`.
 
 ## Kann ich den Kalender einer anderen Landeskirche verwenden?
 

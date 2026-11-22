@@ -57,7 +57,7 @@ Der Mini-Kalender von Evangelische Termine: ein Monatskalender. Fährt man mit d
 [et_minical vid="952"]
 ```
 
-Der Mini-Kalender wird mit JavaScript aufgebaut. Seine Daten holt der **Browser des Besuchers** vom Host aus den Einstellungen, nicht Ihr Server. Der Server der Evangelischen Termine erfährt dadurch die IP-Adresse der Besucher. Welche Server der Browser bei den einzelnen Shortcodes direkt kontaktiert (Bilder, Stylesheets, Daten des Mini-Kalenders), steht im Abschnitt „External service“ der `readme.txt` (auf der Seite des Plugins bei WordPress.org). Beachten Sie das in Ihrer Datenschutzerklärung.
+Der Mini-Kalender wird mit JavaScript aufgebaut. Der Browser des Besuchers fragt dafür nur **Ihre eigene Website** (REST-Route `/wp-json/evangtermine/v1/minical/…`); Ihr Server holt die Daten vom Host aus den Einstellungen und hält sie kurz im Zwischenspeicher. Der Server der Evangelischen Termine erfährt dadurch nicht die IP-Adresse der Besucher. Welche Server der Browser bei den einzelnen Shortcodes direkt kontaktiert (zum Beispiel Bilder), steht im Abschnitt „External service“ der `readme.txt` (auf der Seite des Plugins bei WordPress.org). Beachten Sie das in Ihrer Datenschutzerklärung.
 
 Der Mini-Kalender funktioniert nur, wenn der Host in den Einstellungen zulässig ist (siehe [Einstellungen](einstellungen.md#host-des-kalenderbetreibers)); sonst bleibt die Fläche leer.
 
