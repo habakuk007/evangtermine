@@ -36,7 +36,7 @@ This plugin fetches the events live from an external service: Evangelische Termi
 * **When:** every time `[et_veranstalter]`, `[et_teaser]`, `[et_panels]` or the widget is shown. The output of `[et_teaser]` and of the widget is cached for 5 minutes. `[et_minical]` loads its data with JavaScript from the visitor's browser, from the host in the settings; a click on an event loads the detail view from there in an iframe.
 * **What is sent:** the query parameters (organiser ID, region ID, filters, a visitor's search term and page number, the ID of an event), the URL of the requesting page as Referer and the plugin version in the User-Agent. This request is made by your server, so it does not contain the IP addresses of your visitors.
 * **Returned content:** the HTML delivered by the service is shown on your site as it is, without filtering. Only use a host that you trust. Scripts and libraries (jQuery, jQuery UI, Bootstrap, Font Awesome) are loaded from WordPress and from this plugin, not from the service.
-* **What the visitor's browser loads directly:** the default stylesheet of the service for `[et_veranstalter]` and the detail view (not if you set your own CSS file in the settings); the images of events in `[et_panels]` and in the detail view, which are stored at the service's hosting provider (currently `et-live.obsv3.de-global-1.spacenet.cloud`), and a placeholder image from the service; the data of `[et_minical]`. These servers receive the IP address and the user agent of the visitor. `[et_teaser]` and the widget load nothing from other servers.
+* **What the visitor's browser loads directly:** the images of events in `[et_panels]` and in the detail view, which are stored at the service's hosting provider (currently `et-live.obsv3.de-global-1.spacenet.cloud`) or at the service itself; the data of `[et_minical]`. These servers receive the IP address and the user agent of the visitor. `[et_teaser]` and the widget load nothing from other servers.
 * **Privacy policy of the service:** [https://www.evangelische-termine.de/datenschutz](https://www.evangelische-termine.de/datenschutz)
 
 == Installation ==
@@ -139,6 +139,7 @@ Originally developed by Norbert Räbiger (https://profiles.wordpress.org/regibae
 == Changelog ==
 
 = 3.5.0 =
+* Changed: the default stylesheet and the placeholder image of the service are delivered by the plugin. Visitors' browsers no longer load them from the service.
 * Changed: the settings page explains every setting below its field, and all labels and values are translated. The stored values do not change.
 * Changed: the source strings of the plugin are English now (WordPress.org convention); German translations for `de_DE` and `de_DE_formal` are included. Translations can be contributed at translate.wordpress.org.
 
