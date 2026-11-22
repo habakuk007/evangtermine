@@ -109,6 +109,8 @@ docs/specs/                              ← design specs; not in the release
 
 ## Instruction Files
 
+`.agents/` is the source of truth. `.github/instructions/` and `.github/agents/` are tracked copies (GitHub Copilot reads them only there; git cannot store junctions). Never edit them; after changing `.agents/instructions/` or `.agents/agents/` run `bash .agents/scripts/sync-github-copies.sh`. The CI job `ai-config-sync` fails if they differ.
+
 | File | Applies to |
 |------|-----------|
 | [.agents/instructions/wordpress.instructions.md](.agents/instructions/wordpress.instructions.md) | `**/*.php` |

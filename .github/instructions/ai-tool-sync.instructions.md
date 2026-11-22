@@ -8,13 +8,14 @@ description: 'Rules for keeping AI-tool config files in sync when any one of the
 ## Architecture
 
 `.agents/` is the **single source of truth** for all instructions, agents, and skills.
-Tracked copies under `.github/` make the content available to other tools. Edit only `.agents/` and re-copy; never edit the copies.
+GitHub Copilot reads only `.github/instructions/` and `.github/agents/`, and git cannot store junctions or symlinks portably, so these two folders are **tracked copies** (real files, not junctions). Edit only `.agents/`, then refresh the copies with `bash .agents/scripts/sync-github-copies.sh`; never edit the copies. The CI job `ai-config-sync` runs the same script with `--check` and fails when the copies differ (line endings are ignored).
 
 ```
 .agents/
   instructions/       ← source of truth for all instruction files
   agents/             ← source of truth for all agent definitions
   skills/             ← source of truth for all skill definitions
+  scripts/sync-github-copies.sh  ← refreshes / checks the .github copies
 
 .github/
   instructions/       ← tracked copy of .agents/instructions/  (do not edit directly)
@@ -40,13 +41,13 @@ opencode.json         ← OpenCode config (reads AGENTS.md for context)
    - `CLAUDE.md` (under "Instruction Files")
    - `AGENTS.md` (under "Available Instruction Files")
    - `.github/copilot-instructions.md` (under "Coding Standards Applied Automatically")
-4. Copy the file to `.github/instructions/` as well. In the repository that directory is a set of **tracked copies**, not a junction (a clone on GitHub/Linux has no junction, and Copilot reads only `.github/instructions/`). Verify with `diff -rq .agents/instructions .github/instructions` — it must print nothing.
+4. Run `bash .agents/scripts/sync-github-copies.sh` to refresh `.github/instructions/`. Verify with `bash .agents/scripts/sync-github-copies.sh --check` — it must print nothing.
 
 ---
 
 ## When you remove an instruction file
 
-1. Delete from `.agents/instructions/` and from `.github/instructions/`.
+1. Delete from `.agents/instructions/`, then run `bash .agents/scripts/sync-github-copies.sh` (removes it from `.github/instructions/`).
 2. Remove the row from all three instruction tables.
 
 ---
@@ -61,13 +62,13 @@ opencode.json         ← OpenCode config (reads AGENTS.md for context)
    Context for this task: $ARGUMENTS
    ```
 3. Add a row to the agent table in `CLAUDE.md`, `AGENTS.md`, and `.github/copilot-instructions.md`
-4. Copy the file to `.github/agents/` as well (tracked copies, see above). Verify with `diff -rq .agents/agents .github/agents`.
+4. Run `bash .agents/scripts/sync-github-copies.sh` to refresh `.github/agents/` (tracked copies, see above); `--check` verifies.
 
 ---
 
 ## When you remove an agent
 
-1. Delete from `.agents/agents/` only.
+1. Delete from `.agents/agents/`, then run `bash .agents/scripts/sync-github-copies.sh`.
 2. Delete the corresponding `.claude/commands/<name>.md`.
 3. Remove the row from all three agent tables.
 

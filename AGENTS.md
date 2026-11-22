@@ -114,7 +114,7 @@ readme.txt                <- WordPress.org plugin listing
 ## Available Agents
 
 All agent definitions live in `.agents/agents/` (source of truth).
-`.github/agents/` is a tracked copy of `.agents/agents/` — never edit files there directly; re-copy after changes.
+`.github/agents/` is a tracked copy of `.agents/agents/` (Copilot needs it there) — never edit files there directly; refresh with `bash .agents/scripts/sync-github-copies.sh`. CI (`ai-config-sync`) fails if they differ.
 Each agent has a corresponding Claude Code slash command in `.claude/commands/`.
 
 | Agent | Claude Command | Purpose |
@@ -140,7 +140,7 @@ Each skill has a corresponding Claude Code slash command in `.claude/commands/`.
 ## Available Instruction Files
 
 All instructions live in `.agents/instructions/` (source of truth).
-`.github/instructions/` is a tracked copy of this folder (re-copy after changes).
+`.github/instructions/` is a tracked copy of this folder (refresh with `bash .agents/scripts/sync-github-copies.sh`; CI checks it).
 
 | File | Applies To |
 |------|-----------|
