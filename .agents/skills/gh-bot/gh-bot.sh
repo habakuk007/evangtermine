@@ -32,7 +32,7 @@ usage() {
   cat >&2 <<'EOF'
 Usage:
   gh-bot.sh check                                verify the bot token
-  gh-bot.sh pr <branch> "<title>" ["<body>"]     open a PR as the bot (hotfix/* -> master; else develop)
+  gh-bot.sh pr <branch> "<title>" ["<body>" | --body-file <path>]  open a PR as the bot (base develop; hotfix/* -> master)
   gh-bot.sh comment <pr-number> "<text>"         comment on a PR as the bot
   gh-bot.sh comment <pr-number> --body-file <path>  comment on a PR as the bot (body from a file)
   gh-bot.sh list                                 list open PRs
@@ -100,13 +100,39 @@ bot_gh() {
 }
 
 cmd_pr() {
-  { [ $# -eq 2 ] || [ $# -eq 3 ]; } && [ -n "$1" ] && [ -n "$2" ] || usage
-  local branch="$1" title="$2" body="${3:-}" base
+  [ -n "$1" ] && [ -n "$2" ] || usage
+  local branch="$1" title="$2" base
   case "$branch" in
     hotfix/*) base="master" ;;
     *) base="develop" ;;
   esac
-  bot_gh pr create --repo "$REPO" --head "$branch" --base "$base" --title "$title" --body "$body"
+  # Optional body: a 3rd positional arg, or `--body-file <path>` (4th).
+  if [ $# -eq 4 ] && [ "$3" = "--body-file" ]; then
+    # Resolve the body file for this (WSL / Git-Bash) shell and the Windows
+    # gh.exe, mirroring the comment --body-file handling.
+    local check_path win_path drv rest
+    case "$4" in
+      [A-Za-z]:\\*|[A-Za-z]:/*)
+        drv="${4:0:1}"; rest="${4:2}"
+        rest="${rest//\\//}"
+        rest="${rest#/}"
+        check_path="/mnt/$(printf '%s' "$drv" | tr '[:upper:]' '[:lower:]')/$rest"
+        win_path="$4"
+        ;;
+      *)
+        check_path="$4"
+        win_path="$(winpath "$4")"
+        ;;
+    esac
+    [ -f "$check_path" ] || { printf 'ERROR: --body-file: %s not found (pass a relative path such as ./body.md, or a path this shell can reach)\n' "$4" >&2; exit 64; }
+    bot_gh pr create --repo "$REPO" --head "$branch" --base "$base" --title "$title" --body-file "$win_path"
+    return
+  fi
+  if [ $# -eq 3 ]; then
+    bot_gh pr create --repo "$REPO" --head "$branch" --base "$base" --title "$title" --body "$3"
+  else
+    bot_gh pr create --repo "$REPO" --head "$branch" --base "$base" --title "$title"
+  fi
 }
 
 cmd_comment() {

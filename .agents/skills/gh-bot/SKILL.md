@@ -27,6 +27,7 @@ Never use the bot for pushes.
 
 - `bash .agents/skills/gh-bot/gh-bot.sh check` – verify the bot token (login, repo access, expiry)
 - `bash .agents/skills/gh-bot/gh-bot.sh pr <branch> "<title>" "<body>"` – open a PR (base `develop`; `hotfix/*` → `master`)
+- `bash .agents/skills/gh-bot/gh-bot.sh pr <branch> "<title>" --body-file <path>` – open a PR, reading the body from a file (multi-line bodies; same path rules as `comment --body-file`)
 - `bash .agents/skills/gh-bot/gh-bot.sh comment <pr-number> "<text>"` – comment on a PR (short bodies only)
 - `bash .agents/skills/gh-bot/gh-bot.sh comment <pr-number> --body-file <path>` – comment on a PR, reading the body from a file (multi-line bodies with quotes or newlines)
 - `bash .agents/skills/gh-bot/gh-bot.sh list` – list open PRs
