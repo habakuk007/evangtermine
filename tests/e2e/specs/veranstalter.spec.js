@@ -120,9 +120,6 @@ for ( const session of [ false, true ] ) {
 // the bug exists. When a bug is fixed, the test "passes unexpectedly": then remove test.fail().
 test.describe( 'et_veranstalter: known bugs', () => {
 	test( 'the search term is kept on page 2', async ( { page, site } ) => {
-		// The pagination links carry "q=<term>", but the plugin reads only "et_q". Page 2 shows the unfiltered list.
-		test.fail();
-
 		await visit( page, `${ PAGE }?et_q=Offener&action=search` );
 		const list = page.locator( '.et_veranstalter' );
 		await expect( list.locator( '#et_totalItems' ) ).toHaveText( '7' );
@@ -134,9 +131,6 @@ test.describe( 'et_veranstalter: known bugs', () => {
 	} );
 
 	test( 'reset also clears a search term that is still in the search field', async ( { page, site } ) => {
-		// With "reset=1&et_q=term" the plugin still searches for the term.
-		test.fail();
-
 		await visit( page, PAGE );
 		const list = page.locator( '.et_veranstalter' );
 		await list.locator( '#et_q' ).fill( 'Offener' );
