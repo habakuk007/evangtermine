@@ -59,7 +59,7 @@ msgid "Deanery ID (comma-separated list, no spaces):"
 msgstr ""
 
 #: application/forms/form.etwidget.php:22
-msgid "Eventtype ID (comma-separated list, no spaces):"
+msgid "Event category ID (comma-separated list, no spaces):"
 msgstr ""
 
 #: application/forms/form.etwidget.php:25
@@ -81,7 +81,7 @@ msgid "Venue ID (comma-separated list, no spaces):"
 msgstr ""
 
 #: application/forms/form.etwidget.php:41
-msgid "Event type ID (comma-separated list, no spaces):"
+msgid "Event type ID (input mask, comma-separated list, no spaces):"
 msgstr ""
 
 #: application/forms/form.etwidget.php:44

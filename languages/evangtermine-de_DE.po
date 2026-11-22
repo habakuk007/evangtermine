@@ -59,8 +59,8 @@ msgid "Deanery ID (comma-separated list, no spaces):"
 msgstr "Dekanats-ID (kommaseparierte Liste, keine Leerzeichen):"
 
 #: application/forms/form.etwidget.php:22
-msgid "Eventtype ID (comma-separated list, no spaces):"
-msgstr "Eventtype-ID (kommaseparierte Liste, keine Leerzeichen):"
+msgid "Event category ID (comma-separated list, no spaces):"
+msgstr "Veranstaltungskategorie-ID (kommaseparierte Liste, keine Leerzeichen):"
 
 #: application/forms/form.etwidget.php:25
 msgid "Highlight (all/high):"
@@ -81,8 +81,8 @@ msgid "Venue ID (comma-separated list, no spaces):"
 msgstr "Veranstaltungsort-ID (kommaseparierte Liste, keine Leerzeichen):"
 
 #: application/forms/form.etwidget.php:41
-msgid "Event type ID (comma-separated list, no spaces):"
-msgstr "Veranstaltungstyp-ID (kommaseparierte Liste, keine Leerzeichen):"
+msgid "Event type ID (input mask, comma-separated list, no spaces):"
+msgstr "Veranstaltungstyp-ID (Eingabemaske, kommaseparierte Liste, keine Leerzeichen):"
 
 #: application/forms/form.etwidget.php:44
 msgid "Adult education (if 'eb' is selected, the fields Event type ID and Channels are ignored):"
