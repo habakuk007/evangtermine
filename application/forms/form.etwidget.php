@@ -9,18 +9,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+// This template is included inside EtWidget::form(), so the variables below are local to that method, not globals.
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- Local scope, see above.
+
 ?>
-	<p><?php esc_html_e( 'Title:', 'evangtermine' ); ?> 
+	<p><?php esc_html_e( 'Title:', 'evangtermine' ); ?>
 		<input name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['title'] ); ?>" />
 	</p>
-	<p><?php esc_html_e( 'Organizer ID (comma-separated list, no spaces):', 'evangtermine' ); ?> 
+	<p><?php esc_html_e( 'Organizer ID (comma-separated list, no spaces):', 'evangtermine' ); ?>
 		<input name="<?php echo esc_attr( $this->get_field_name( 'vid' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['vid'] ); ?>" />
 	</p>
 	<p><?php esc_html_e( 'Deanery ID (comma-separated list, no spaces):', 'evangtermine' ); ?>
 		<input name="<?php echo esc_attr( $this->get_field_name( 'region' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['region'] ); ?>" />
 	</p>
 	<p><?php esc_html_e( 'Event category ID (comma-separated list, no spaces):', 'evangtermine' ); ?>
-		<input name="<?php echo esc_attr( $this->get_field_name( 'eventtype' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['eventtype' ] ); ?>" />
+		<input name="<?php echo esc_attr( $this->get_field_name( 'eventtype' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['eventtype'] ); ?>" />
 	</p>
 	<p><?php esc_html_e( 'Highlight (all/high):', 'evangtermine' ); ?>
 		<select name="<?php echo esc_attr( $this->get_field_name( 'highlight' ) ); ?>">
@@ -29,9 +32,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 				'all'  => _x( 'all', 'widget highlight option', 'evangtermine' ),
 				'high' => _x( 'high', 'widget highlight option', 'evangtermine' ),
 			);
-			foreach ($items as $item => $label) {
-			 	 echo '<option value="' . esc_attr( $item ) . '"' . selected( (string) $instance['highlight'], $item, false ) . '>' . esc_html( $label ) . '</option>';
-			} 
+			foreach ( $items as $item => $label ) {
+				echo '<option value="' . esc_attr( $item ) . '"' . selected( (string) $instance['highlight'], $item, false ) . '>' . esc_html( $label ) . '</option>';
+			}
 			?>
 		</select>
 	</p>
@@ -45,12 +48,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<select name="<?php echo esc_attr( $this->get_field_name( 'auswahl' ) ); ?>" >
 			<?php
 			$items = array( '', 'eb' );
-			foreach ($items as $item) {
+			foreach ( $items as $item ) {
 				echo '<option value="' . esc_attr( $item ) . '"' . selected( (string) $instance['auswahl'], $item, false ) . '>' . esc_html( $item ) . '</option>';
 			}
 			?>
 		</select>
-	</p>	
+	</p>
 	<p><?php esc_html_e( 'Channels (comma-separated list, no spaces):', 'evangtermine' ); ?>
 		<input name="<?php echo esc_attr( $this->get_field_name( 'cha' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['cha'] ); ?>" />
 	</p>
@@ -65,9 +68,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 				'intern' => _x( 'intern', 'widget display option', 'evangtermine' ),
 				'all'    => _x( 'all', 'widget display option', 'evangtermine' ),
 			);
-			foreach ($items as $item => $label) {
-			 	 echo '<option value="' . esc_attr( $item ) . '"' . selected( (string) $instance['dest'], $item, false ) . '>' . esc_html( $label ) . '</option>';
-			} 
+			foreach ( $items as $item => $label ) {
+				echo '<option value="' . esc_attr( $item ) . '"' . selected( (string) $instance['dest'], $item, false ) . '>' . esc_html( $label ) . '</option>';
+			}
 			?>
 		</select>
 	</p>
@@ -78,17 +81,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 				'yes' => __( 'yes', 'evangtermine' ),
 				'no'  => __( 'no', 'evangtermine' ),
 			);
-			foreach ($items as $item => $label) {
-			 	 echo '<option value="' . esc_attr( $item ) . '"' . selected( (string) $instance['until'], $item, false ) . '>' . esc_html( $label ) . '</option>';
-			} 
+			foreach ( $items as $item => $label ) {
+				echo '<option value="' . esc_attr( $item ) . '"' . selected( (string) $instance['until'], $item, false ) . '>' . esc_html( $label ) . '</option>';
+			}
 			?>
 		</select>
-		<!-- <input name="<?php echo esc_attr( $this->get_field_name( 'until' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['until'] ); ?>" /> -->
 	</p>
 	<p><?php esc_html_e( 'Search terms (comma-separated list):', 'evangtermine' ); ?>
 		<input name="<?php echo esc_attr( $this->get_field_name( 'q' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['q'] ); ?>" />
 	</p>
 	<input name="<?php echo esc_attr( $this->get_field_name( 'tpl' ) ); ?>" type="hidden" value="2" />
 	<p><?php esc_html_e( 'Additional parameters (format param1=value1&param2=value2[&..]):', 'evangtermine' ); ?>
-		<input name="<?php echo esc_attr( $this->get_field_name( 'additionalParameters' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['additionalParameters' ] ); ?>" />
+		<input name="<?php echo esc_attr( $this->get_field_name( 'additionalParameters' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['additionalParameters'] ); ?>" />
 	</p>

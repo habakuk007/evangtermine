@@ -24,6 +24,22 @@ Review PHP code changes in the evangtermine plugin for correctness, security, an
 
 - **WordPress.org review readiness**: Check against §8 "Common review rejections" in `.agents/instructions/wordpress-org-submission.instructions.md` (ABSPATH guard, prefixes ≥ 4 characters, escaping functions, literal i18n strings, no remote assets, no compliance claims in `readme.txt`)
 
+## Automated PR feedback (when reviewing a pull request)
+
+Linters and CI do not appear in `gh pr view --comments`. They post **check-run annotations** (the "Check warning on line R28" boxes in the PR *Files changed* tab, e.g. from Plugin Check), which are separate from review comments. Collect both before you review:
+
+```bash
+# review comments (human and bot, line-level)
+gh api repos/{owner}/{repo}/pulls/<PR>/comments --paginate --jq '.[] | "\(.user.login) \(.path):\(.line) \(.body)"'
+# check-run annotations of every check on the PR head commit
+sha=$(gh pr view <PR> --json headRefOid --jq .headRefOid)
+for id in $(gh api repos/{owner}/{repo}/commits/$sha/check-runs --jq '.check_runs[].id'); do
+  gh api repos/{owner}/{repo}/check-runs/$id/annotations --paginate --jq '.[] | "\(.path):\(.start_line) \(.annotation_level) \(.message)"'
+done
+```
+
+Group annotations by rule and file (one sniff often repeats on many lines) and triage each group as **real** (fix it) or **false positive** (say why). Typical false positive: `WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound` in a template that is `include`d inside a method, because the sniff cannot see the include scope. Plugin Check uses its own ruleset, so a `phpcs.xml` exclusion does **not** silence it. Use an inline `// phpcs:disable <Sniff> -- <reason>` in the file. Include the triage in the review output and answer the PR comments through the `gh-bot` skill, never as the developer.
+
 ## Approach
 
 1. Read the diff or the files provided in `$ARGUMENTS`
