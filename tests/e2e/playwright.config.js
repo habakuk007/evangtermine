@@ -18,8 +18,7 @@ const tmpDir = path.join( __dirname, '.tmp' );
 const blueprint = JSON.parse( fs.readFileSync( path.join( __dirname, 'blueprint.json' ), 'utf8' ) );
 blueprint.preferredVersions = { php, wp };
 // Multisite run (npm run test:e2e:multisite): the same site, converted to a network by Playground.
-const multisite = '1' === process.env.ET_E2E_MULTISITE;
-if ( multisite ) {
+if ( multisiteRun ) {
 	blueprint.steps.push( { step: 'enableMultisite' } );
 }
 fs.mkdirSync( tmpDir, { recursive: true } );

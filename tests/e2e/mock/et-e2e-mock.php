@@ -407,7 +407,8 @@ function et_e2e_control() {
 					)
 				);
 				update_option( 'widget_etwidget', array( '_multiwidget' => 1 ) );
-				// Written as rows of the options table: an object cache must not hide them from uninstall.php.
+				// Written as rows of the options table: set_transient() did not reach the options table in the Playground network
+				// (cause not investigated, probably the object cache), and the rows are what uninstall.php deletes.php.
 				update_option( '_transient_et_stream_e2e', 'cached' );
 				update_option( '_transient_timeout_et_stream_e2e', time() + HOUR_IN_SECONDS );
 				update_option( 'et_e2e_unrelated', 'keep' );

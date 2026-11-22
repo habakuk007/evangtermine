@@ -15,6 +15,7 @@ test.describe( 'uninstall in a multisite', () => {
 			const before = result.before[ id ];
 			expect( [ ...before.options ].sort(), `site ${ id } before` ).toEqual( OPTIONS );
 			expect( before.cache.length ).toBeGreaterThan( 0 );
+			expect( before.unrelated.length ).toBeGreaterThan( 0 );
 
 			const after = result.after[ id ];
 			expect( after.options, `site ${ id } after` ).toEqual( [ 'et_e2e_unrelated' ] );
