@@ -67,12 +67,19 @@ class Evangtermine_ShortcodeVeranstalter
             }
         }
 
-        // Parameter für die Suche sichern
-        $searchTerm = self::getRequestValue('et_q');
-        if (null !== $searchTerm && '' !== $searchTerm) {
-            $etstream->setEtParameter('q', $searchTerm);
+        // Suchbegriff: Das Suchformular sendet 'et_q', die Links (z.B. zur Seite 2) in den Evangelischen Terminen
+        // enthalten 'q'. 'et_q' hat Vorrang. Bei reset=1 wird der Suchbegriff aus dem Request ignoriert, ein 'q'-Default
+        // aus dem Shortcode bleibt erhalten.
+        if ('1' !== self::getRequestValue('reset')) {
+            $searchTerm = self::getRequestValue('et_q');
+            if (null === $searchTerm) {
+                $searchTerm = self::getRequestValue('q');
+            }
+            if (null !== $searchTerm && '' !== $searchTerm) {
+                $etstream->setEtParameter('q', $searchTerm);
+            }
         }
-        
+
         // Querystring erstellen
         $querystring = $etstream->getQuerystring();
 

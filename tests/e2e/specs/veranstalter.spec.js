@@ -90,6 +90,18 @@ for ( const session of [ false, true ] ) {
 			expect( ( await lastListRequest( site, page ) ).query ).toMatchObject( { vid: 'all', eventtype: '', q: '' } );
 		} );
 
+		test( 'reset keeps the q attribute of the shortcode and drops the searched term', async ( { page, site } ) => {
+			// Page with [et_veranstalter ... q="Offener"]: the page author's default.
+			await visit( page, '/et-veranstalter-q/?et_q=Konzert&action=search' );
+			const list = page.locator( '.et_veranstalter' );
+			expect( ( await lastListRequest( site, page ) ).query.q ).toBe( 'Konzert' );
+
+			await list.locator( '#reset' ).click();
+			await expect( page ).toHaveURL( /reset=1/ );
+			await expect( list.locator( '.et_content_row' ).first() ).toBeVisible();
+			expect( ( await lastListRequest( site, page ) ).query.q ).toBe( 'Offener' );
+		} );
+
 		test( 'detail view of an event', async ( { page, site } ) => {
 			await visit( page, PAGE );
 			const list = page.locator( '.et_veranstalter' );
@@ -120,9 +132,6 @@ for ( const session of [ false, true ] ) {
 // the bug exists. When a bug is fixed, the test "passes unexpectedly": then remove test.fail().
 test.describe( 'et_veranstalter: known bugs', () => {
 	test( 'the search term is kept on page 2', async ( { page, site } ) => {
-		// The pagination links carry "q=<term>", but the plugin reads only "et_q". Page 2 shows the unfiltered list.
-		test.fail();
-
 		await visit( page, `${ PAGE }?et_q=Offener&action=search` );
 		const list = page.locator( '.et_veranstalter' );
 		await expect( list.locator( '#et_totalItems' ) ).toHaveText( '7' );
@@ -134,9 +143,6 @@ test.describe( 'et_veranstalter: known bugs', () => {
 	} );
 
 	test( 'reset also clears a search term that is still in the search field', async ( { page, site } ) => {
-		// With "reset=1&et_q=term" the plugin still searches for the term.
-		test.fail();
-
 		await visit( page, PAGE );
 		const list = page.locator( '.et_veranstalter' );
 		await list.locator( '#et_q' ).fill( 'Offener' );
