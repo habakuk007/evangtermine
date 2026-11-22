@@ -3,6 +3,8 @@
 const { test, expect, visit } = require( '../helpers' );
 
 const HOST = 'www.evangelische-termine.de';
+// WordPress core, not the plugin: the admin bar of the logged-in test user shows a Gravatar.
+const isCore = ( href ) => 'secure.gravatar.com' === new URL( href ).hostname;
 const ROUTE = '/?rest_route=/evangtermine/v1/minical/';
 
 function url( route, params ) {
@@ -36,7 +38,7 @@ test.describe( 'et_minical in the browser', () => {
 
 		// The data came through the proxy; the browser never tried to reach the calendar host.
 		expect( proxyRequests.some( ( href ) => href.includes( 'minical/events' ) ) ).toBe( true );
-		expect( page.externalRequests ).toEqual( [] );
+		expect( page.externalRequests.filter( ( href ) => ! isCore( href ) ) ).toEqual( [] );
 		const requests = await remoteRequests( site, 'json' );
 		expect( requests ).toHaveLength( 1 );
 		expect( requests[ 0 ].host ).toBe( HOST );
