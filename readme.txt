@@ -138,7 +138,7 @@ Originally developed by Norbert Räbiger (https://profiles.wordpress.org/regibae
 
 == Changelog ==
 
-= 3.5 =
+= 3.5.0 =
 * Changed: the settings page explains every setting below its field, and all labels and values are translated. The stored values do not change.
 * Changed: the source strings of the plugin are English now (WordPress.org convention); German translations for `de_DE` and `de_DE_formal` are included. Translations can be contributed at translate.wordpress.org.
 
