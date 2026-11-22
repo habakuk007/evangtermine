@@ -58,6 +58,30 @@ test.describe( 'XSS probes on et_veranstalter', () => {
 		expect( requests[ 0 ].url ).not.toMatch( /[<>"' ]/ );
 	} );
 
+	// The pagination links of the calendar host carry the search term as "q", so the plugin reads "q" as well.
+	test( 'script in the search term (q)', async ( { page, site } ) => {
+		const assertNoXss = watchForXss( page );
+		await visit( page, `${ PAGE }?q=${ encodeURIComponent( '"><script>window.__xss=1</script>' ) }` );
+
+		await assertNoXss();
+		await expectPagerLinksIntact( page );
+		const requests = await site.requests( page, { module: 'veranstaltungen-php' } );
+		expect( requests ).toHaveLength( 1 );
+		expect( requests[ 0 ].url ).not.toMatch( /[<>"']/ );
+	} );
+
+	test( 'attribute injection in the search term (q)', async ( { page, site } ) => {
+		const assertNoXss = watchForXss( page );
+		const probe = 'x" onmouseover="window.__xss=1" y="';
+		await visit( page, `${ PAGE }?q=${ encodeURIComponent( probe ) }` );
+
+		await assertNoXss();
+		await expectPagerLinksIntact( page );
+		const requests = await site.requests( page, { module: 'veranstaltungen-php' } );
+		expect( requests[ 0 ].query.q ).toBe( probe );
+		expect( requests[ 0 ].url ).not.toMatch( /[<>"' ]/ );
+	} );
+
 	test( 'HTML in the name and value of an unknown parameter', async ( { page, site } ) => {
 		const assertNoXss = watchForXss( page );
 		const name = encodeURIComponent( 'x"y' );

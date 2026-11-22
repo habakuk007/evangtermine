@@ -90,6 +90,18 @@ for ( const session of [ false, true ] ) {
 			expect( ( await lastListRequest( site, page ) ).query ).toMatchObject( { vid: 'all', eventtype: '', q: '' } );
 		} );
 
+		test( 'reset keeps the q attribute of the shortcode and drops the searched term', async ( { page, site } ) => {
+			// Page with [et_veranstalter ... q="Offener"]: the page author's default.
+			await visit( page, '/et-veranstalter-q/?et_q=Konzert&action=search' );
+			const list = page.locator( '.et_veranstalter' );
+			expect( ( await lastListRequest( site, page ) ).query.q ).toBe( 'Konzert' );
+
+			await list.locator( '#reset' ).click();
+			await expect( page ).toHaveURL( /reset=1/ );
+			await expect( list.locator( '.et_content_row' ).first() ).toBeVisible();
+			expect( ( await lastListRequest( site, page ) ).query.q ).toBe( 'Offener' );
+		} );
+
 		test( 'detail view of an event', async ( { page, site } ) => {
 			await visit( page, PAGE );
 			const list = page.locator( '.et_veranstalter' );
