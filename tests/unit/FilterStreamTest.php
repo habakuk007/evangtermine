@@ -52,7 +52,8 @@ class FilterStreamTest extends Et_Test_Case {
 
 	public function test_remote_css_is_removed_only_when_own_css_is_used() {
 		$tag = '<link rel="stylesheet" type="text/css" href="https://www.evangelische-termine.de/bundles/vket/css/publicintegration.css"  />';
-		$this->assertSame( $tag, $this->filter( $tag, array(), true ) );
+		// Kept when the default stylesheet is used (unchanged, or rewritten to the bundled copy, see #134).
+		$this->assertStringContainsString( 'publicintegration.css', $this->filter( $tag, array(), true ) );
 		$this->assertSame( '', $this->filter( $tag, array(), false ) );
 	}
 
