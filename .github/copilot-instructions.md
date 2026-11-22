@@ -10,7 +10,7 @@ with the WordPress HTTP API (`wp_remote_get()`).
 The codebase is object-oriented PHP with an autoloader, no build tools, no runtime Composer dependencies (Composer and npm are dev tooling only: PHPCS and the end-to-end tests).
 The plugin was closed on WordPress.org on 2025-05-01 (security issue); issues #1–#6 are fixed,
 PHP 8 is supported and the plugin has been re-opened (version 3.4).
-Further work is tracked in the GitHub issues (milestones 3.5 and 3.6).
+Further work is tracked in the GitHub issues (milestones 3.5.0 and 3.5.1).
 
 ## File Map
 
@@ -37,6 +37,7 @@ readme.txt                  <- WordPress.org listing
 - `develop` = integration branch for further development. Protected like `master`.
 - Work in short-lived branches (`fix/<issue>-<topic>`, `feat/<issue>-<topic>`, `chore/<issue>-<topic>`) and open PRs **against `develop`**.
 - Release: PR `develop` -> `master`, then tag the merge commit (see `/wp-release`). Urgent security fixes may go to `master` first and are merged back into `develop`.
+- Versioning follows [Semantic Versioning](https://semver.org/lang/de/) (`MAJOR.MINOR.PATCH`, always three parts, no pre-release suffixes): MAJOR = breaking changes, MINOR = new backward-compatible features or behaviour changes, PATCH = bug fixes and internal work (tests, docs, coding standard). GitHub milestones are named by the target version (3.5.0, 3.5.1, 4.0.0, 4.1.0). The tag `3.4` predates this rule and stays as is.
 
 ## Key Conventions
 

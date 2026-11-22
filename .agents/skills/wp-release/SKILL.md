@@ -29,10 +29,10 @@ Review recent commits to decide the version bump:
 git log --oneline $(git describe --tags --abbrev=0)..HEAD
 ```
 
-Version rules (SemVer-light for WP plugins):
-- **Patch** (`3.3` → `3.3.1`): bug fixes, no API changes
-- **Minor** (`3.3` → `3.4`): new features, backwards-compatible
-- **Major** (`3.3` → `4.0`): breaking changes (option key renames, class renames, shortcode changes)
+Version rules ([Semantic Versioning](https://semver.org/lang/de/), always three parts, no pre-release suffixes):
+- **Patch** (`3.4.0` → `3.4.1`): bug fixes, no API changes
+- **Minor** (`3.4.0` → `3.5.0`): new features, backwards-compatible
+- **Major** (`3.4.0` → `4.0.0`): breaking changes (option key renames, class renames, shortcode changes)
 
 ### Step 2: Update version in `evangtermine.php`
 
@@ -97,7 +97,7 @@ git push && git push --tags
 Pushing the tag also starts `.github/workflows/release-zip.yml` (no approval needed). It builds
 `evangtermine-X.Y.Z.zip` with `.github/scripts/build-release.sh` (same file set as the WordPress.org
 package, top-level folder `evangtermine/`), checks (via the GitHub API) that the tag is on `master` and equals the plugin
-version, and creates the GitHub release with generated notes and the ZIP attached. Only plain version tags (`X.Y` or `X.Y.Z`) are built; there are no pre-release tags. Do **not** run `gh release create` yourself right after the push (the two would race).
+version, and creates the GitHub release with generated notes and the ZIP attached. Only plain `X.Y.Z` version tags are built (the legacy tag `3.4` still matches); there are no pre-release tags. Do **not** run `gh release create` yourself right after the push (the two would race).
 Wait for the workflow, then replace the generated notes if you want:
 
 ```bash
