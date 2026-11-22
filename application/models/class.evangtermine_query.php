@@ -209,6 +209,11 @@ class Evangtermine_Query
     public function setEtParameters($etParameters)
     {
         if (is_array($etParameters)) {
+            // Das Attribut css erlaubt nur 'nocss'. Eine URL würde der Kalenderserver als Stylesheet-Link ausgeben; ein eigenes
+            // CSS wird auf der Einstellungsseite hinterlegt.
+            if (array_key_exists('css', $etParameters) && 'nocss' !== $etParameters['css']) {
+                unset($etParameters['css']);
+            }
             $this->etParameters = array_merge($this->etParameters, $etParameters);
             if (array_key_exists('itemsperpage', $this->etParameters)) {
                 if ($etParameters['itemsperpage']) {
