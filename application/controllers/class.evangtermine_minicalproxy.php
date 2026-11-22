@@ -38,6 +38,8 @@ class Evangtermine_MinicalProxy
      */
     public static function registerRoutes()
     {
+        // Einmal registrieren; serveRaw() greift nur bei der Route .../minical/detail.
+        add_filter('rest_pre_serve_request', array(__CLASS__, 'serveRaw'), 10, 4);
         register_rest_route(self::REST_NAMESPACE, '/minical/events', array(
             'methods'             => 'GET',
             'callback'            => array(__CLASS__, 'handleEvents'),
@@ -88,7 +90,7 @@ class Evangtermine_MinicalProxy
         }
 
         $day = isset($params['d']) && is_scalar($params['d']) ? trim((string) $params['d']) : '0';
-        if (! preg_match('/^[0-9]{1,2}$/', $day)) {
+        if (! preg_match('/^[0-9]{1,2}$/', $day) || (int) $day > 31) {
             return new WP_Error('evangtermine_bad_request', 'Invalid day.', array('status' => 400));
         }
 
@@ -170,8 +172,7 @@ class Evangtermine_MinicalProxy
         $response->header('Content-Security-Policy', 'sandbox allow-scripts allow-popups allow-popups-to-escape-sandbox');
         $response->header('X-Content-Type-Options', 'nosniff');
 
-        // Das HTML wird unverändert ausgegeben, nicht als JSON.
-        add_filter('rest_pre_serve_request', array(__CLASS__, 'serveRaw'), 10, 4);
+        // Das HTML wird unverändert ausgegeben, nicht als JSON (Filter serveRaw, siehe registerRoutes()).
         return $response;
     }
 
