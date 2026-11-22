@@ -67,7 +67,10 @@ application/
 assets/                                  ← bundled Bootstrap 3.3.7, jQuery, Font Awesome 4.7.0, CSS
 languages/readme-translations/                     ← readme.txt translations (de, de formal) for translate.wordpress.org; not in the release
 tests/e2e/                               ← Playwright tests against WordPress Playground (blueprint, mock of the calendar host, fixtures); not in the release
+docs/specs/                              ← design specs; not in the release
 ```
+
+**4.0.0 (planned, epic #107):** every event gets its own page on the WordPress site, data from the JSON interface, own templates. The design and all decisions are in [docs/specs/4.0-event-pages.md](docs/specs/4.0-event-pages.md); read it before working on any 4.0 issue and change decisions only through a PR against that file.
 
 **Data flow:** shortcode/widget attributes → `Evangtermine_Query::setEtParameters()` → request values (`$_REQUEST`, `$_GET['etID']`) are merged in → `Evangtermine_Query::getQuerystring()` → `Evangtermine_Query::retrieveStream()` (`wp_remote_get` to `{etprotocol}{ethost}/{veranstaltungen-php|detail-php|teaser|…}`) → `filterStream()` string-replace post-processing → `Evangtermine_View::buildView()`.
 
