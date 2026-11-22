@@ -170,7 +170,16 @@ function evangtermine_sanitize_encoding( $value ) {
 }
 
 function evangtermine_sanitize_etprotocol( $value ) {
-	return evangtermine_sanitize_choice( $value, array( '', 'https://', 'http://' ), '' );
+	$value = evangtermine_sanitize_choice( $value, array( '', 'https://', 'http://' ), '' );
+	if ( 'http://' === $value ) {
+		add_settings_error(
+			'et_group',
+			'et_http_protocol',
+			__( 'Warning: With http:// the connection to the calendar operator is unencrypted. A third party on the network could change the events that are shown on your site. Use https:// if the calendar operator offers it.', 'evangtermine' ),
+			'warning'
+		);
+	}
+	return $value;
 }
 
 /**

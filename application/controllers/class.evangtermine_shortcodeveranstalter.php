@@ -83,52 +83,9 @@ class Evangtermine_ShortcodeVeranstalter
         // Querystring erstellen
         $querystring = $etstream->getQuerystring();
 
-        // URL-Parameter, die nicht von den Evangelischen Terminen stammen zusammenstellen
-        // $etURLParameters identifiziert die Parameter der Evangelischen Termine.
-        // Werte, die nicht in diesem Array enthalten sind, werden vor dem Abruf der Evangelischen Termine an die URL angehängt.
-        $etURLParameters = array(
-            'vid',
-            'region',
-            'aid',
-            'date',
-            'highlight',
-            'eventtype',
-            'people',
-            'et_q',
-            'place',
-            'person',
-            'ipm',
-            'cha',
-            'until',
-            'itemsPerPage',
-            'pageID',
-            'encoding',
-            'css',
-            'etID',
-            'Suche',
-            'action',
-            session_name(), // z.B. PHPSESSID: steht im Formular der Evangelischen Termine und wird nicht weitergegeben.
-            '_token',
-            'reset',
-            'dest',
-            'q'
-        );
-        // GET und POST (keine Cookies): Namen und Werte werden bereinigt, die Werte URL-kodiert.
-        // phpcs:disable WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing -- öffentliche Filter-Parameter, kein Formular mit Nonce
-        $requestKeys = array_keys(array_merge($_GET, $_POST));
-        // phpcs:enable
-        foreach ($requestKeys as $key) {
-            $cleanKey = Evangtermine_Query::cleanParameterName($key);
-            if ('' === $cleanKey || in_array($cleanKey, $etURLParameters, true)) {
-                continue;
-            }
-            $val = self::getRequestValue($key);
-            if (null === $val) {
-                continue; // Arrays und andere Nicht-Skalare werden nicht weitergegeben
-            }
-            $querystring .= '&' . $cleanKey . '=' . urlencode($val);
-            Evangtermine_Debugging::consoleLog($cleanKey . ': ', $val);
-        }
+        // Andere Request-Parameter werden bewusst nicht an die Evangelischen Termine weitergegeben (Allowlist): Gibt der
+        // Kalenderserver einen Wert ungefiltert wieder, wäre das sonst reflektiertes XSS auf dieser Seite (Issue #41).
+        // Weitere Parameter setzt der Seitenautor über Shortcode-Attribute.
 
         // Daten von den Evangelischen Terminen abrufen
         $content = $etstream->retrieveStream($querystring);
