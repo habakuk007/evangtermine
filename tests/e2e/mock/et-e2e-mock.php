@@ -376,6 +376,73 @@ function et_e2e_control() {
 			);
 			break;
 
+		// Multisite variant of "uninstall": the plugin data of every site of the network must go (needs a multisite, see ET_E2E_MULTISITE).
+		case 'uninstall-multisite':
+			if ( ! is_multisite() ) {
+				et_e2e_send( array( 'multisite' => false ) );
+			}
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+			require_once ABSPATH . 'wp-admin/includes/ms.php';
+			$main_id = get_main_site_id();
+			$new_id  = wpmu_create_blog( get_network()->domain, get_network()->path . 'et-second/', 'Second site', get_current_user_id() ? get_current_user_id() : 1, array( 'public' => 1 ), get_current_network_id() );
+			if ( is_wp_error( $new_id ) ) {
+				et_e2e_send( array( 'error' => $new_id->get_error_message() ) );
+			}
+			$site_ids = array( $main_id, (int) $new_id );
+			$before   = array();
+			$after    = array();
+			$widgets  = get_option( 'widget_etwidget' );
+
+			foreach ( $site_ids as $site_id ) {
+				switch_to_blog( $site_id );
+				et_e2e_set_options(
+					array(
+						'vid'        => '1474',
+						'region'     => '407',
+						'until'      => '30',
+						'css'        => 'nocss',
+						'encoding'   => 'utf-8',
+						'etprotocol' => 'https://',
+						'ethost'     => 'www.evangelische-termine.de',
+					)
+				);
+				update_option( 'widget_etwidget', array( '_multiwidget' => 1 ) );
+				// Written as rows of the options table: an object cache must not hide them from uninstall.php.
+				update_option( '_transient_et_stream_e2e', 'cached' );
+				update_option( '_transient_timeout_et_stream_e2e', time() + HOUR_IN_SECONDS );
+				update_option( 'et_e2e_unrelated', 'keep' );
+				update_option( '_transient_et_e2e_unrelated', 'keep' );
+				$before[ $site_id ] = et_e2e_uninstall_state();
+				restore_current_blog();
+			}
+
+			uninstall_plugin( plugin_basename( ET_BASE_PATH . '/evangtermine.php' ) );
+			wp_cache_flush();
+
+			foreach ( $site_ids as $site_id ) {
+				switch_to_blog( $site_id );
+				$after[ $site_id ] = et_e2e_uninstall_state();
+				delete_option( 'et_e2e_unrelated' );
+				delete_option( '_transient_et_e2e_unrelated' );
+				restore_current_blog();
+			}
+
+			// Clean up: remove the second site and give the main site its widget back.
+			wpmu_delete_blog( (int) $new_id, true );
+			switch_to_blog( $main_id );
+			update_option( 'widget_etwidget', $widgets );
+			restore_current_blog();
+			et_e2e_send(
+				array(
+					'multisite' => true,
+					'mainId'    => $main_id,
+					'newId'     => (int) $new_id,
+					'before'    => $before,
+					'after'     => $after,
+				)
+			);
+			break;
+
 		case 'config':
 			update_option( ET_E2E_CONFIG, array_merge( et_e2e_config(), $input ), false );
 			et_e2e_send( et_e2e_config() );
