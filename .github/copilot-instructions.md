@@ -27,6 +27,7 @@ application/
 assets/                     <- bundled Bootstrap, jQuery, Font Awesome, CSS
 languages/readme-translations/     <- readme.txt translations (de, de formal) for translate.wordpress.org (not in the release)
 tests/e2e/                  <- Playwright tests against WordPress Playground (not in the release)
+docs/specs/                 <- design specs, e.g. 4.0-event-pages.md for epic #107 (not in the release)
 readme.txt                  <- WordPress.org listing
 ```
 

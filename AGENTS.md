@@ -60,6 +60,7 @@ application/
 assets/                   <- bundled Bootstrap 3.3.7, jQuery, Font Awesome 4.7.0, CSS
 languages/readme-translations/   <- readme.txt translations (de, de formal) for translate.wordpress.org (not in the release)
 tests/e2e/                <- Playwright tests against WordPress Playground (not in the release)
+docs/specs/               <- design specs (not in the release)
 readme.txt                <- WordPress.org plugin listing
 ```
 
@@ -76,6 +77,8 @@ readme.txt                <- WordPress.org plugin listing
 **Filter state:** the user's filters travel in the URL only, the plugin does not use a PHP session. `Evangtermine_ShortcodeVeranstalter` reads the filter values from the request (`getRequestValue()`) and passes them to `Evangtermine_Query::setEtParameter()`; `filterStream()` rewrites the links in the remote HTML to the permalink plus the current query string. `reset=1` returns to the shortcode defaults.
 
 **Admin settings** (`application/forms/options.php`): Seven options registered under `et_group` via Settings API. Shortcode attributes and widget fields override these defaults per call.
+
+**4.0.0 (planned, epic #107):** every event gets its own page on the WordPress site, data from the JSON interface, own templates. Design and decisions: [docs/specs/4.0-event-pages.md](docs/specs/4.0-event-pages.md). Read it before working on any 4.0 issue; change decisions only through a PR against that file.
 
 **Security-critical spots:** request data that reaches the remote URL or the returned HTML (`Evangtermine_ShortcodeVeranstalter`, `Evangtermine_Query::getQuerystring`, `Evangtermine_Query::filterStream`) and printed option values (`options.php`, `Evangtermine_IncludeCSS`).
 
