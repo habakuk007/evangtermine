@@ -122,6 +122,16 @@ jobs:
           ET_E2E_PHP: ${{ matrix.php }}
           ET_E2E_WP: ${{ matrix.wp }}
 
+      # Playground needs port 80 for a multisite (no custom ports); one PHP version is enough.
+      - name: Run the multisite E2E test
+        if: ${{ matrix.php == '8.3' }}
+        run: |
+          sudo sysctl -w net.ipv4.ip_unprivileged_port_start=80
+          npm run test:e2e:multisite
+        env:
+          ET_E2E_PHP: ${{ matrix.php }}
+          ET_E2E_WP: ${{ matrix.wp }}
+
       - name: Upload the Playwright report
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2

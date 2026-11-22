@@ -38,6 +38,11 @@ npm run test:e2e:report
 ```
 
 ```bash
+# Uninstall in a multisite (starts a separate test site as a network on port 80, see below)
+npm run test:e2e:multisite
+```
+
+```bash
 # Optional: a few checks against the real www.evangelische-termine.de (or another host, see below)
 npm run test:e2e:live
 ```
@@ -154,6 +159,7 @@ The control interface has no access check. Never copy the helper to a real websi
 | `options.spec.js` | Options page: escaping, select fields, `ethost` is rejected for local addresses, output of the `css` option in the page head. |
 | `cache.spec.js` | Teaser and widget cache, `evangtermine_cache_ttl`, errors are not cached, default CSS of `et_teaser`. |
 | `external-hosts.spec.js` | Guard for issue #33: every shortcode page and the detail view contact only hosts of an explicit allowlist (requests and `src`/`href`/`srcset` in the markup, no external JavaScript). Each allowlist entry names the PR that removes it. |
+| `multisite.spec.js` | Only in the project `multisite` (`npm run test:e2e:multisite`): `uninstall.php` in a network with two sites removes the data of every site. |
 | `uninstall.spec.js` | Deleting the plugin (`uninstall.php`, run by `uninstall_plugin()` of WordPress) removes the seven options, `widget_etwidget` and the cached `et_stream_*` transients, and leaves other data alone. |
 | `live.spec.js` | Structure of the output with the real calendar host (default: organiser `1474` and region `407`; configurable, see above). A test with `ET_E2E_LIVE_ALT_HOST` checks in the request log that the plugin asks the host from the option `ethost`. A second one fetches list, detail, teaser and panels from that host. |
 
@@ -187,6 +193,8 @@ Known bugs that have such a test today: the widget form does not show the saved 
 The job `e2e` in `.github/workflows/ci.yml` runs `npm run test:e2e` for PHP 7.4 and 8.0 to 8.5 with the latest WordPress. The Playwright report of every run is uploaded as an artifact (`playwright-report-php<version>-wp<version>`). The live tests do not run in CI.
 
 ## Problems and solutions
+
+- **Multisite test**: Playground refuses a multisite on a custom port, so `npm run test:e2e:multisite` uses port 80 and `--site-url=http://127.0.0.1`. Port 80 must be free (stop other test sites) and on Linux needs `sudo sysctl -w net.ipv4.ip_unprivileged_port_start=80` for a normal user. The test site is a separate start (about 3 minutes) and is not part of `npm run test:e2e`.
 
 - **The port is in use or reserved** (Windows): the default port of Playground, 9400, is inside a reserved range on some Windows machines (`netsh interface ipv4 show excludedportrange protocol=tcp`). The tests use 8881. Use `ET_E2E_PORT` for another port.
 - **`npx @wp-playground/cli` fails with `ECONNRESET`**: use the installed version (`npm ci`, then `npm run playground`), not `npx` with a download.
