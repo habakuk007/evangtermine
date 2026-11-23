@@ -87,7 +87,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			?>
 		</select>
 	</p>
-	<p><?php esc_html_e( 'Search terms (comma-separated list):', 'evangtermine' ); ?>
+	<p><?php esc_html_e( 'Search terms (separated by spaces):', 'evangtermine' ); ?>
 		<input name="<?php echo esc_attr( $this->get_field_name( 'q' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['q'] ); ?>" />
 	</p>
 	<input name="<?php echo esc_attr( $this->get_field_name( 'tpl' ) ); ?>" type="hidden" value="2" />

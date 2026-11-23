@@ -56,9 +56,34 @@ function et_e2e_fixture( $name ) {
 }
 
 /**
+ * JSON of the mini calendar for one month, like the endpoint "json" of the calendar host: a list of {"Veranstaltung": {...}}.
+ *
+ * @param string $month Month as "M.YY" (for example "11.26").
+ * @return string
+ */
+function et_e2e_minical_json( $month ) {
+	$parts = explode( '.', $month );
+	$year  = 2000 + (int) ( isset( $parts[1] ) ? $parts[1] : 0 );
+	$mon   = (int) $parts[0];
+	$items = array();
+	foreach ( array( 5 => 1001, 12 => 1002 ) as $day => $id ) {
+		$items[] = array(
+			'Veranstaltung' => array(
+				'ID'            => (string) $id,
+				'START'         => sprintf( '%04d-%02d-%02d 18:00:00', $year, $mon, $day ),
+				'START_UHRZEIT' => '18:00',
+				'_event_TITLE'  => 'Mock-Event ' . $id,
+				'_place_NAME'   => 'Gemeindehaus Musterstadt',
+			),
+		);
+	}
+	return wp_json_encode( $items );
+}
+
+/**
  * Picks the answer of the calendar host for one request.
  *
- * @param string $module Requested module (veranstaltungen-php, detail-php, teaser, panels).
+ * @param string $module Requested module (veranstaltungen-php, detail-php, teaser, panels, json, detail-bt).
  * @param array  $query  Query parameters of the request.
  * @return string
  */
@@ -66,6 +91,14 @@ function et_e2e_response_body( $module, $query ) {
 	$get = function ( $key ) use ( $query ) {
 		return isset( $query[ $key ] ) && is_scalar( $query[ $key ] ) ? (string) $query[ $key ] : '';
 	};
+
+	// Mini calendar (through the proxy of the plugin): two events in the requested month "M.YY", and the detail popup.
+	if ( 'json' === $module ) {
+		return et_e2e_minical_json( $get( 'month' ) );
+	}
+	if ( 'detail-bt' === $module ) {
+		return et_e2e_fixture( 'detail-bt' );
+	}
 
 	if ( 'detail-php' === $module ) {
 		return '1001' === $get( 'ID' ) ? et_e2e_fixture( 'detail' ) : et_e2e_fixture( 'detail-error' );
@@ -110,7 +143,7 @@ function et_e2e_response_body( $module, $query ) {
 function et_e2e_pre_http_request( $pre, $args, $url ) {
 	$parts  = wp_parse_url( $url );
 	$module = isset( $parts['path'] ) ? ltrim( $parts['path'], '/' ) : '';
-	if ( ! in_array( $module, array( 'veranstaltungen-php', 'detail-php', 'teaser', 'panels' ), true ) ) {
+	if ( ! in_array( $module, array( 'veranstaltungen-php', 'detail-php', 'teaser', 'panels', 'json', 'detail-bt' ), true ) ) {
 		return $pre;
 	}
 

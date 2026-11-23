@@ -88,6 +88,7 @@ readme.txt                <- WordPress.org plugin listing
 - `develop` = integration branch for further development. Protected like `master`.
 - Work in short-lived branches (`fix/<issue>-<topic>`, `feat/<issue>-<topic>`, `chore/<issue>-<topic>`) and open PRs **against `develop`**.
 - Release: PR `develop` -> `master`, then tag the merge commit (see `/wp-release`). Urgent security fixes may go to `master` first and are merged back into `develop`.
+- Versioning follows [Semantic Versioning](https://semver.org/lang/de/) (`MAJOR.MINOR.PATCH`, always three parts, no pre-release suffixes): MAJOR = breaking changes, MINOR = new backward-compatible features or behaviour changes, PATCH = bug fixes and internal work (tests, docs, coding standard). GitHub milestones are named by the target version (3.5.0, 3.5.1, 4.0.0, 4.1.0). The tag `3.4` predates this rule and stays as is.
 
 ## Key Conventions
 
@@ -114,7 +115,7 @@ readme.txt                <- WordPress.org plugin listing
 ## Available Agents
 
 All agent definitions live in `.agents/agents/` (source of truth).
-`.github/agents/` is a tracked copy of `.agents/agents/` — never edit files there directly; re-copy after changes.
+`.github/agents/` is a tracked copy of `.agents/agents/` (Copilot needs it there) — never edit files there directly; refresh with `bash .agents/scripts/sync-github-copies.sh`. CI (`ai-config-sync`) fails if they differ.
 Each agent has a corresponding Claude Code slash command in `.claude/commands/`.
 
 | Agent | Claude Command | Purpose |
@@ -140,7 +141,7 @@ Each skill has a corresponding Claude Code slash command in `.claude/commands/`.
 ## Available Instruction Files
 
 All instructions live in `.agents/instructions/` (source of truth).
-`.github/instructions/` is a tracked copy of this folder (re-copy after changes).
+`.github/instructions/` is a tracked copy of this folder (refresh with `bash .agents/scripts/sync-github-copies.sh`; CI checks it).
 
 | File | Applies To |
 |------|-----------|

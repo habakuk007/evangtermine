@@ -8,7 +8,8 @@ The calendar is in German, so the output of the plugin and its settings page are
 
 - WordPress.org page: <https://wordpress.org/plugins/evangtermine/>
 - Issues: <https://github.com/habakuk007/evangtermine/issues>
-- Full user documentation (all settings and parameters, FAQ, changelog): [readme.txt](readme.txt)
+- Documentation (user guide in German, developer pages in English): [docs/README.md](docs/README.md)
+- Short description, FAQ and changelog: [readme.txt](readme.txt)
 
 ## Status
 
@@ -79,18 +80,19 @@ for this one shortcode. The plugin passes the attributes on to the calendar as q
 | `dest` | `extern` (public events), `intern` (internal events) or `all` | `extern` |
 | `until` | Show an event until its end date: `yes` or `no` | `yes` |
 | `q` | Search terms, separated by spaces | empty |
+| `auswahl` | Predefined selection, for example `eb` (adult education in Bavaria) | not set |
 
 A `vid` is needed, in the settings or in the shortcode. Without it `[et_veranstalter]`, `[et_teaser]`
 and `[et_panels]` show an error message instead of the events.
 
 The parameters are explained in detail in the
-[manual of Evangelische Termine](http://handbuch.evangelische-termine.de/Ausgabe-Parameter/) (German)
-and in [readme.txt](readme.txt).
+[manual of Evangelische Termine](https://handbuch.evangelische-termine.de/anzeige-im-internet/ausgabe-parameter) (German),
+in [readme.txt](readme.txt) and, with every parameter checked against the code, in [docs/de/parameter.md](docs/de/parameter.md).
 
 ## Widget
 
 The widget "Evangelische Termine" shows a list of the next events in a widget area.
-Its form offers the same parameters as the shortcodes, plus a field for additional parameters
+Its form offers the same parameters as the shortcodes except `people` and `person`, plus a field for additional parameters
 in the form `param1=value1&param2=value2`.
 
 ## External service

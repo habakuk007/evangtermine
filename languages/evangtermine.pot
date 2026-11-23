@@ -135,7 +135,7 @@ msgid "no"
 msgstr ""
 
 #: application/forms/form.etwidget.php:88
-msgid "Search terms (comma-separated list):"
+msgid "Search terms (separated by spaces):"
 msgstr ""
 
 #: application/forms/form.etwidget.php:92

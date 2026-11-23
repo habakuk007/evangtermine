@@ -32,7 +32,7 @@ usage() {
   cat >&2 <<'EOF'
 Usage:
   gh-bot.sh check                                verify the bot token
-  gh-bot.sh pr <branch> "<title>" ["<body>"]     open a PR as the bot (hotfix/* -> master; else develop)
+  gh-bot.sh pr <branch> "<title>" ["<body>" | --body-file <path>]  open a PR as the bot (base develop; hotfix/* -> master)
   gh-bot.sh comment <pr-number> "<text>"         comment on a PR as the bot
   gh-bot.sh comment <pr-number> --body-file <path>  comment on a PR as the bot (body from a file)
   gh-bot.sh list                                 list open PRs
@@ -100,13 +100,39 @@ bot_gh() {
 }
 
 cmd_pr() {
-  { [ $# -eq 2 ] || [ $# -eq 3 ]; } && [ -n "$1" ] && [ -n "$2" ] || usage
-  local branch="$1" title="$2" body="${3:-}" base
+  [ -n "$1" ] && [ -n "$2" ] || usage
+  local branch="$1" title="$2" base
   case "$branch" in
     hotfix/*) base="master" ;;
     *) base="develop" ;;
   esac
-  bot_gh pr create --repo "$REPO" --head "$branch" --base "$base" --title "$title" --body "$body"
+  # Optional body: a 3rd positional arg, or `--body-file <path>` (4th).
+  if [ $# -eq 4 ] && [ "$3" = "--body-file" ]; then
+    # Resolve the body file for this (WSL / Git-Bash) shell and the Windows
+    # gh.exe, mirroring the comment --body-file handling.
+    local check_path win_path drv rest
+    case "$4" in
+      [A-Za-z]:\\*|[A-Za-z]:/*)
+        drv="${4:0:1}"; rest="${4:2}"
+        rest="${rest//\\//}"
+        rest="${rest#/}"
+        check_path="/mnt/$(printf '%s' "$drv" | tr '[:upper:]' '[:lower:]')/$rest"
+        win_path="$4"
+        ;;
+      *)
+        check_path="$4"
+        win_path="$(winpath "$4")"
+        ;;
+    esac
+    [ -f "$check_path" ] || { printf 'ERROR: --body-file: %s not found (pass a relative path such as ./body.md, or a path this shell can reach)\n' "$4" >&2; exit 64; }
+    bot_gh pr create --repo "$REPO" --head "$branch" --base "$base" --title "$title" --body-file "$win_path"
+    return
+  fi
+  if [ $# -eq 3 ]; then
+    bot_gh pr create --repo "$REPO" --head "$branch" --base "$base" --title "$title" --body "$3"
+  else
+    bot_gh pr create --repo "$REPO" --head "$branch" --base "$base" --title "$title"
+  fi
 }
 
 cmd_comment() {
@@ -114,10 +140,29 @@ cmd_comment() {
   case "$1" in *[!0-9]*) usage ;; esac
   # comment <pr> --body-file <path>  -> body read from a file (avoids arg mangling)
   if [ $# -eq 3 ] && [ "$2" = "--body-file" ]; then
-    # Existence check runs in this shell (may be WSL); the path handed to the
-    # Windows gh.exe must be converted to a Windows path via winpath().
-    [ -f "$3" ] || { printf 'ERROR: --body-file: %s not found\n' "$3" >&2; exit 64; }
-    bot_gh pr comment "$1" --repo "$REPO" --body-file "$(winpath "$3")"
+    # Resolve the body file for this (WSL / Git-Bash) shell and for the Windows
+    # gh.exe. The existence check runs in this Linux shell, so:
+    #   - a relative path or a WSL path is stat-able as-is and is converted to a
+    #     Windows path for gh.exe by winpath();
+    #   - an absolute Windows path (C:\… / C:/…) is mapped into the WSL namespace
+    #     (/mnt/<drive>/…) so the existence check passes, and is handed to gh.exe
+    #     verbatim (it accepts that form).
+    local body="$3" check_path win_path drv rest
+    case "$body" in
+      [A-Za-z]:\\*|[A-Za-z]:/*)
+        drv="${body:0:1}"; rest="${body:2}"
+        rest="${rest//\\//}"
+        rest="${rest#/}"
+        check_path="/mnt/$(printf '%s' "$drv" | tr '[:upper:]' '[:lower:]')/$rest"
+        win_path="$body"
+        ;;
+      *)
+        check_path="$body"
+        win_path="$(winpath "$body")"
+        ;;
+    esac
+    [ -f "$check_path" ] || { printf 'ERROR: --body-file: %s not found (pass a relative path such as ./body.md, or a path this shell can reach)\n' "$body" >&2; exit 64; }
+    bot_gh pr comment "$1" --repo "$REPO" --body-file "$win_path"
     return
   fi
   # comment <pr> "<text>"  -> body passed as an argument

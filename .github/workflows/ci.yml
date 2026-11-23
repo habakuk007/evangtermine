@@ -59,6 +59,29 @@ jobs:
           retention-days: 14
           if-no-files-found: error
 
+  # ── Docs: markdownlint and relative links in README.md and docs/ (issue #29) ──
+  # Configuration: .markdownlint-cli2.jsonc. The link check needs no network.
+  docs:
+    name: Docs (markdownlint, links)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24'
+
+      - name: markdownlint
+        run: npx --yes markdownlint-cli2@0.18.1
+
+      - name: Relative links
+        run: node .github/scripts/check-doc-links.mjs
+
   # ── PHPCS: PHP compatibility (blocking) and coding standards ─────
   phpcs:
     name: PHPCS
@@ -86,6 +109,34 @@ jobs:
       - name: WordPress Coding Standards (phpcs.xml)
         continue-on-error: true
         run: composer lint:php
+
+  # ── Unit tests: PHPUnit + Brain Monkey (issue #99) ───────────────
+  # Pure logic only, no WordPress and no network. Composer picks the PHPUnit version that fits the PHP version.
+  unit-tests:
+    name: Unit tests (PHP ${{ matrix.php }})
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['7.4', '8.0', '8.1', '8.2', '8.3', '8.4', '8.5']
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Setup PHP ${{ matrix.php }}
+        uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # 2.40.0
+        with:
+          php-version: ${{ matrix.php }}
+          tools: composer
+          coverage: none
+
+      - name: Install dev dependencies
+        run: composer install --no-interaction --no-progress
+
+      - name: Run the unit tests
+        run: composer test:unit
 
   # ── End-to-end tests: WordPress Playground + Playwright (issue #24) ──
   # The calendar host is mocked (tests/e2e/mock), so this job does not need www.evangelische-termine.de.
@@ -142,3 +193,17 @@ jobs:
             tests/e2e/test-results/
           retention-days: 14
           if-no-files-found: ignore
+
+  # ── AI config copies ─────────────────────────────────────────────
+  ai-config-sync:
+    name: AI config copies in sync
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: .github/agents and .github/instructions match .agents/
+        run: bash .agents/scripts/sync-github-copies.sh --check

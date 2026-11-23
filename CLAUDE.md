@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **Evangelische Termine** (v3.4) — WordPress plugin that embeds the Protestant events calendar from [www.evangelische-termine.de](https://www.evangelische-termine.de) via shortcodes and a sidebar widget. The event HTML is fetched live from the remote host with the WordPress HTTP API (`wp_remote_get()`) and injected into the page. There is no build system; Composer (PHPCS) and npm (end-to-end tests) are used for dev tooling only, the plugin has no runtime dependencies.
 
-The plugin was closed on WordPress.org on 2025-05-01 (security issue). The git history was imported from the WordPress.org SVN. The security issues (#1–#6) are fixed, the plugin is PHP 8 compatible and it has been re-opened on WordPress.org (version 3.4). Further work is tracked in the GitHub issues (milestones 3.5 and 3.6). A release goes live on WordPress.org as soon as the deploy workflow pushes the tag to SVN.
+The plugin was closed on WordPress.org on 2025-05-01 (security issue). The git history was imported from the WordPress.org SVN. The security issues (#1–#6) are fixed, the plugin is PHP 8 compatible and it has been re-opened on WordPress.org (version 3.4). Further work is tracked in the GitHub issues (milestones 3.5.0 and 3.5.1). A release goes live on WordPress.org as soon as the deploy workflow pushes the tag to SVN.
 
 ## Commands
 
@@ -86,6 +86,7 @@ docs/specs/                              ← design specs; not in the release
 - `develop` = integration branch for further development. Protected like `master`.
 - Work in short-lived branches (`fix/<issue>-<topic>`, `feat/<issue>-<topic>`, `chore/<issue>-<topic>`) and open PRs **against `develop`**.
 - Release: PR `develop` -> `master`, then tag the merge commit (see `/wp-release`). Urgent security fixes may go to `master` first and are merged back into `develop`.
+- Versioning follows [Semantic Versioning](https://semver.org/lang/de/) (`MAJOR.MINOR.PATCH`, always three parts, no pre-release suffixes): MAJOR = breaking changes, MINOR = new backward-compatible features or behaviour changes, PATCH = bug fixes and internal work (tests, docs, coding standard). GitHub milestones are named by the target version (3.5.0, 3.5.1, 4.0.0, 4.1.0). The tag `3.4` predates this rule and stays as is.
 
 ## Key Conventions
 
@@ -108,6 +109,8 @@ docs/specs/                              ← design specs; not in the release
 - Shortcode names `et_veranstalter`, `et_teaser`, `et_panels`, `et_minical`
 
 ## Instruction Files
+
+`.agents/` is the source of truth. `.github/instructions/` and `.github/agents/` are tracked copies (GitHub Copilot reads them only there; git cannot store junctions). Never edit them; after changing `.agents/instructions/` or `.agents/agents/` run `bash .agents/scripts/sync-github-copies.sh`. The CI job `ai-config-sync` fails if they differ.
 
 | File | Applies to |
 |------|-----------|

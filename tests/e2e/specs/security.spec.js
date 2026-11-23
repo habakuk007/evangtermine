@@ -82,7 +82,7 @@ test.describe( 'XSS probes on et_veranstalter', () => {
 		expect( requests[ 0 ].url ).not.toMatch( /[<>"' ]/ );
 	} );
 
-	test( 'HTML in the name and value of an unknown parameter', async ( { page, site } ) => {
+	test( 'HTML in the name and value of an unknown parameter is not passed on', async ( { page, site } ) => {
 		const assertNoXss = watchForXss( page );
 		const name = encodeURIComponent( 'x"y' );
 		const value = encodeURIComponent( '<img src=x onerror=window.__xss=1>' );
@@ -95,9 +95,9 @@ test.describe( 'XSS probes on et_veranstalter', () => {
 		const requests = await site.requests( page, { module: 'veranstaltungen-php' } );
 		expect( requests ).toHaveLength( 1 );
 		expect( requests[ 0 ].url ).not.toMatch( /[<>"' ]/ );
-		// Unknown parameters are passed on with a cleaned name and an encoded value.
-		expect( requests[ 0 ].query.foo ).toBe( 'a b"c' );
-		expect( Object.keys( requests[ 0 ].query ) ).toContain( 'xy' );
+		// Unknown parameters are not passed on to the calendar host (allowlist, issue #41).
+		expect( requests[ 0 ].query.foo ).toBeUndefined();
+		expect( Object.keys( requests[ 0 ].query ) ).not.toContain( 'xy' );
 	} );
 
 	test( 'HTML in the event ID (etID)', async ( { page, site } ) => {
@@ -183,6 +183,18 @@ test.describe( 'request to the calendar host', () => {
 	}
 } );
 
+test.describe( 'css shortcode attribute', () => {
+	test( 'a URL in the css attribute is not sent to the calendar host', async ( { page, site } ) => {
+		await visit( page, '/et-veranstalter-css/' );
+
+		await expect( page.locator( '.et_veranstalter' ) ).toHaveCount( 1 );
+		const requests = await site.requests( page, { module: 'veranstaltungen-php' } );
+		expect( requests ).toHaveLength( 1 );
+		expect( requests[ 0 ].url ).not.toContain( 'evil.example' );
+		expect( requests[ 0 ].query.css ).toBe( 'nocss' );
+	} );
+} );
+
 test.describe( 'et_minical', () => {
 	test( "an apostrophe in a shortcode attribute does not break the inline script", async ( { page } ) => {
 		const errors = [];
@@ -192,7 +204,10 @@ test.describe( 'et_minical', () => {
 		await expect( page.locator( '#et_minicalendar' ) ).toHaveCount( 1 );
 		const data = await page.evaluate( () => window.etMinicalData );
 		expect( data.parameters.place ).toBe( "St. Mary's" );
-		expect( data.baseUrl ).toBe( `https://${ HOST }` );
+		expect( data.baseUrl ).toBeUndefined();
+		// The browser talks to the own site (proxy routes), not to the calendar host.
+		expect( data.eventsUrl ).toContain( 'evangtermine/v1/minical/events' );
+		expect( data.detailUrl ).toContain( 'evangtermine/v1/minical/detail' );
 		expect( errors ).toEqual( [] );
 	} );
 } );

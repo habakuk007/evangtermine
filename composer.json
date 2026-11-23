@@ -7,8 +7,10 @@
     "php": ">=7.4"
   },
   "require-dev": {
+    "brain/monkey": "^2.6",
     "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
     "phpcompatibility/phpcompatibility-wp": "^2.1",
+    "phpunit/phpunit": "^9.6 || ^10.5 || ^11.0",
     "wp-cli/i18n-command": "^2.7",
     "wp-coding-standards/wpcs": "^3.0"
   },
@@ -17,14 +19,16 @@
     "lint:compat": "phpcs --standard=PHPCompatibilityWP --runtime-set testVersion 7.4- --extensions=php --ignore=*/assets/*,*/vendor/* -s evangtermine.php autoloader.php application/",
     "fix:php": "phpcbf",
     "make:pot": "@php vendor/wp-cli/wp-cli/php/boot-fs.php i18n make-pot . languages/evangtermine.pot --slug=evangtermine --domain=evangtermine --exclude=assets,build,tests,vendor,node_modules --package-name=\"Evangelische Termine\"",
-    "make:mo": "@php vendor/wp-cli/wp-cli/php/boot-fs.php i18n make-mo languages/"
+    "make:mo": "@php vendor/wp-cli/wp-cli/php/boot-fs.php i18n make-mo languages/",
+    "test:unit": "phpunit"
   },
   "scripts-descriptions": {
     "lint:php": "Full ruleset from phpcs.xml (WordPress Coding Standards + PHPCompatibilityWP).",
     "lint:compat": "PHP compatibility sniffs only (PHP 7.4 and newer).",
     "fix:php": "Auto-fix what PHPCBF can fix.",
     "make:pot": "Extract the translatable strings into languages/evangtermine.pot (WP-CLI i18n from Composer, no global wp needed).",
-    "make:mo": "Compile all .po files in languages/ to .mo."
+    "make:mo": "Compile all .po files in languages/ to .mo.",
+    "test:unit": "Unit tests (PHPUnit + Brain Monkey) for the pure logic, no WordPress needed (tests/unit)."
   },
   "config": {
     "allow-plugins": {

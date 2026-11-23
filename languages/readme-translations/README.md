@@ -13,9 +13,9 @@ Both files are exports of the project "Stable Readme (latest release)" of https:
 
 ## Files for release 3.4
 
-The plain files match the readme of the next release (3.5). The `*-3.4.po` files contain the `msgid`s of the readme of release 3.4 (`tags/3.4`, the current stable tag on WordPress.org), so they match the strings that translate.wordpress.org currently holds. Import these first. The `msgid`s were derived from `readme.txt` at tag `3.4` (the GlotPress export only lists translated strings), so a few multi-line paragraphs may not match; the import shows how many strings were taken over.
+The plain files match the readme of the next release (3.5.0). The `*-3.4.po` files contain the `msgid`s of the readme of release 3.4 (`tags/3.4`, the current stable tag on WordPress.org), so they match the strings that translate.wordpress.org currently holds. Import these first. The `msgid`s were derived from `readme.txt` at tag `3.4` (the GlotPress export only lists translated strings), so a few multi-line paragraphs may not match; the import shows how many strings were taken over.
 
-The matching files for the plugin strings (Development project) are in `languages/3.4/`. They are also excluded from the release. Delete the `*-3.4.po` files and `languages/3.4/` once 3.5 is released and the projects hold the new strings.
+The matching files for the plugin strings (Development project) are in `languages/3.4/`. They are also excluded from the release. Delete the `*-3.4.po` files and `languages/3.4/` once 3.5.0 is released and the projects hold the new strings.
 
 ## Import
 
