@@ -19,6 +19,12 @@ class OptionsSanitizeTest extends Et_Test_Case {
 	 * @dataProvider choices
 	 */
 	public function test_choice_functions( $function, $input, $expected ) {
+		// The http:// protocol adds a settings warning (see #41); the other values must not.
+		if ( 'evangtermine_sanitize_etprotocol' === $function && 'http://' === $input ) {
+			Functions\expect( 'add_settings_error' )->once()->with( 'et_group', 'et_http_protocol', \Mockery::type( 'string' ), 'warning' );
+		} else {
+			Functions\expect( 'add_settings_error' )->never();
+		}
 		$this->assertSame( $expected, $function( $input ) );
 	}
 
