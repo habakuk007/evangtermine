@@ -80,6 +80,9 @@ class evangtermine {
 		// shortcode für das Panelsmodul einbinden
 		add_shortcode('et_panels', array('Evangtermine_ShortcodePanels', 'etPanels'));
 		
+		// Proxy für die Abrufe des Mini-Kalenders (der Browser der Besucher ruft die Evangelischen Termine nicht direkt ab)
+		add_action ('rest_api_init', array('Evangtermine_MinicalProxy', 'registerRoutes'));
+
 		// shortcode für den Mini-Kalender
 		add_shortcode('et_minical', array('Evangtermine_ShortcodeMinical', 'etMinical'));
 		

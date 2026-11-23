@@ -156,6 +156,7 @@ The control interface has no access check. Never copy the helper to a real websi
 | `render.spec.js` | The four shortcodes and the widget show the calendar; widget form and saving; scripts come from WordPress and the plugin, not from the calendar host. |
 | `veranstalter.spec.js` | `et_veranstalter`: pagination, search, filter, reset, detail view. Every test runs without and with an active PHP session. |
 | `security.spec.js` | XSS probes (`et_q`, unknown parameters, `etID`), cookies are not forwarded, https by default, unsafe hosts are not requested, `et_minical` with an apostrophe. |
+| `minical.spec.js` | `et_minical` and its same-origin proxy (REST routes `evangtermine/v1/minical/events` and `/detail`): the browser only talks to the own site, only allowlisted and cleaned parameters reach the calendar host, invalid values are rejected, short cache, host and protocol from the settings, unsafe hosts are not requested. |
 | `options.spec.js` | Options page: escaping, select fields, `ethost` is rejected for local addresses, output of the `css` option in the page head. |
 | `cache.spec.js` | Teaser and widget cache, `evangtermine_cache_ttl`, errors are not cached, default CSS of `et_teaser`. |
 | `external-hosts.spec.js` | Guard for issue #33: every shortcode page and the detail view contact only hosts of an explicit allowlist (requests and `src`/`href`/`srcset` in the markup, no external JavaScript). Each allowlist entry names the PR that removes it. |

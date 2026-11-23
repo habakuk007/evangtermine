@@ -33,10 +33,10 @@ To hide the "Mehr laden" (load more) panel of `[et_panels]`, add `#load1 { displ
 
 This plugin fetches the events live from an external service: Evangelische Termine ([www.evangelische-termine.de](https://www.evangelische-termine.de)). The host can be changed in the settings, for example for the calendar of another regional church.
 
-* **When:** every time `[et_veranstalter]`, `[et_teaser]`, `[et_panels]` or the widget is shown. The output of `[et_teaser]` and of the widget is cached for 5 minutes. `[et_minical]` loads its data with JavaScript from the visitor's browser, from the host in the settings; a click on an event loads the detail view from there in an iframe.
-* **What is sent:** the query parameters (organiser ID, region ID, filters, a visitor's search term and page number, the ID of an event), the URL of the requesting page as Referer and the plugin version in the User-Agent. This request is made by your server, so it does not contain the IP addresses of your visitors.
+* **When:** every time `[et_veranstalter]`, `[et_teaser]`, `[et_panels]` or the widget is shown. The output of `[et_teaser]` and of the widget is cached for 5 minutes. `[et_minical]` loads its data from your own site: its JavaScript calls two public REST routes of this plugin (`/wp-json/evangtermine/v1/minical/events` and `/detail`), and your server fetches the data from the host in the settings. These answers are cached for 5 minutes too.
+* **What is sent:** the query parameters (organiser ID, region ID, filters, a visitor's search term and page number, the ID of an event), the URL of the requesting page as Referer and the plugin version in the User-Agent. This request is made by your server, so it does not contain the IP addresses of your visitors. For `[et_minical]` only known filter parameters are passed on (organiser, region, filters, search term), the month and the ID of an event.
 * **Returned content:** the HTML delivered by the service is shown on your site as it is, without filtering. Only use a host that you trust. Scripts and libraries (jQuery, jQuery UI, Bootstrap, Font Awesome) are loaded from WordPress and from this plugin, not from the service.
-* **What the visitor's browser loads directly:** the images of events in `[et_panels]` and in the detail view, which are stored at the service's hosting provider (currently `et-live.obsv3.de-global-1.spacenet.cloud`) or at the service itself; the data of `[et_minical]`. These servers receive the IP address and the user agent of the visitor. `[et_teaser]` and the widget load nothing from other servers.
+* **What the visitor's browser loads directly:** the images of events in `[et_panels]` and in the detail view (also in the popup of `[et_minical]`), which are stored at the service's hosting provider (currently `et-live.obsv3.de-global-1.spacenet.cloud`) or at the service itself. These servers receive the IP address and the user agent of the visitor. The calendar and the list of events of `[et_minical]`, `[et_teaser]` and the widget load nothing from other servers.
 * **Privacy policy of the service:** [https://www.evangelische-termine.de/datenschutz](https://www.evangelische-termine.de/datenschutz)
 
 == Installation ==
@@ -140,6 +140,7 @@ Originally developed by Norbert Räbiger (https://profiles.wordpress.org/regibae
 
 = 3.5.0 =
 * Changed: the default stylesheet and the placeholder image of the service are delivered by the plugin. Visitors' browsers no longer load them from the service.
+* Changed: `[et_minical]` no longer calls the Evangelische Termine from the visitor's browser (this sent the visitor's IP address). The data and the detail view of an event come through two public read-only REST routes of this plugin; your server fetches them from the host in the settings. Only known parameters are passed on, and the answers are cached for 5 minutes (filter `evangtermine_cache_ttl`).
 * Changed: the settings page explains every setting below its field, and all labels and values are translated. The stored values do not change.
 * Changed: the source strings of the plugin are English now (WordPress.org convention); German translations for `de_DE` and `de_DE_formal` are included. Translations can be contributed at translate.wordpress.org.
 

@@ -204,7 +204,10 @@ test.describe( 'et_minical', () => {
 		await expect( page.locator( '#et_minicalendar' ) ).toHaveCount( 1 );
 		const data = await page.evaluate( () => window.etMinicalData );
 		expect( data.parameters.place ).toBe( "St. Mary's" );
-		expect( data.baseUrl ).toBe( `https://${ HOST }` );
+		expect( data.baseUrl ).toBeUndefined();
+		// The browser talks to the own site (proxy routes), not to the calendar host.
+		expect( data.eventsUrl ).toContain( 'evangtermine/v1/minical/events' );
+		expect( data.detailUrl ).toContain( 'evangtermine/v1/minical/detail' );
 		expect( errors ).toEqual( [] );
 	} );
 } );

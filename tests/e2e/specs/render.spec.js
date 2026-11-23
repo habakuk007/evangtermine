@@ -75,7 +75,10 @@ test.describe( 'shortcodes and widget render', () => {
 
 		await expect( page.locator( '#et_minicalendar' ) ).toHaveCount( 1 );
 		const data = await page.evaluate( () => window.etMinicalData );
-		expect( data.baseUrl ).toBe( `https://${ HOST }` );
+		expect( data.baseUrl ).toBeUndefined();
+		// The browser talks to the own site (proxy routes), not to the calendar host.
+		expect( data.eventsUrl ).toContain( 'evangtermine/v1/minical/events' );
+		expect( data.detailUrl ).toContain( 'evangtermine/v1/minical/detail' );
 		expect( data.parameters ).toMatchObject( { vid: 'all', region: '407' } );
 		expect( errors ).toEqual( [] );
 	} );
