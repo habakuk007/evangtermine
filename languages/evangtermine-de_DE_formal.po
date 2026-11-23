@@ -130,8 +130,8 @@ msgid "no"
 msgstr "nein"
 
 #: application/forms/form.etwidget.php:88
-msgid "Search terms (comma-separated list):"
-msgstr "Suchbegriffe (durch Komma getrennte Liste):"
+msgid "Search terms (separated by spaces):"
+msgstr "Suchbegriffe (durch Leerzeichen getrennt):"
 
 #: application/forms/form.etwidget.php:92
 msgid "Additional parameters (format param1=value1&param2=value2[&..]):"
