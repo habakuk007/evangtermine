@@ -10,6 +10,7 @@
 .vscode
 .wordpress-org
 .editorconfig
+.markdownlint-cli2.jsonc
 AGENTS.md
 CLAUDE.md
 CONTRIBUTING.md
