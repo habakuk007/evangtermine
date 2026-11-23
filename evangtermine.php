@@ -1,14 +1,14 @@
 <?php
 /**
  * @package evangtermine
- * @version 3.4
+ * @version 3.5.0
  */
 /*
  * Plugin Name: Evangelische Termine
  * Plugin URI: https://github.com/habakuk007/evangtermine
  * Description: Shows the events of the German Protestant event calendar "Evangelische Termine" (www.evangelische-termine.de) with shortcodes and a widget.
  * Author: habakuk
- * Version: 3.4
+ * Version: 3.5.0
  * Requires at least: 5.0
  * Requires PHP: 7.4
  * Author URI: https://profiles.wordpress.org/habakuk/
@@ -37,7 +37,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define ('ET_VERSION', '3.4');
+define ('ET_VERSION', '3.5.0');
 
 define('ET_DEBUG', false);
 
