@@ -110,6 +110,34 @@ jobs:
         continue-on-error: true
         run: composer lint:php
 
+  # ── Unit tests: PHPUnit + Brain Monkey (issue #99) ───────────────
+  # Pure logic only, no WordPress and no network. Composer picks the PHPUnit version that fits the PHP version.
+  unit-tests:
+    name: Unit tests (PHP ${{ matrix.php }})
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['7.4', '8.0', '8.1', '8.2', '8.3', '8.4', '8.5']
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Setup PHP ${{ matrix.php }}
+        uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # 2.40.0
+        with:
+          php-version: ${{ matrix.php }}
+          tools: composer
+          coverage: none
+
+      - name: Install dev dependencies
+        run: composer install --no-interaction --no-progress
+
+      - name: Run the unit tests
+        run: composer test:unit
+
   # ── End-to-end tests: WordPress Playground + Playwright (issue #24) ──
   # The calendar host is mocked (tests/e2e/mock), so this job does not need www.evangelische-termine.de.
   e2e:
