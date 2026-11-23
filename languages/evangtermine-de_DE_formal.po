@@ -42,6 +42,11 @@ msgstr "Zeigt eine Liste der nächsten Veranstaltungen an."
 msgid "Upcoming events"
 msgstr "Nächste Veranstaltungen"
 
+#: application/forms/class.evangtermine_pluginoptionspage.php:16
+#: application/forms/options.php:128
+msgid "Documentation"
+msgstr "Dokumentation"
+
 #: application/forms/class.pluginoptionspage.php:10
 msgid "Settings"
 msgstr "Einstellungen"
