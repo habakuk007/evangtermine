@@ -144,6 +144,7 @@ Originally developed by Norbert Räbiger (https://profiles.wordpress.org/regibae
 * Changed: the settings page explains every setting below its field, and all labels and values are translated. The stored values do not change.
 * Changed: the source strings of the plugin are English now (WordPress.org convention); German translations for `de_DE` and `de_DE_formal` are included.
 * Security: unknown request parameters are no longer passed on to the calendar host, the `css` shortcode attribute only accepts `nocss`, and the settings page warns when `http://` is saved.
+* Fixed: `[et_veranstalter]` keeps the search term on page 2 and clears it on reset; the widget no longer overwrites a custom title; matching heading tags in the detail view.
 * Added: a "Documentation" link on the settings page and in the plugin row; user and developer documentation in the `docs/` folder of the repository.
 
 See changelog.txt for older entries.
