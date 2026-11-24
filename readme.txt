@@ -5,7 +5,7 @@ Tags: events, calendar, church, evangelische termine, elkb
 Requires at least: 5.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 3.4
+Stable tag: 3.5.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://trumpkin.de/donate
@@ -143,15 +143,9 @@ Originally developed by Norbert Räbiger (https://profiles.wordpress.org/regibae
 * Changed: `[et_minical]` no longer calls the Evangelische Termine from the visitor's browser (this sent the visitor's IP address). The data and the detail view of an event come through two public read-only REST routes of this plugin; your server fetches them from the host in the settings. Only known parameters are passed on, and the answers are cached for 5 minutes (filter `evangtermine_cache_ttl`).
 * Changed: the settings page explains every setting below its field, and all labels and values are translated. The stored values do not change.
 * Changed: the source strings of the plugin are English now (WordPress.org convention); German translations for `de_DE` and `de_DE_formal` are included.
-
-= 3.4 =
-* Security: fixed cross-site scripting and further security issues (including CVE-2025-28960). Request parameters are sanitized and URL-encoded, options and output are escaped, the widget settings are sanitized, and the calendar host is checked against local and private addresses.
-* Changed: the calendar is fetched over https:// by default. The output of `[et_teaser]` and of the widget is cached for 5 minutes (filter `evangtermine_cache_ttl`, 0 switches the cache off).
-* Changed: jQuery, jQuery UI and moment are loaded from WordPress; the bundled copies were removed. `[et_veranstalter]` and the detail view no longer load scripts from the calendar host in the visitor's browser, and `[et_veranstalter]` no longer uses the PHP session (the filters are passed in the URL, as before).
-* Fixed: `[et_minical]` uses the host from the settings instead of a fixed address and escapes texts from the calendar in its tooltip.
-* Fixed: the search in `[et_veranstalter]` often ran into a timeout. The request now waits up to 15 instead of 5 seconds (filter `evangtermine_http_timeout`).
-* Fixed: `[et_teaser]` is delivered with the default styles as long as no own CSS file is set; compatibility with PHP 8.0 to 8.5.
-* New: deleting the plugin removes its settings and cache (uninstall.php); `Requires PHP: 7.4`; description of the external service; readme in English.
+* Security: unknown request parameters are no longer passed on to the calendar host, the `css` shortcode attribute only accepts `nocss`, and the settings page warns when `http://` is saved.
+* Fixed: `[et_veranstalter]` keeps the search term on page 2 and clears it on reset; the widget no longer overwrites a custom title; matching heading tags in the detail view.
+* Added: a "Documentation" link on the settings page and in the plugin row; user and developer documentation in the `docs/` folder of the repository.
 
 See changelog.txt for older entries.
 

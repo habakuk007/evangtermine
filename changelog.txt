@@ -2,6 +2,15 @@
 
 Older entries of the plugin. The entries of the current versions are in readme.txt.
 
+= 3.4 =
+* Security: fixed cross-site scripting and further security issues (including CVE-2025-28960). Request parameters are sanitized and URL-encoded, options and output are escaped, the widget settings are sanitized, and the calendar host is checked against local and private addresses.
+* Changed: the calendar is fetched over https:// by default. The output of `[et_teaser]` and of the widget is cached for 5 minutes (filter `evangtermine_cache_ttl`, 0 switches the cache off).
+* Changed: jQuery, jQuery UI and moment are loaded from WordPress; the bundled copies were removed. `[et_veranstalter]` and the detail view no longer load scripts from the calendar host in the visitor's browser, and `[et_veranstalter]` no longer uses the PHP session (the filters are passed in the URL, as before).
+* Fixed: `[et_minical]` uses the host from the settings instead of a fixed address and escapes texts from the calendar in its tooltip.
+* Fixed: the search in `[et_veranstalter]` often ran into a timeout. The request now waits up to 15 instead of 5 seconds (filter `evangtermine_http_timeout`).
+* Fixed: `[et_teaser]` is delivered with the default styles as long as no own CSS file is set; compatibility with PHP 8.0 to 8.5.
+* New: deleting the plugin removes its settings and cache (uninstall.php); `Requires PHP: 7.4`; description of the external service; readme in English.
+
 = 3.3 =
 * Fixed: display problem in `[et_panels]`.
 
