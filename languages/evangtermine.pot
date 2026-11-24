@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Evangelische Termine 3.4\n"
+"Project-Id-Version: Evangelische Termine 3.5.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/evangtermine\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-16T23:14:46+00:00\n"
+"POT-Creation-Date: 2026-11-24T20:20:42+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: evangtermine\n"
@@ -19,27 +19,36 @@ msgstr ""
 msgid "Evangelische Termine"
 msgstr ""
 
-#. Description of the plugin
+#. Plugin URI of the plugin
 #: evangtermine.php:8
+msgid "https://github.com/habakuk007/evangtermine"
+msgstr ""
+
+#. Description of the plugin
+#: evangtermine.php:9
 msgid "Shows the events of the German Protestant event calendar \"Evangelische Termine\" (www.evangelische-termine.de) with shortcodes and a widget."
 msgstr ""
 
 #. Author of the plugin
-#: evangtermine.php:9
+#: evangtermine.php:10
 msgid "habakuk"
 msgstr ""
 
 #. Author URI of the plugin
-#: evangtermine.php:13
+#: evangtermine.php:14
 msgid "https://profiles.wordpress.org/habakuk/"
 msgstr ""
 
-#: application/controllers/class.etwidget.php:11
+#: application/controllers/class.etwidget.php:16
 msgid "Shows a list of the upcoming events."
 msgstr ""
 
-#: application/controllers/class.etwidget.php:24
+#: application/controllers/class.etwidget.php:31
 msgid "Upcoming events"
+msgstr ""
+
+#: application/forms/class.evangtermine_pluginoptionspage.php:15
+msgid "Settings"
 msgstr ""
 
 #: application/forms/class.evangtermine_pluginoptionspage.php:16
@@ -47,194 +56,194 @@ msgstr ""
 msgid "Documentation"
 msgstr ""
 
-#: application/forms/class.pluginoptionspage.php:10
-msgid "Settings"
-msgstr ""
-
-#: application/forms/form.etwidget.php:13
+#: application/forms/form.etwidget.php:16
 msgid "Title:"
 msgstr ""
 
-#: application/forms/form.etwidget.php:16
+#: application/forms/form.etwidget.php:19
 msgid "Organizer ID (comma-separated list, no spaces):"
 msgstr ""
 
-#: application/forms/form.etwidget.php:19
+#: application/forms/form.etwidget.php:22
 msgid "Deanery ID (comma-separated list, no spaces):"
 msgstr ""
 
-#: application/forms/form.etwidget.php:22
+#: application/forms/form.etwidget.php:25
 msgid "Event category ID (comma-separated list, no spaces):"
 msgstr ""
 
-#: application/forms/form.etwidget.php:25
+#: application/forms/form.etwidget.php:28
 msgid "Highlight (all/high):"
 msgstr ""
 
-#: application/forms/form.etwidget.php:29
+#: application/forms/form.etwidget.php:32
 msgctxt "widget highlight option"
 msgid "all"
 msgstr ""
 
-#: application/forms/form.etwidget.php:30
+#: application/forms/form.etwidget.php:33
 msgctxt "widget highlight option"
 msgid "high"
 msgstr ""
 
-#: application/forms/form.etwidget.php:38
+#: application/forms/form.etwidget.php:41
 msgid "Venue ID (comma-separated list, no spaces):"
 msgstr ""
 
-#: application/forms/form.etwidget.php:41
+#: application/forms/form.etwidget.php:44
 msgid "Event type ID (input mask, comma-separated list, no spaces):"
 msgstr ""
 
-#: application/forms/form.etwidget.php:44
+#: application/forms/form.etwidget.php:47
 msgid "Adult education (if 'eb' is selected, the fields Event type ID and Channels are ignored):"
 msgstr ""
 
-#: application/forms/form.etwidget.php:54
+#: application/forms/form.etwidget.php:57
 msgid "Channels (comma-separated list, no spaces):"
 msgstr ""
 
-#: application/forms/form.etwidget.php:57
+#: application/forms/form.etwidget.php:60
 msgid "itemsPerPage:"
 msgstr ""
 
-#: application/forms/form.etwidget.php:60
+#: application/forms/form.etwidget.php:63
 msgid "Display (extern/intern/all):"
 msgstr ""
 
-#: application/forms/form.etwidget.php:64
+#: application/forms/form.etwidget.php:67
 msgctxt "widget display option"
 msgid "extern"
 msgstr ""
 
-#: application/forms/form.etwidget.php:65
+#: application/forms/form.etwidget.php:68
 msgctxt "widget display option"
 msgid "intern"
 msgstr ""
 
-#: application/forms/form.etwidget.php:66
+#: application/forms/form.etwidget.php:69
 msgctxt "widget display option"
 msgid "all"
 msgstr ""
 
-#: application/forms/form.etwidget.php:74
+#: application/forms/form.etwidget.php:77
 msgid "Show the event until its end date (yes/no):"
 msgstr ""
 
-#: application/forms/form.etwidget.php:78
-#: application/forms/options.php:66
+#: application/forms/form.etwidget.php:81
+#: application/forms/options.php:68
 msgid "yes"
 msgstr ""
 
-#: application/forms/form.etwidget.php:79
-#: application/forms/options.php:67
+#: application/forms/form.etwidget.php:82
+#: application/forms/options.php:69
 msgid "no"
 msgstr ""
 
-#: application/forms/form.etwidget.php:88
+#: application/forms/form.etwidget.php:90
 msgid "Search terms (separated by spaces):"
 msgstr ""
 
-#: application/forms/form.etwidget.php:92
+#: application/forms/form.etwidget.php:94
 msgid "Additional parameters (format param1=value1&param2=value2[&..]):"
 msgstr ""
 
-#: application/forms/options.php:9
+#: application/forms/options.php:11
 msgid "Evangelische Termine – Settings"
 msgstr ""
 
-#: application/forms/options.php:14
+#: application/forms/options.php:16
 msgid "Here you set the basic settings for the plugin. They apply to all shortcodes and the widget unless a value is given there: the shortcode parameters and the widget settings take precedence."
 msgstr ""
 
-#: application/forms/options.php:48
+#: application/forms/options.php:50
 msgid "The ID of your organizer at Evangelische Termine. It is shown at the top right after you log in there. Enter several IDs separated by commas and without spaces, for example 952,988. Without an organizer ID no events are shown."
 msgstr ""
 
-#: application/forms/options.php:55
+#: application/forms/options.php:57
 msgid "The number of a deanery (Dekanat) at Evangelische Termine. The events of all organizers of this deanery are shown. Enter several numbers separated by commas. Leave the field empty if only the events of the organizers above should appear."
 msgstr ""
 
-#: application/forms/options.php:70
+#: application/forms/options.php:72
 msgid "With “yes” an event stays visible until it has ended. With “no” it disappears from the list as soon as it has started. Default: yes."
 msgstr ""
 
-#: application/forms/options.php:77
+#: application/forms/options.php:79
 msgid "The address (URL) of your own CSS file. It is loaded instead of the Evangelische Termine stylesheet. Empty: the Evangelische Termine stylesheet is used. With the value nocss no stylesheet is loaded at all, for example if the styling is already part of your theme."
 msgstr ""
 
-#: application/forms/options.php:91
+#: application/forms/options.php:93
 msgid "The character encoding of your website. Evangelische Termine delivers the data in this encoding. UTF-8 is correct for almost all WordPress sites; only change the value if umlauts are displayed incorrectly. Default: UTF-8."
 msgstr ""
 
 #. translators: %s: protocol, e.g. https:
-#: application/forms/options.php:102
+#: application/forms/options.php:104
 #, php-format
 msgid "Default (%s)"
 msgstr ""
 
-#: application/forms/options.php:107
+#: application/forms/options.php:109
 msgid "The protocol your server uses to fetch the events from the calendar operator. Choose http:// only if the calendar operator does not offer https://; the connection is then unencrypted."
 msgstr ""
 
 #. translators: %s: host name, e.g. www.evangelische-termine.de
-#: application/forms/options.php:114
+#: application/forms/options.php:116
 #, php-format
 msgid "The server the events are fetched from: the host name only, without http:// and without a path. Empty: %s. Another value is only needed if your regional church (Landeskirche) runs its own calendar."
 msgstr ""
 
-#: application/forms/options.php:121
+#: application/forms/options.php:123
 msgid "You do not have sufficient permissions to access this page."
 msgstr ""
 
-#: application/forms/options.php:189
-msgid "The host must consist of a domain name only (without http://, without a path). The previous value was kept."
-msgstr ""
-
-#: application/forms/options.php:193
-msgid "This host is not allowed (local or private address, or unreachable port). The previous value was kept."
+#: application/forms/options.php:179
+msgid "Warning: With http:// the connection to the calendar operator is unencrypted. A third party on the network could change the events that are shown on your site. Use https:// if the calendar operator offers it."
 msgstr ""
 
 #: application/forms/options.php:201
-msgid "Basic settings"
-msgstr ""
-
-#: application/forms/options.php:203
-msgid "Organizer ID"
-msgstr ""
-
-#: application/forms/options.php:204
-msgid "Deanery ID"
+msgid "The host must consist of a domain name only (without http://, without a path). The previous value was kept."
 msgstr ""
 
 #: application/forms/options.php:205
+msgid "This host is not allowed (local or private address, or unreachable port). The previous value was kept."
+msgstr ""
+
+#: application/forms/options.php:213
+msgid "Basic settings"
+msgstr ""
+
+#: application/forms/options.php:215
+msgid "Organizer ID"
+msgstr ""
+
+#: application/forms/options.php:216
+msgid "Deanery ID"
+msgstr ""
+
+#: application/forms/options.php:217
 msgid "Show events until they end"
 msgstr ""
 
-#: application/forms/options.php:206
+#: application/forms/options.php:218
 msgid "CSS file"
 msgstr ""
 
-#: application/forms/options.php:207
+#: application/forms/options.php:219
 msgid "Character encoding"
 msgstr ""
 
-#: application/forms/options.php:208
+#: application/forms/options.php:220
 msgid "Protocol"
 msgstr ""
 
-#: application/forms/options.php:209
+#: application/forms/options.php:221
 msgid "Calendar operator host"
 msgstr ""
 
-#: application/models/class.etquery.php:300
-#: application/models/class.etquery.php:329
+#: application/models/class.evangtermine_query.php:310
+#: application/models/class.evangtermine_query.php:344
 msgid "The event calendar is currently unavailable."
 msgstr ""
 
-#: application/models/class.etquery.php:333
+#: application/models/class.evangtermine_query.php:348
 msgid "Error: plugin \"Evangelische Termine\": the organizer ID is not set."
 msgstr ""
