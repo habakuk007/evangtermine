@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - Evangelische Termine - Stable Readme (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2026-11-17 01:00:00+0000\n"
+"PO-Revision-Date: 2026-11-24 12:00:00+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13,215 +13,27 @@ msgstr ""
 "Language: de_DE_formal\n"
 "Project-Id-Version: Plugins - Evangelische Termine - Stable Readme (latest release)\n"
 
-#. Short description.
-#, gp-priority: high
-msgid "Shows the events of the German Protestant event calendar &quot;Evangelische Termine&quot; on your site, with shortcodes and a widget."
-msgstr "Zeigt die Termine des deutschen evangelischen Veranstaltungskalenders „Evangelische Termine“ mit Shortcodes und einem Widget auf Ihrer Website an."
-
 #. Plugin name.
 #, gp-priority: high
 msgid "Evangelische Termine"
 msgstr "Evangelische Termine"
 
-#. Found in faq paragraph.
-msgid "Enter the URL of your CSS file under \"CSS-Datei\" in the settings. It replaces the stylesheet of Evangelische Termine. Enter <code>nocss</code> if your theme already contains the styles. The elements use class names starting with <code>et_</code>."
-msgstr "Tragen Sie in den Einstellungen unter „CSS-Datei“ die URL Ihrer CSS-Datei ein. Sie ersetzt das Stylesheet der Evangelischen Termine. Tragen Sie <code>nocss</code> ein, wenn Ihr Theme die Gestaltung schon enthält. Die Elemente verwenden Klassennamen, die mit <code>et_</code> beginnen."
-
-#. Found in faq paragraph.
-msgid "The output of the widget and of <code>[et_teaser]</code> is cached for 5 minutes. The filter <code>evangtermine_cache_ttl</code> changes the lifetime in seconds; 0 switches the cache off."
-msgstr "Die Ausgabe des Widgets und von <code>[et_teaser]</code> wird 5 Minuten zwischengespeichert. Mit dem Filter <code>evangtermine_cache_ttl</code> ändern Sie die Dauer in Sekunden; 0 schaltet den Cache aus."
-
-#. Found in faq paragraph.
-msgid "The request to the calendar failed or took too long. Check that your server may open outgoing HTTPS connections to the calendar host and that the \"Host\" setting is correct. The plugin waits up to 15 seconds for an answer; the filter <code>evangtermine_http_timeout</code> changes that (1 to 30 seconds)."
-msgstr "Die Anfrage an den Kalender ist fehlgeschlagen oder hat zu lange gedauert. Prüfen Sie, ob Ihr Server ausgehende HTTPS-Verbindungen zum Kalender-Host herstellen darf und ob die Einstellung „Host“ stimmt. Das Plugin wartet bis zu 15 Sekunden auf eine Antwort; mit dem Filter <code>evangtermine_http_timeout</code> ändern Sie das (1 bis 30 Sekunden)."
-
-#. Found in faq paragraph.
-msgid "Yes. Enter the host name under \"Settings\" &gt; \"Evangelische Termine\" &gt; \"Host\". Local and private addresses are rejected."
-msgstr "Ja. Tragen Sie den Hostnamen unter „Einstellungen“ &gt; „Evangelische Termine“ &gt; „Host des Kalenderbetreibers“ ein. Lokale und private Adressen werden abgelehnt."
-
-#. Found in faq paragraph.
-msgid "Yes. <code>[et_veranstalter]</code> always shows the filter form. Use <code>[et_teaser]</code> for a plain list."
-msgstr "Ja. <code>[et_veranstalter]</code> zeigt immer das Filterformular. Für eine einfache Liste verwenden Sie <code>[et_teaser]</code>."
-
-#. Found in faq paragraph.
-msgid "Log in at https://www.evangelische-termine.de/. The organiser ID (Veranstalter-ID) is shown at the top right."
-msgstr "Melden Sie sich unter https://www.evangelische-termine.de/ an. Die Veranstalter-ID wird oben rechts angezeigt."
-
-#. Found in faq header.
-msgid "How do I use my own styles?"
-msgstr "Wie verwende ich eigene Stile?"
-
-#. Found in faq header.
-msgid "New events do not show up in the widget immediately."
-msgstr "Neue Termine erscheinen nicht sofort im Widget."
-
-#. Found in faq header.
-msgid "My regional church runs its own calendar host. Can I use it?"
-msgstr "Meine Landeskirche betreibt einen eigenen Kalender-Host. Kann ich ihn verwenden?"
-
-#. Found in faq header.
-msgid "Can I show a list without the search form?"
-msgstr "Kann ich eine Liste ohne Suchformular anzeigen?"
-
-#. Found in faq header.
-msgid "Where do I find my organiser ID?"
-msgstr "Wo finde ich meine Veranstalter-ID?"
-
-#. Found in installation list item.
-msgid "Add a shortcode to a page or post, or add the widget \"Evangelische Termine\" to a widget area."
-msgstr "Fügen Sie einer Seite oder einem Beitrag einen Shortcode hinzu oder fügen Sie einem Widget-Bereich das Widget „Evangelische Termine“ hinzu."
-
-#. Found in installation list item.
-msgid "Enter your organiser ID under \"Settings\" &gt; \"Evangelische Termine\"."
-msgstr "Tragen Sie Ihre Veranstalter-ID unter „Einstellungen“ &gt; „Evangelische Termine“ ein."
-
-#. Found in installation list item.
-msgid "Activate the plugin on the \"Plugins\" screen."
-msgstr "Aktivieren Sie das Plugin unter „Plugins“."
-
-#. Found in installation list item.
-msgid "Upload the folder <code>evangtermine</code> to <code>/wp-content/plugins/</code>, or install the plugin from the \"Plugins\" screen in WordPress."
-msgstr "Laden Sie den Ordner <code>evangtermine</code> nach <code>/wp-content/plugins/</code> hoch oder installieren Sie das Plugin über „Plugins“ in WordPress."
-
-#. Found in description paragraph.
-msgid "Originally developed by Norbert Räbiger (https://profiles.wordpress.org/regibaer)."
-msgstr "Ursprünglich entwickelt von Norbert Räbiger (https://profiles.wordpress.org/regibaer)."
-
-#. Found in description paragraph.
-msgid "jQuery, the date picker and moment come from WordPress."
-msgstr "jQuery, die Datumsauswahl und moment stammen von WordPress."
-
-#. Found in description paragraph.
-msgid "Colorbox 1.6.4 (MIT), https://www.jacklmoore.com/colorbox/ - used by <code>[et_minical]</code>. Final release, no known CVE."
-msgstr "Colorbox 1.6.4 (MIT), https://www.jacklmoore.com/colorbox/ – verwendet von <code>[et_minical]</code>. Letzte Version, keine bekannte CVE."
-
-#. Found in description paragraph.
-msgid "The widget form offers the same parameters, plus a field for additional parameters in the form <code>param1=value1&amp;param2=value2</code>."
-msgstr "Das Widget-Formular bietet dieselben Parameter, dazu ein Feld für weitere Parameter in der Form <code>param1=wert1&amp;param2=wert2</code>."
-
-#. Found in description paragraph.
-msgid "<strong>q</strong>: search terms, separated by spaces."
-msgstr "<strong>q</strong>: Suchbegriffe, durch Leerzeichen getrennt."
-
-#. Found in description paragraph.
-msgid "<strong>vid</strong>: organiser ID or several IDs separated by commas, for example <code>[et_teaser vid=\"952,988\"]</code>."
-msgstr "<strong>vid</strong>: Veranstalter-ID oder mehrere IDs, durch Kommas getrennt, zum Beispiel <code>[et_teaser vid=\"952,988\"]</code>."
-
-#. Found in description paragraph.
-msgid "This plugin fetches the events live from an external service: Evangelische Termine (<a href=\"https://www.evangelische-termine.de\">www.evangelische-termine.de</a>). The host can be changed in the settings, for example for the calendar of another regional church."
-msgstr "Dieses Plugin ruft die Veranstaltungen live von einem externen Dienst ab: Evangelische Termine (<a href=\"https://www.evangelische-termine.de\">www.evangelische-termine.de</a>). Der Host kann in den Einstellungen geändert werden, zum Beispiel für den Kalender einer anderen Landeskirche."
+#. Short description.
+#, gp-priority: high
+msgid "Shows the events of the German Protestant event calendar &quot;Evangelische Termine&quot; on your site, with shortcodes and a widget."
+msgstr "Zeigt die Termine des deutschen evangelischen Veranstaltungskalenders „Evangelische Termine“ mit Shortcodes und einem Widget auf Ihrer Website an."
 
 #. Found in description paragraph.
 msgid "\"Evangelische Termine\" (https://www.evangelische-termine.de/) is the event calendar of the Protestant churches in Germany. This plugin fetches the events of one or more organisers, or of a whole region (Dekanat), from that calendar and shows them in WordPress. Shortcodes and a widget control what is shown."
 msgstr "„Evangelische Termine“ (https://www.evangelische-termine.de/) ist der Veranstaltungskalender der evangelischen Kirchen in Deutschland. Dieses Plugin ruft die Veranstaltungen eines oder mehrerer Veranstalter oder einer ganzen Region (Dekanat) aus diesem Kalender ab und zeigt sie in WordPress an. Shortcodes und ein Widget steuern, was angezeigt wird."
 
-#. Found in description list item.
-msgid "jQuery UI 1.12.1 base theme (MIT), https://jqueryui.com/ - used by <code>[et_minical]</code> and the date filter of <code>[et_veranstalter]</code>"
-msgstr "jQuery UI 1.12.1, Basis-Theme (MIT), https://jqueryui.com/ – verwendet von <code>[et_minical]</code> und dem Datumsfilter von <code>[et_veranstalter]</code>"
-
-#. Found in description list item.
-msgid "Font Awesome 4.7.0, CSS and woff/woff2 fonts (OFL 1.1 / MIT), https://fontawesome.com/v4/ - used by <code>[et_panels]</code>. No JavaScript, no known CVE."
-msgstr "Font Awesome 4.7.0, CSS und woff/woff2-Schriften (OFL 1.1 / MIT), https://fontawesome.com/v4/ – verwendet von <code>[et_panels]</code>. Kein JavaScript, keine bekannte CVE."
-
-#. Found in description list item.
-msgid "Bootstrap 3.4.1, CSS only (MIT), https://getbootstrap.com/ - used by <code>[et_panels]</code>. Last 3.x release, fixes the known CVEs. No Bootstrap JS."
-msgstr "Bootstrap 3.4.1, nur CSS (MIT), https://getbootstrap.com/ – verwendet von <code>[et_panels]</code>. Letzte 3.x-Version, behebt die bekannten CVEs. Kein Bootstrap-JS."
-
-#. Found in description list item.
-msgid "<code>evangtermine_cache_ttl</code>: lifetime of the cache for <code>[et_teaser]</code> and the widget in seconds (default 300, 0 switches it off)."
-msgstr "<code>evangtermine_cache_ttl</code>: Lebensdauer des Caches für <code>[et_teaser]</code> und das Widget in Sekunden (Standard 300, 0 schaltet ihn aus)."
-
-#. Found in description list item.
-msgid "<code>evangtermine_http_timeout</code>: timeout of the request to the calendar in seconds (default 15, limited to 1 to 30)."
-msgstr "<code>evangtermine_http_timeout</code>: Zeitlimit der Anfrage an den Kalender in Sekunden (Standard 15, begrenzt auf 1 bis 30)."
-
-#. Found in description list item.
-msgid "<strong>Privacy policy of the service:</strong> <a href=\"https://www.evangelische-termine.de/datenschutz\">https://www.evangelische-termine.de/datenschutz</a>"
-msgstr "<strong>Datenschutzerklärung des Dienstes:</strong> <a href=\"https://www.evangelische-termine.de/datenschutz\">https://www.evangelische-termine.de/datenschutz</a>"
-
-#. Found in description list item.
-msgid "<strong>What the visitor's browser loads directly:</strong> the default stylesheet of the service for <code>[et_veranstalter]</code> and the detail view (not if you set your own CSS file in the settings); the images of events in <code>[et_panels]</code> and in the detail view, which are stored at the service's hosting provider (currently <code>et-live.obsv3.de-global-1.spacenet.cloud</code>), and a placeholder image from the service; the data of <code>[et_minical]</code>. These servers receive the IP address and the user agent of the visitor. <code>[et_teaser]</code> and the widget load nothing from other servers."
-msgstr "<strong>Was der Browser des Besuchers direkt lädt:</strong> das Standard-Stylesheet des Dienstes für <code>[et_veranstalter]</code> und die Detailansicht (nicht, wenn Sie in den Einstellungen eine eigene CSS-Datei angeben); die Bilder der Veranstaltungen in <code>[et_panels]</code> und in der Detailansicht, die beim Hosting-Anbieter des Dienstes gespeichert sind (derzeit <code>et-live.obsv3.de-global-1.spacenet.cloud</code>), und ein Platzhalterbild des Dienstes; die Daten von <code>[et_minical]</code>. Diese Server erhalten die IP-Adresse und den User-Agent des Besuchers. <code>[et_teaser]</code> und das Widget laden nichts von anderen Servern."
-
-#. Found in description list item.
-msgid "<strong>Returned content:</strong> the HTML delivered by the service is shown on your site as it is, without filtering. Only use a host that you trust. Scripts and libraries (jQuery, jQuery UI, Bootstrap, Font Awesome) are loaded from WordPress and from this plugin, not from the service."
-msgstr "<strong>Zurückgelieferter Inhalt:</strong> das vom Dienst gelieferte HTML wird unverändert und ohne Filterung auf Ihrer Website angezeigt. Verwenden Sie nur einen Host, dem Sie vertrauen. Skripte und Bibliotheken (jQuery, jQuery UI, Bootstrap, Font Awesome) werden von WordPress und von diesem Plugin geladen, nicht vom Dienst."
-
-#. Found in description list item.
-msgid "<strong>What is sent:</strong> the query parameters (organiser ID, region ID, filters, a visitor's search term and page number, the ID of an event), the URL of the requesting page as Referer and the plugin version in the User-Agent. This request is made by your server, so it does not contain the IP addresses of your visitors."
-msgstr "<strong>Was gesendet wird:</strong> die Abfrageparameter (Veranstalter-ID, Regions-ID, Filter, der Suchbegriff und die Seitenzahl eines Besuchers, die ID einer Veranstaltung), die URL der aufrufenden Seite als Referer und die Plugin-Version im User-Agent. Diese Anfrage stellt Ihr Server, daher enthält sie nicht die IP-Adressen Ihrer Besucher."
-
-#. Found in description list item.
-msgid "<strong>When:</strong> every time <code>[et_veranstalter]</code>, <code>[et_teaser]</code>, <code>[et_panels]</code> or the widget is shown. The output of <code>[et_teaser]</code> and of the widget is cached for 5 minutes. <code>[et_minical]</code> loads its data with JavaScript from the visitor's browser, from the host in the settings; a click on an event loads the detail view from there in an iframe."
-msgstr "<strong>Wann:</strong> jedes Mal, wenn <code>[et_veranstalter]</code>, <code>[et_teaser]</code>, <code>[et_panels]</code> oder das Widget angezeigt wird. Die Ausgabe von <code>[et_teaser]</code> und des Widgets wird 5 Minuten zwischengespeichert. <code>[et_minical]</code> lädt seine Daten per JavaScript aus dem Browser des Besuchers vom Host aus den Einstellungen; ein Klick auf eine Veranstaltung lädt die Detailansicht von dort in einem iframe."
-
-#. Found in description header.
-msgid "Credits"
-msgstr "Mitwirkende"
-
-#. Found in description header.
-msgid "Alternative"
-msgstr "Alternative"
-
-#. Found in description header.
-msgid "Bundled libraries"
-msgstr "Eingebundene Bibliotheken"
-
-#. Found in description header.
-msgid "Filters for developers"
-msgstr "Filter für Entwickler"
-
-#. Found in description header.
-msgid "Settings"
-msgstr "Einstellungen"
-
-#. Found in description header.
-msgid "Settings and parameters"
-msgstr "Einstellungen und Parameter"
-
-#. Found in description header.
-msgid "External service"
-msgstr "Externer Dienst"
-
-#. Screenshot description.
-msgid "Output of the widget"
-msgstr "Ausgabe des Widgets"
-
-#. Screenshot description.
-msgid "Widget settings"
-msgstr "Widget-Einstellungen"
-
-#. Screenshot description.
-msgid "Output of the shortcode <code>[et_teaser]</code>"
-msgstr "Ausgabe des Shortcodes <code>[et_teaser]</code>"
-
-#. Screenshot description.
-msgid "Output of the shortcode <code>[et_veranstalter]</code>"
-msgstr "Ausgabe des Shortcodes <code>[et_veranstalter]</code>"
-
-#. Screenshot description.
-msgid "Settings of the plugin"
-msgstr "Einstellungen des Plugins"
-
-#. Found in description header.
-msgid "Widget"
-msgstr "Widget"
-
-#. Found in description header.
-msgid "Parameters"
-msgstr "Parameter"
+#. Found in description paragraph.
+msgid "The calendar itself is in German, so its output is in German."
+msgstr "Der Kalender selbst ist deutschsprachig, daher ist auch seine Ausgabe deutsch."
 
 #. Found in description header.
 msgid "Shortcodes"
 msgstr "Shortcodes"
-
-#. Found in faq header.
-msgid "The page shows \"The event calendar is currently unavailable\"."
-msgstr "Auf der Seite steht „Der Veranstaltungskalender ist derzeit nicht verfügbar“."
-
-#. Found in description paragraph.
-msgid "The calendar itself is in German, so its output is in German."
-msgstr "Der Kalender selbst ist deutschsprachig, daher ist auch seine Ausgabe deutsch."
 
 #. Found in description list item.
 msgid "<code>[et_veranstalter]</code>: event list with a filter form, pagination and detail view, for example <code>[et_veranstalter vid=\"952\"]</code>"
@@ -240,20 +52,128 @@ msgid "<code>[et_minical]</code>: the mini calendar of Evangelische Termine, for
 msgstr "<code>[et_minical]</code>: der Minikalender der Evangelischen Termine, zum Beispiel <code>[et_minical vid=\"952\"]</code>"
 
 #. Found in description paragraph.
-msgid "The widget \"Evangelische Termine\" shows the next events in a widget area. Every default from the settings can be overridden per shortcode and per widget."
-msgstr "Das Widget „Evangelische Termine“ zeigt die nächsten Termine in einem Widget-Bereich. Jeder Standardwert aus den Einstellungen lässt sich pro Shortcode und pro Widget überschreiben."
+msgid "The widget \"Evangelische Termine\" shows the next events in a widget area. Every default from the settings can be overridden per shortcode and per widget. Documentation (German): https://github.com/habakuk007/evangtermine/tree/master/docs"
+msgstr "Das Widget „Evangelische Termine“ zeigt die nächsten Termine in einem Widget-Bereich. Jeder Standardwert aus den Einstellungen lässt sich pro Shortcode und pro Widget überschreiben. Dokumentation (auf Deutsch): https://github.com/habakuk007/evangtermine/tree/master/docs"
 
 #. Found in description paragraph.
 msgid "To hide the \"Mehr laden\" (load more) panel of <code>[et_panels]</code>, add <code>#load1 { display: none; }</code> to your CSS."
 msgstr "Um das Feld „Mehr laden“ von <code>[et_panels]</code> auszublenden, fügen Sie <code>#load1 { display: none; }</code> Ihrem CSS hinzu."
 
+#. Found in description header.
+msgid "External service"
+msgstr "Externer Dienst"
+
+#. Found in description paragraph.
+msgid "This plugin fetches the events live from an external service: Evangelische Termine (<a href=\"https://www.evangelische-termine.de\">www.evangelische-termine.de</a>). The host can be changed in the settings, for example for the calendar of another regional church."
+msgstr "Dieses Plugin ruft die Veranstaltungen live von einem externen Dienst ab: Evangelische Termine (<a href=\"https://www.evangelische-termine.de\">www.evangelische-termine.de</a>). Der Host kann in den Einstellungen geändert werden, zum Beispiel für den Kalender einer anderen Landeskirche."
+
+#. Found in description list item.
+msgid "<strong>When:</strong> every time <code>[et_veranstalter]</code>, <code>[et_teaser]</code>, <code>[et_panels]</code> or the widget is shown. The output of <code>[et_teaser]</code> and of the widget is cached for 5 minutes. <code>[et_minical]</code> loads its data from your own site: its JavaScript calls two public REST routes of this plugin (<code>/wp-json/evangtermine/v1/minical/events</code> and <code>/detail</code>), and your server fetches the data from the host in the settings. These answers are cached for 5 minutes too."
+msgstr "<strong>Wann:</strong> jedes Mal, wenn <code>[et_veranstalter]</code>, <code>[et_teaser]</code>, <code>[et_panels]</code> oder das Widget angezeigt wird. Die Ausgabe von <code>[et_teaser]</code> und des Widgets wird 5 Minuten zwischengespeichert. <code>[et_minical]</code> lädt seine Daten von Ihrer eigenen Website: Sein JavaScript ruft zwei öffentliche REST-Routen dieses Plugins auf (<code>/wp-json/evangtermine/v1/minical/events</code> und <code>/detail</code>), und Ihr Server ruft die Daten vom Host aus den Einstellungen ab. Diese Antworten werden ebenfalls 5 Minuten zwischengespeichert."
+
+#. Found in description list item.
+msgid "<strong>What is sent:</strong> the query parameters (organiser ID, region ID, filters, a visitor's search term and page number, the ID of an event), the URL of the requesting page as Referer and the plugin version in the User-Agent. This request is made by your server, so it does not contain the IP addresses of your visitors. For <code>[et_minical]</code> only known filter parameters are passed on (organiser, region, filters, search term), the month and the ID of an event."
+msgstr "<strong>Was gesendet wird:</strong> die Abfrageparameter (Veranstalter-ID, Regions-ID, Filter, der Suchbegriff und die Seitenzahl eines Besuchers, die ID einer Veranstaltung), die URL der aufrufenden Seite als Referer und die Plugin-Version im User-Agent. Diese Anfrage stellt Ihr Server, daher enthält sie nicht die IP-Adressen Ihrer Besucher. Bei <code>[et_minical]</code> werden nur bekannte Filterparameter weitergegeben (Veranstalter, Region, Filter, Suchbegriff), dazu der Monat und die ID einer Veranstaltung."
+
+#. Found in description list item.
+msgid "<strong>Returned content:</strong> the HTML delivered by the service is shown on your site as it is, without filtering. Only use a host that you trust. Scripts and libraries (jQuery, jQuery UI, Bootstrap, Font Awesome) are loaded from WordPress and from this plugin, not from the service."
+msgstr "<strong>Zurückgelieferter Inhalt:</strong> das vom Dienst gelieferte HTML wird unverändert und ohne Filterung auf Ihrer Website angezeigt. Verwenden Sie nur einen Host, dem Sie vertrauen. Skripte und Bibliotheken (jQuery, jQuery UI, Bootstrap, Font Awesome) werden von WordPress und von diesem Plugin geladen, nicht vom Dienst."
+
+#. Found in description list item.
+msgid "<strong>What the visitor's browser loads directly:</strong> the images of events in <code>[et_panels]</code> and in the detail view, which are stored at the service's hosting provider (currently <code>et-live.obsv3.de-global-1.spacenet.cloud</code>) or at the service itself; the popup of <code>[et_minical]</code> (shown after a click on an event) additionally references stylesheets, scripts, fonts and images of the service. These servers receive the IP address and the user agent of the visitor. The calendar and the list of events of <code>[et_minical]</code>, <code>[et_teaser]</code> and the widget load nothing from other servers."
+msgstr "<strong>Was der Browser des Besuchers direkt lädt:</strong> die Bilder der Veranstaltungen in <code>[et_panels]</code> und in der Detailansicht, die beim Hosting-Anbieter des Dienstes (derzeit <code>et-live.obsv3.de-global-1.spacenet.cloud</code>) oder beim Dienst selbst gespeichert sind; das Popup von <code>[et_minical]</code> (wird nach einem Klick auf eine Veranstaltung angezeigt) verweist zusätzlich auf Stylesheets, Skripte, Schriften und Bilder des Dienstes. Diese Server erhalten die IP-Adresse und den User-Agent des Besuchers. Der Kalender und die Veranstaltungsliste von <code>[et_minical]</code> sowie <code>[et_teaser]</code> und das Widget laden nichts von anderen Servern."
+
+#. Found in description list item.
+msgid "<strong>Privacy policy of the service:</strong> <a href=\"https://www.evangelische-termine.de/datenschutz\">https://www.evangelische-termine.de/datenschutz</a>"
+msgstr "<strong>Datenschutzerklärung des Dienstes:</strong> <a href=\"https://www.evangelische-termine.de/datenschutz\">https://www.evangelische-termine.de/datenschutz</a>"
+
+#. Found in installation list item.
+msgid "Upload the folder <code>evangtermine</code> to <code>/wp-content/plugins/</code>, or install the plugin from the \"Plugins\" screen in WordPress."
+msgstr "Laden Sie den Ordner <code>evangtermine</code> nach <code>/wp-content/plugins/</code> hoch oder installieren Sie das Plugin über „Plugins“ in WordPress."
+
+#. Found in installation list item.
+msgid "Activate the plugin on the \"Plugins\" screen."
+msgstr "Aktivieren Sie das Plugin unter „Plugins“."
+
+#. Found in installation list item.
+msgid "Enter your organiser ID under \"Settings\" &gt; \"Evangelische Termine\"."
+msgstr "Tragen Sie Ihre Veranstalter-ID unter „Einstellungen“ &gt; „Evangelische Termine“ ein."
+
+#. Found in installation list item.
+msgid "Add a shortcode to a page or post, or add the widget \"Evangelische Termine\" to a widget area."
+msgstr "Fügen Sie einer Seite oder einem Beitrag einen Shortcode hinzu oder fügen Sie einem Widget-Bereich das Widget „Evangelische Termine“ hinzu."
+
+#. Found in faq header.
+msgid "Where do I find my organiser ID?"
+msgstr "Wo finde ich meine Veranstalter-ID?"
+
+#. Found in faq paragraph.
+msgid "Log in at https://www.evangelische-termine.de/. The organiser ID (Veranstalter-ID) is shown at the top right."
+msgstr "Melden Sie sich unter https://www.evangelische-termine.de/ an. Die Veranstalter-ID wird oben rechts angezeigt."
+
+#. Found in faq header.
+msgid "Can I show a list without the search form?"
+msgstr "Kann ich eine Liste ohne Suchformular anzeigen?"
+
+#. Found in faq paragraph.
+msgid "Yes. <code>[et_veranstalter]</code> always shows the filter form. Use <code>[et_teaser]</code> for a plain list."
+msgstr "Ja. <code>[et_veranstalter]</code> zeigt immer das Filterformular. Für eine einfache Liste verwenden Sie <code>[et_teaser]</code>."
+
+#. Found in faq header.
+msgid "My regional church runs its own calendar host. Can I use it?"
+msgstr "Meine Landeskirche betreibt einen eigenen Kalender-Host. Kann ich ihn verwenden?"
+
+#. Found in faq paragraph.
+msgid "Yes. Enter the host name under \"Settings\" &gt; \"Evangelische Termine\" &gt; \"Host\". Local and private addresses are rejected."
+msgstr "Ja. Tragen Sie den Hostnamen unter „Einstellungen“ &gt; „Evangelische Termine“ &gt; „Host des Kalenderbetreibers“ ein. Lokale und private Adressen werden abgelehnt."
+
+#. Found in faq header.
+msgid "The page shows \"The event calendar is currently unavailable\"."
+msgstr "Auf der Seite steht „Der Veranstaltungskalender ist derzeit nicht verfügbar“."
+
+#. Found in faq paragraph.
+msgid "The request to the calendar failed or took too long. Check that your server may open outgoing HTTPS connections to the calendar host and that the \"Host\" setting is correct. The plugin waits up to 15 seconds for an answer; the filter <code>evangtermine_http_timeout</code> changes that (1 to 30 seconds)."
+msgstr "Die Anfrage an den Kalender ist fehlgeschlagen oder hat zu lange gedauert. Prüfen Sie, ob Ihr Server ausgehende HTTPS-Verbindungen zum Kalender-Host herstellen darf und ob die Einstellung „Host“ stimmt. Das Plugin wartet bis zu 15 Sekunden auf eine Antwort; mit dem Filter <code>evangtermine_http_timeout</code> ändern Sie das (1 bis 30 Sekunden)."
+
+#. Found in faq header.
+msgid "New events do not show up in the widget immediately."
+msgstr "Neue Termine erscheinen nicht sofort im Widget."
+
+#. Found in faq paragraph.
+msgid "The output of the widget and of <code>[et_teaser]</code> is cached for 5 minutes. The filter <code>evangtermine_cache_ttl</code> changes the lifetime in seconds; 0 switches the cache off."
+msgstr "Die Ausgabe des Widgets und von <code>[et_teaser]</code> wird 5 Minuten zwischengespeichert. Mit dem Filter <code>evangtermine_cache_ttl</code> ändern Sie die Dauer in Sekunden; 0 schaltet den Cache aus."
+
+#. Found in faq header.
+msgid "How do I use my own styles?"
+msgstr "Wie verwende ich eigene Stile?"
+
+#. Found in faq paragraph.
+msgid "Enter the URL of your CSS file under \"CSS-Datei\" in the settings. It replaces the stylesheet of Evangelische Termine. Enter <code>nocss</code> if your theme already contains the styles. The elements use class names starting with <code>et_</code>."
+msgstr "Tragen Sie in den Einstellungen unter „CSS-Datei“ die URL Ihrer CSS-Datei ein. Sie ersetzt das Stylesheet der Evangelischen Termine. Tragen Sie <code>nocss</code> ein, wenn Ihr Theme die Gestaltung schon enthält. Die Elemente verwenden Klassennamen, die mit <code>et_</code> beginnen."
+
+#. Found in description header.
+msgid "Settings and parameters"
+msgstr "Einstellungen und Parameter"
+
+#. Found in description header.
+msgid "Settings"
+msgstr "Einstellungen"
+
 #. Found in description paragraph.
 msgid "The settings are under \"Settings\" &gt; \"Evangelische Termine\". Several organiser IDs (Veranstalter-ID) are given as a comma-separated list without spaces. The CSS file (CSS-Datei) replaces the stylesheet of Evangelische Termine; enter <code>nocss</code> to load no stylesheet. The encoding is <code>utf8</code> (default) or <code>latin1</code>, the protocol <code>http://</code> or <code>https://</code> (default), the host (Host des Kalenderbetreibers) defaults to <code>www.evangelische-termine.de</code>."
 msgstr "Die Einstellungen finden Sie unter „Einstellungen“ &gt; „Evangelische Termine“. Mehrere Veranstalter-IDs werden als kommagetrennte Liste ohne Leerzeichen angegeben. Die CSS-Datei ersetzt das Stylesheet der Evangelischen Termine; mit <code>nocss</code> wird kein Stylesheet geladen. Die Zeichenkodierung ist <code>utf8</code> (Standard) oder <code>latin1</code>, das Protokoll <code>http://</code> oder <code>https://</code> (Standard); der Host des Kalenderbetreibers ist standardmäßig <code>www.evangelische-termine.de</code>."
 
+#. Found in description header.
+msgid "Parameters"
+msgstr "Parameter"
+
 #. Found in description paragraph.
-msgid "The parameters are described in the <a href=\"http://handbuch.evangelische-termine.de/Ausgabe-Parameter/\">manual of Evangelische Termine</a> (German). The plugin supports:"
-msgstr "Die Parameter sind im <a href=\"http://handbuch.evangelische-termine.de/Ausgabe-Parameter/\">Handbuch der Evangelischen Termine</a> beschrieben. Das Plugin unterstützt:"
+msgid "The parameters are described in the <a href=\"https://handbuch.evangelische-termine.de/anzeige-im-internet/ausgabe-parameter\">manual of Evangelische Termine</a> (German). The plugin supports:"
+msgstr "Die Parameter sind im <a href=\"https://handbuch.evangelische-termine.de/anzeige-im-internet/ausgabe-parameter\">Handbuch der Evangelischen Termine</a> beschrieben (auf Deutsch). Das Plugin unterstützt:"
+
+#. Found in description paragraph.
+msgid "<strong>vid</strong>: organiser ID or several IDs separated by commas, for example <code>[et_teaser vid=\"952,988\"]</code>."
+msgstr "<strong>vid</strong>: Veranstalter-ID oder mehrere IDs, durch Kommas getrennt, zum Beispiel <code>[et_teaser vid=\"952,988\"]</code>."
 
 #. Found in description paragraph.
 msgid "<strong>region</strong>: three-digit region number, or several numbers separated by commas. <code>[et_veranstalter]</code> then shows a field to choose the organiser. Set <code>vid</code> to <code>all</code> or to a preselected organiser."
@@ -284,12 +204,102 @@ msgid "<strong>until</strong>: show an event until its end date (<code>yes</code
 msgstr "<strong>until</strong>: einen Termin bis zu seinem Ende anzeigen (<code>yes</code>, Standard) oder nicht (<code>no</code>)."
 
 #. Found in description paragraph.
+msgid "<strong>q</strong>: search terms, separated by spaces."
+msgstr "<strong>q</strong>: Suchbegriffe, durch Leerzeichen getrennt."
+
+#. Found in description paragraph.
 msgid "<strong>auswahl</strong>: <code>eb</code> shows adult education events in Bavaria (input mask or channel \"Erwachsenenbildung\")."
 msgstr "<strong>auswahl</strong>: <code>eb</code> zeigt Veranstaltungen der Erwachsenenbildung in Bayern (Eingabemaske oder Kanal „Erwachsenenbildung“)."
 
+#. Found in description header.
+msgid "Widget"
+msgstr "Widget"
+
 #. Found in description paragraph.
-msgid "Evangelische Termine also offers its own widget for any CMS, under \"Information\" &gt; \"Widgets\" after logging in at https://www.evangelische-termine.de/."
-msgstr "Die Evangelischen Termine bieten auch ein eigenes Widget für jedes CMS an, unter „Information“ &gt; „Widgets“ nach der Anmeldung unter https://www.evangelische-termine.de/."
+msgid "The widget form offers these parameters except <code>people</code> and <code>person</code>, plus a field for additional parameters in the form <code>param1=value1&amp;param2=value2</code>."
+msgstr "Das Widget-Formular bietet diese Parameter außer <code>people</code> und <code>person</code>, dazu ein Feld für weitere Parameter in der Form <code>param1=wert1&amp;param2=wert2</code>."
+
+#. Found in description header.
+msgid "Filters for developers"
+msgstr "Filter für Entwickler"
+
+#. Found in description list item.
+msgid "<code>evangtermine_http_timeout</code>: request timeout in seconds (default 15, 1 to 30)."
+msgstr "<code>evangtermine_http_timeout</code>: Zeitlimit der Anfrage in Sekunden (Standard 15, 1 bis 30)."
+
+#. Found in description list item.
+msgid "<code>evangtermine_cache_ttl</code>: cache lifetime of <code>[et_teaser]</code> and the widget in seconds (default 300, 0 = off)."
+msgstr "<code>evangtermine_cache_ttl</code>: Lebensdauer des Caches von <code>[et_teaser]</code> und des Widgets in Sekunden (Standard 300, 0 = aus)."
+
+#. Found in description header.
+msgid "Bundled libraries"
+msgstr "Eingebundene Bibliotheken"
+
+#. Found in description list item.
+msgid "Bootstrap 3.4.1, CSS only (MIT), https://getbootstrap.com/ - used by <code>[et_panels]</code>. Last 3.x release, fixes the known CVEs. No Bootstrap JS."
+msgstr "Bootstrap 3.4.1, nur CSS (MIT), https://getbootstrap.com/ – verwendet von <code>[et_panels]</code>. Letzte 3.x-Version, behebt die bekannten CVEs. Kein Bootstrap-JS."
+
+#. Found in description list item.
+msgid "Font Awesome 4.7.0, CSS and woff/woff2 fonts (OFL 1.1 / MIT), https://fontawesome.com/v4/ - used by <code>[et_panels]</code>. No JavaScript, no known CVE."
+msgstr "Font Awesome 4.7.0, CSS und woff/woff2-Schriften (OFL 1.1 / MIT), https://fontawesome.com/v4/ – verwendet von <code>[et_panels]</code>. Kein JavaScript, keine bekannte CVE."
+
+#. Found in description list item.
+msgid "jQuery UI 1.12.1 base theme (MIT), https://jqueryui.com/ - used by <code>[et_minical]</code> and the date filter of <code>[et_veranstalter]</code>"
+msgstr "jQuery UI 1.12.1, Basis-Theme (MIT), https://jqueryui.com/ – verwendet von <code>[et_minical]</code> und dem Datumsfilter von <code>[et_veranstalter]</code>"
+
+#. Found in description list item.
+msgid "Colorbox 1.6.4 (MIT), https://www.jacklmoore.com/colorbox/ - used by <code>[et_minical]</code>. Final release, no known CVE."
+msgstr "Colorbox 1.6.4 (MIT), https://www.jacklmoore.com/colorbox/ – verwendet von <code>[et_minical]</code>. Letzte Version, keine bekannte CVE."
+
+#. Found in description paragraph.
+msgid "jQuery, the date picker and moment come from WordPress."
+msgstr "jQuery, die Datumsauswahl und moment stammen von WordPress."
+
+#. Found in description header.
+msgid "Alternative"
+msgstr "Alternative"
+
+#. Found in description paragraph.
+msgid "Evangelische Termine also has its own widget for any CMS (after login at the service: \"Information\" &gt; \"Widgets\")."
+msgstr "Die Evangelischen Termine haben auch ein eigenes Widget für jedes CMS (nach der Anmeldung beim Dienst: „Information“ &gt; „Widgets“)."
+
+#. Found in description header.
+msgid "Credits"
+msgstr "Mitwirkende"
+
+#. Found in description paragraph.
+msgid "Originally developed by Norbert Räbiger (https://profiles.wordpress.org/regibaer)."
+msgstr "Ursprünglich entwickelt von Norbert Räbiger (https://profiles.wordpress.org/regibaer)."
+
+#. Screenshot description.
+msgid "Settings of the plugin"
+msgstr "Einstellungen des Plugins"
+
+#. Screenshot description.
+msgid "Output of the shortcode <code>[et_veranstalter]</code>"
+msgstr "Ausgabe des Shortcodes <code>[et_veranstalter]</code>"
+
+#. Screenshot description.
+msgid "Output of the shortcode <code>[et_teaser]</code>"
+msgstr "Ausgabe des Shortcodes <code>[et_teaser]</code>"
+
+#. Screenshot description.
+msgid "Widget settings"
+msgstr "Widget-Einstellungen"
+
+#. Screenshot description.
+msgid "Output of the widget"
+msgstr "Ausgabe des Widgets"
+
+#. Found in changelog list item.
+#, gp-priority: low
+msgid "Changed: the default stylesheet and the placeholder image of the service are delivered by the plugin. Visitors' browsers no longer load them from the service."
+msgstr "Geändert: Das Standard-Stylesheet und das Platzhalterbild des Dienstes werden vom Plugin ausgeliefert. Die Browser der Besucher laden sie nicht mehr vom Dienst."
+
+#. Found in changelog list item.
+#, gp-priority: low
+msgid "Changed: <code>[et_minical]</code> no longer calls the Evangelische Termine from the visitor's browser (this sent the visitor's IP address). The data and the detail view of an event come through two public read-only REST routes of this plugin; your server fetches them from the host in the settings. Only known parameters are passed on, and the answers are cached for 5 minutes (filter <code>evangtermine_cache_ttl</code>)."
+msgstr "Geändert: <code>[et_minical]</code> ruft die Evangelischen Termine nicht mehr aus dem Browser des Besuchers auf (dabei wurde die IP-Adresse des Besuchers gesendet). Die Daten und die Detailansicht einer Veranstaltung kommen über zwei öffentliche, nur lesende REST-Routen dieses Plugins; Ihr Server ruft sie vom Host aus den Einstellungen ab. Es werden nur bekannte Parameter weitergegeben, und die Antworten werden 5 Minuten zwischengespeichert (Filter <code>evangtermine_cache_ttl</code>)."
 
 #. Found in changelog list item.
 #, gp-priority: low
@@ -298,45 +308,26 @@ msgstr "Geändert: Die Einstellungsseite erklärt jede Einstellung unter ihrem F
 
 #. Found in changelog list item.
 #, gp-priority: low
-msgid "Changed: the source strings of the plugin are English now (WordPress.org convention); German translations for <code>de_DE</code> and <code>de_DE_formal</code> are included. Translations can be contributed at translate.wordpress.org."
-msgstr "Geändert: Die Quelltexte des Plugins sind jetzt englisch (Konvention von WordPress.org); deutsche Übersetzungen für <code>de_DE</code> und <code>de_DE_formal</code> sind enthalten. Übersetzungen können auf translate.wordpress.org beigetragen werden."
+msgid "Changed: the source strings of the plugin are English now (WordPress.org convention); German translations for <code>de_DE</code> and <code>de_DE_formal</code> are included."
+msgstr "Geändert: Die Quelltexte des Plugins sind jetzt englisch (Konvention von WordPress.org); deutsche Übersetzungen für <code>de_DE</code> und <code>de_DE_formal</code> sind enthalten."
 
 #. Found in changelog list item.
 #, gp-priority: low
-msgid "Security: fixed cross-site scripting and further security issues (including CVE-2025-28960). Request parameters are sanitized and URL-encoded, options and output are escaped, the widget settings are sanitized, and the calendar host is checked against local and private addresses."
-msgstr "Sicherheit: Cross-Site-Scripting und weitere Sicherheitslücken behoben (darunter CVE-2025-28960). Anfrageparameter werden bereinigt und URL-kodiert, Optionen und Ausgabe werden maskiert, die Widget-Einstellungen werden bereinigt, und der Kalender-Host wird gegen lokale und private Adressen geprüft."
+msgid "Security: unknown request parameters are no longer passed on to the calendar host, the <code>css</code> shortcode attribute only accepts <code>nocss</code>, and the settings page warns when <code>http://</code> is saved."
+msgstr "Sicherheit: Unbekannte Anfrageparameter werden nicht mehr an den Kalender-Host weitergegeben, das Shortcode-Attribut <code>css</code> akzeptiert nur <code>nocss</code>, und die Einstellungsseite warnt, wenn <code>http://</code> gespeichert wird."
 
 #. Found in changelog list item.
 #, gp-priority: low
-msgid "Changed: the calendar is fetched over https:// by default. The output of <code>[et_teaser]</code> and of the widget is cached for 5 minutes (filter <code>evangtermine_cache_ttl</code>, 0 switches the cache off)."
-msgstr "Geändert: Der Kalender wird standardmäßig über https:// abgerufen. Die Ausgabe von <code>[et_teaser]</code> und des Widgets wird 5 Minuten zwischengespeichert (Filter <code>evangtermine_cache_ttl</code>, 0 schaltet den Cache aus)."
+msgid "Fixed: <code>[et_veranstalter]</code> keeps the search term on page 2 and clears it on reset; the widget no longer overwrites a custom title; matching heading tags in the detail view."
+msgstr "Behoben: <code>[et_veranstalter]</code> behält den Suchbegriff auf Seite 2 bei und löscht ihn beim Zurücksetzen; das Widget überschreibt einen eigenen Titel nicht mehr; passende Überschriften-Tags in der Detailansicht."
 
 #. Found in changelog list item.
 #, gp-priority: low
-msgid "Changed: jQuery, jQuery UI and moment are loaded from WordPress; the bundled copies were removed. <code>[et_veranstalter]</code> and the detail view no longer load scripts from the calendar host in the visitor's browser, and <code>[et_veranstalter]</code> no longer uses the PHP session (the filters are passed in the URL, as before)."
-msgstr "Geändert: jQuery, jQuery UI und moment werden von WordPress geladen; die mitgelieferten Kopien wurden entfernt. <code>[et_veranstalter]</code> und die Detailansicht laden im Browser des Besuchers keine Skripte mehr vom Kalender-Host, und <code>[et_veranstalter]</code> verwendet keine PHP-Session mehr (die Filter werden wie bisher in der URL übergeben)."
+msgid "Added: a \"Documentation\" link on the settings page and in the plugin row; user and developer documentation in the <code>docs/</code> folder of the repository."
+msgstr "Hinzugefügt: ein Link „Dokumentation“ auf der Einstellungsseite und in der Plugin-Zeile; Benutzer- und Entwicklerdokumentation im Ordner <code>docs/</code> des Repositorys."
 
-#. Found in changelog list item.
+#. Found in changelog paragraph.
 #, gp-priority: low
-msgid "Fixed: <code>[et_minical]</code> uses the host from the settings instead of a fixed address and escapes texts from the calendar in its tooltip."
-msgstr "Behoben: <code>[et_minical]</code> verwendet den Host aus den Einstellungen statt einer festen Adresse und maskiert Texte aus dem Kalender in seinem Tooltip."
-
-#. Found in changelog list item.
-#, gp-priority: low
-msgid "Fixed: the search in <code>[et_veranstalter]</code> often ran into a timeout. The request now waits up to 15 instead of 5 seconds (filter <code>evangtermine_http_timeout</code>)."
-msgstr "Behoben: Die Suche in <code>[et_veranstalter]</code> lief oft in eine Zeitüberschreitung. Die Anfrage wartet jetzt bis zu 15 statt 5 Sekunden (Filter <code>evangtermine_http_timeout</code>)."
-
-#. Found in changelog list item.
-#, gp-priority: low
-msgid "Fixed: <code>[et_teaser]</code> is delivered with the default styles as long as no own CSS file is set; compatibility with PHP 8.0 to 8.5."
-msgstr "Behoben: <code>[et_teaser]</code> wird mit den Standardstilen ausgeliefert, solange keine eigene CSS-Datei gesetzt ist; Kompatibilität mit PHP 8.0 bis 8.5."
-
-#. Found in changelog list item.
-#, gp-priority: low
-msgid "New: deleting the plugin removes its settings and cache (uninstall.php); <code>Requires PHP: 7.4</code>; description of the external service; readme in English."
-msgstr "Neu: Beim Löschen des Plugins werden seine Einstellungen und sein Cache entfernt (uninstall.php); <code>Requires PHP: 7.4</code>; Beschreibung des externen Dienstes; Readme auf Englisch."
-
-#. Found in description paragraph.
 msgid "See changelog.txt for older entries."
 msgstr "Ältere Einträge stehen in der Datei changelog.txt."
 
