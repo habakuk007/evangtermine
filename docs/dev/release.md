@@ -16,7 +16,7 @@ Urgent security fixes may go to `master` first (branch `hotfix/*`) and are merge
 
 1. **Prepare on `develop`:** all changes are merged and CI is green. Run the Plugin Check including the runtime checks, and run `/wp-security-review` on the release diff.
 2. **Version and changelog:** in a pull request, set `Version:` in `evangtermine.php`, `ET_VERSION`, `Stable tag:` in `readme.txt` (all identical), update `Tested up to`, and add the changelog entry (and an Upgrade Notice only for breaking changes). Follow [.agents/instructions/readme-txt.instructions.md](../../.agents/instructions/readme-txt.instructions.md); `readme.txt` has a size limit of about 10 KB.
-3. **Release pull request:** `develop` into `master`. CI must pass, including the job "Release files" that builds the file set and the ZIP.
+3. **Release pull request:** `develop` into `master`. Open it with `bash .agents/skills/gh-bot/gh-bot.sh pr develop "Release X.Y.Z" --body-file <path>` (as the bot, so the developer can approve). CI must pass, including the job "Release files" that builds the file set and the ZIP.
 4. **Tag:** create the tag (`X.Y` or `X.Y.Z`) on the merge commit on `master` and push it.
 
 ## What the tag starts
