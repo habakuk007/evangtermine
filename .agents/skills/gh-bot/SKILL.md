@@ -26,13 +26,13 @@ Never use the bot for pushes.
 ## Commands
 
 - `bash .agents/skills/gh-bot/gh-bot.sh check` – verify the bot token (login, repo access, expiry)
-- `bash .agents/skills/gh-bot/gh-bot.sh pr <branch> "<title>" "<body>"` – open a PR (base `develop`; `hotfix/*` → `master`)
+- `bash .agents/skills/gh-bot/gh-bot.sh pr <branch> "<title>" "<body>"` – open a PR (base `develop`; `hotfix/*` and the branch `develop` (release PR) → `master`)
 - `bash .agents/skills/gh-bot/gh-bot.sh pr <branch> "<title>" --body-file <path>` – open a PR, reading the body from a file (multi-line bodies; same path rules as `comment --body-file`)
 - `bash .agents/skills/gh-bot/gh-bot.sh comment <pr-number> "<text>"` – comment on a PR (short bodies only)
 - `bash .agents/skills/gh-bot/gh-bot.sh comment <pr-number> --body-file <path>` – comment on a PR, reading the body from a file (multi-line bodies with quotes or newlines)
 - `bash .agents/skills/gh-bot/gh-bot.sh list` – list open PRs
 
-Release PRs `develop` → `master` are not covered by `pr`; ask the user how to open them.
+Release PR: `gh-bot.sh pr develop "Release X.Y.Z" --body-file <path>` opens `develop` → `master`.
 
 ### Posting a multi-line / formatted comment
 

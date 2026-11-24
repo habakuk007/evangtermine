@@ -9,7 +9,7 @@
 #
 # Usage:
 #   gh-bot.sh check
-#   gh-bot.sh pr <branch> "<title>" ["<body>"]   # hotfix/* -> master; else develop
+#   gh-bot.sh pr <branch> "<title>" ["<body>"]   # hotfix/* or develop (release PR) -> master; else develop
 #   gh-bot.sh comment <pr-number> "<text>"
 #   gh-bot.sh comment <pr-number> --body-file <path>
 #   gh-bot.sh list
@@ -32,7 +32,7 @@ usage() {
   cat >&2 <<'EOF'
 Usage:
   gh-bot.sh check                                verify the bot token
-  gh-bot.sh pr <branch> "<title>" ["<body>" | --body-file <path>]  open a PR as the bot (base develop; hotfix/* -> master)
+  gh-bot.sh pr <branch> "<title>" ["<body>" | --body-file <path>]  open a PR as the bot (base develop; hotfix/* and develop -> master)
   gh-bot.sh comment <pr-number> "<text>"         comment on a PR as the bot
   gh-bot.sh comment <pr-number> --body-file <path>  comment on a PR as the bot (body from a file)
   gh-bot.sh list                                 list open PRs
@@ -103,7 +103,7 @@ cmd_pr() {
   [ -n "$1" ] && [ -n "$2" ] || usage
   local branch="$1" title="$2" base
   case "$branch" in
-    hotfix/*) base="master" ;;
+    hotfix/*|develop) base="master" ;;  # develop -> master is the release PR
     *) base="develop" ;;
   esac
   # Optional body: a 3rd positional arg, or `--body-file <path>` (4th).
