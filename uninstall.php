@@ -1,6 +1,6 @@
 <?php
 /**
- * Wird von WordPress beim Löschen des Plugins aufgerufen: entfernt die Einstellungen und den Cache des Plugins.
+ * Wird von WordPress beim Löschen des Plugins aufgerufen: entfernt die Einstellungen, die Widget-Einstellungen und den Cache des Plugins.
  *
  * @package evangtermine
  */
@@ -10,7 +10,7 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 }
 
 /**
- * Löscht die Einstellungen und die zwischengespeicherten Abrufe der aktuellen Website.
+ * Löscht die Einstellungen, die Widget-Einstellungen und die zwischengespeicherten Abrufe der aktuellen Website.
  */
 function evangtermine_uninstall_site() {
 	global $wpdb;
@@ -20,7 +20,10 @@ function evangtermine_uninstall_site() {
 		delete_option( $option );
 	}
 
-	// Zwischengespeicherte Abrufe (EtQuery::getCacheKey) inklusive ihrer Ablaufzeiten.
+	// Gespeicherte Instanzen des Widgets (EtWidget; WordPress speichert sie unter "widget_" + kleingeschriebener id_base).
+	delete_option( 'widget_etwidget' );
+
+	// Zwischengespeicherte Abrufe (Evangtermine_Query::getCacheKey) inklusive ihrer Ablaufzeiten.
 	// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 	$wpdb->query(
 		$wpdb->prepare(

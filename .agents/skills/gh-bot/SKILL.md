@@ -26,12 +26,41 @@ Never use the bot for pushes.
 ## Commands
 
 - `bash .agents/skills/gh-bot/gh-bot.sh check` – verify the bot token (login, repo access, expiry)
-- `bash .agents/skills/gh-bot/gh-bot.sh pr <branch> "<title>" "<body>"` – open a PR (base `develop`; `hotfix/*` → `master`)
-- `bash .agents/skills/gh-bot/gh-bot.sh comment <pr-number> "<text>"` – comment on a PR
-- `bash .agents/skills/gh-bot/gh-bot.sh comment <pr-number> --body-file <path>` – comment on a PR, reading the body from a file (for multi-line bodies with quotes or newlines)
+- `bash .agents/skills/gh-bot/gh-bot.sh pr <branch> "<title>" "<body>"` – open a PR (base `develop`; `hotfix/*` and the branch `develop` (release PR) → `master`)
+- `bash .agents/skills/gh-bot/gh-bot.sh pr <branch> "<title>" --body-file <path>` – open a PR, reading the body from a file (multi-line bodies; same path rules as `comment --body-file`)
+- `bash .agents/skills/gh-bot/gh-bot.sh comment <pr-number> "<text>"` – comment on a PR (short bodies only)
+- `bash .agents/skills/gh-bot/gh-bot.sh comment <pr-number> --body-file <path>` – comment on a PR, reading the body from a file (multi-line bodies with quotes or newlines)
 - `bash .agents/skills/gh-bot/gh-bot.sh list` – list open PRs
 
-Release PRs `develop` → `master` are not covered by `pr`; ask the user how to open them.
+Release PR: `gh-bot.sh pr develop "Release X.Y.Z" --body-file <path>` opens `develop` → `master`.
+
+### Posting a multi-line / formatted comment
+
+The `bash` that runs `gh-bot.sh` is **WSL / Git-Bash** — a Linux shell whose working
+directory is the repo. The `--body-file` check runs in *that* shell first, so a
+**Windows-style absolute path (`C:\…` / `C:/…`) fails** with
+`ERROR: --body-file: … not found`. (A relative path or the inline form never have this
+problem.)
+
+Use one of these — in order of preference:
+
+1. **Relative path (recommended).** Write the body file *inside the repo* and pass it
+   **relative** to the working directory:
+   ```bash
+   # 1. write the body to a file inside the repo, e.g. .gh-bot-comment-131.md
+   # 2. post it by relative path, then clean up
+   bash .agents/skills/gh-bot/gh-bot.sh comment 131 --body-file .gh-bot-comment-131.md
+   rm .gh-bot-comment-131.md
+   ```
+   A relative path resolves in both the WSL shell (the existence check) and the Windows
+   `gh.exe` the script hands it to.
+
+2. **Inline for short bodies.** `comment <pr> "<text>"`. The script quotes the text for
+   the shell, but keep the body short and free of heavy backtick / `$` / double-quote use.
+
+3. **Absolute Windows path (works, but avoid).** The script now maps a `C:\…` / `C:/…`
+   path into the WSL namespace for the existence check, so it no longer fails — but a
+   relative path (1) is simpler and more reliable. Prefer it.
 
 If a command fails with setup instructions, show them to the user **completely** and stop.
 If the output contains a WARNING, pass it on to the user and continue.

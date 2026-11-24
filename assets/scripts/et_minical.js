@@ -3,17 +3,19 @@
  *
  * Verwendet jQuery, jQuery UI (Datepicker, Tooltip) und moment aus WordPress sowie Colorbox
  * (assets/scripts/jquery.colorbox-min.js). Die Daten des Shortcodes stehen in etMinicalData:
- * parameters = Abfrageparameter, baseUrl = Adresse der Evangelischen Termine (aus den Einstellungen).
+ * parameters = Abfrageparameter, eventsUrl / detailUrl = Routen des Proxys der eigenen Website. Der Browser ruft die
+ * Evangelischen Termine nicht direkt ab; der Server holt die Daten (Host aus den Einstellungen).
  */
 ( function ( $ ) {
 	'use strict';
 
-	if ( typeof window.etMinicalData === 'undefined' || ! window.etMinicalData.baseUrl ) {
+	if ( typeof window.etMinicalData === 'undefined' || ! window.etMinicalData.eventsUrl || ! window.etMinicalData.detailUrl ) {
 		return;
 	}
 
 	var parameters = window.etMinicalData.parameters || {};
-	var baseUrl = window.etMinicalData.baseUrl;
+	var eventsUrl = window.etMinicalData.eventsUrl;
+	var detailUrl = window.etMinicalData.detailUrl;
 	var eventdata = {};
 
 	/*
@@ -62,6 +64,11 @@
 			.html();
 	}
 
+	// Hängt Parameter an die Adresse einer Route (bei einfachen Permalinks enthält sie schon ein '?').
+	function withQuery( url, query ) {
+		return url + ( url.indexOf( '?' ) === -1 ? '?' : '&' ) + query;
+	}
+
 	function beforeShowDay( day ) {
 		var key = window.moment( day ).format( 'YYYY-MM-DD' );
 		if ( Object.prototype.hasOwnProperty.call( eventdata, key ) ) {
@@ -72,7 +79,7 @@
 
 	function loadMonthData( year, month ) {
 		var shortYear = String( year ).substring( 2, 4 );
-		var url = baseUrl + '/json?' + $.param( parameters ) + '&d=0&month=' + month + '.' + shortYear;
+		var url = withQuery( eventsUrl, $.param( parameters ) + '&d=0&month=' + month + '.' + shortYear );
 
 		eventdata = {};
 
@@ -137,7 +144,7 @@
 			var id = parseInt( $( this ).data( 'eventid' ), 10 ) || 0;
 			$.colorbox( {
 				iframe: true,
-				href: baseUrl + '/detail-bt?ID=' + id,
+				href: withQuery( detailUrl, 'ID=' + id ),
 				width: '100%',
 				height: '100%',
 				maxWidth: '900px',

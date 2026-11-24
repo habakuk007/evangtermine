@@ -10,16 +10,32 @@
 .vscode
 .wordpress-org
 .editorconfig
+.markdownlint-cli2.jsonc
 AGENTS.md
 CLAUDE.md
+CONTRIBUTING.md
+docs
 HANDOVER.md
+README.md
+SECURITY.md
 opencode.json
 node_modules
+build
+package.json
+package-lock.json
 vendor
-composer.json
 composer.lock
 phpcs.xml
 phpcs.xml.dist
 phpunit.xml
 phpunit.xml.dist
 tests
+
+# Translations of the readme.txt (for the import at translate.wordpress.org), not loaded by WordPress.
+languages/readme-translations
+languages/3.4
+
+# The .pot template is only for translators and the i18n tooling, not needed at runtime (the .po/.mo files are shipped).
+languages/evangtermine.pot
+
+# LICENSE is shipped on purpose: the GPL asks that every recipient gets a copy of the license text.

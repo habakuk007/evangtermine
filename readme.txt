@@ -5,9 +5,9 @@ Tags: events, calendar, church, evangelische termine, elkb
 Requires at least: 5.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 3.4
+Stable tag: 3.5.0
 License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://trumpkin.de/donate
 
 Shows the events of the German Protestant event calendar "Evangelische Termine" on your site, with shortcodes and a widget.
@@ -16,50 +16,27 @@ Shows the events of the German Protestant event calendar "Evangelische Termine" 
 
 "Evangelische Termine" (https://www.evangelische-termine.de/) is the event calendar of the Protestant churches in Germany. This plugin fetches the events of one or more organisers, or of a whole region (Dekanat), from that calendar and shows them in WordPress. Shortcodes and a widget control what is shown.
 
-The calendar itself is in German, so the output of the plugin and its settings page are in German.
-
-= Features =
-
-* Shortcode `[et_veranstalter]`: event list with a filter and search form, pagination and a detail view
-* Shortcode `[et_teaser]`: event list without a search form
-* Shortcode `[et_panels]`: events as panels with their images
-* Shortcode `[et_minical]`: the mini calendar of Evangelische Termine
-* Widget "Evangelische Termine": list of the next events for a widget area
-* Settings page for the defaults of the plugin
-* Every default can be overridden per shortcode and per widget
-* Your own CSS file can replace the styles of Evangelische Termine
+The calendar itself is in German, so its output is in German.
 
 = Shortcodes =
 
-`[et_veranstalter]` calls the organiser module of Evangelische Termine. It shows a filter form and the event list below it.
-`[et_veranstalter vid="952"]`
+* `[et_veranstalter]`: event list with a filter form, pagination and detail view, for example `[et_veranstalter vid="952"]`
+* `[et_teaser]`: event list without a search form, for example `[et_teaser vid="952,988" itemsperpage="5"]`
+* `[et_panels]`: events as panels with their images, for example `[et_panels vid="952"]`
+* `[et_minical]`: the mini calendar of Evangelische Termine, for example `[et_minical vid="952"]`
 
-`[et_teaser]` calls the teaser module. It shows an event list without a search form.
-`[et_teaser vid="952,988" itemsperpage="5"]`
+The widget "Evangelische Termine" shows the next events in a widget area. Every default from the settings can be overridden per shortcode and per widget. Documentation (German): https://github.com/habakuk007/evangtermine/tree/master/docs
 
-`[et_panels]` shows the events as panels with their images.
-`[et_panels vid="952"]`
-To hide the panel with the "Mehr laden" (load more) link, add this to your CSS:
-
-`
-#load1 {
-	display: none;
-}
-`
-
-`[et_minical]` embeds the mini calendar of Evangelische Termine.
-`[et_minical vid="952"]`
-
-All shortcodes accept the parameters listed under "Settings and parameters".
+To hide the "Mehr laden" (load more) panel of `[et_panels]`, add `#load1 { display: none; }` to your CSS.
 
 == External service ==
 
 This plugin fetches the events live from an external service: Evangelische Termine ([www.evangelische-termine.de](https://www.evangelische-termine.de)). The host can be changed in the settings, for example for the calendar of another regional church.
 
-* **When:** every time `[et_veranstalter]`, `[et_teaser]`, `[et_panels]` or the widget is shown. The output of `[et_teaser]` and of the widget is cached for 5 minutes. `[et_minical]` loads its data with JavaScript from the visitor's browser, from the host in the settings; a click on an event loads the detail view from there in an iframe.
-* **What is sent:** the query parameters (organiser ID, region ID, filters, a visitor's search term and page number, the ID of an event), the URL of the requesting page as Referer and the plugin version in the User-Agent. This request is made by your server, so it does not contain the IP addresses of your visitors.
+* **When:** every time `[et_veranstalter]`, `[et_teaser]`, `[et_panels]` or the widget is shown. The output of `[et_teaser]` and of the widget is cached for 5 minutes. `[et_minical]` loads its data from your own site: its JavaScript calls two public REST routes of this plugin (`/wp-json/evangtermine/v1/minical/events` and `/detail`), and your server fetches the data from the host in the settings. These answers are cached for 5 minutes too.
+* **What is sent:** the query parameters (organiser ID, region ID, filters, a visitor's search term and page number, the ID of an event), the URL of the requesting page as Referer and the plugin version in the User-Agent. This request is made by your server, so it does not contain the IP addresses of your visitors. For `[et_minical]` only known filter parameters are passed on (organiser, region, filters, search term), the month and the ID of an event.
 * **Returned content:** the HTML delivered by the service is shown on your site as it is, without filtering. Only use a host that you trust. Scripts and libraries (jQuery, jQuery UI, Bootstrap, Font Awesome) are loaded from WordPress and from this plugin, not from the service.
-* **What the visitor's browser loads directly:** the default stylesheet of the service for `[et_veranstalter]` and the detail view (not if you set your own CSS file in the settings); the images of events in `[et_panels]` and in the detail view, which are stored at the service's hosting provider (currently `et-live.obsv3.de-global-1.spacenet.cloud`), and a placeholder image from the service; the data of `[et_minical]`. These servers receive the IP address and the user agent of the visitor. `[et_teaser]` and the widget load nothing from other servers.
+* **What the visitor's browser loads directly:** the images of events in `[et_panels]` and in the detail view, which are stored at the service's hosting provider (currently `et-live.obsv3.de-global-1.spacenet.cloud`) or at the service itself; the popup of `[et_minical]` (shown after a click on an event) additionally references stylesheets, scripts, fonts and images of the service. These servers receive the IP address and the user agent of the visitor. The calendar and the list of events of `[et_minical]`, `[et_teaser]` and the widget load nothing from other servers.
 * **Privacy policy of the service:** [https://www.evangelische-termine.de/datenschutz](https://www.evangelische-termine.de/datenschutz)
 
 == Installation ==
@@ -83,7 +60,7 @@ Yes. `[et_veranstalter]` always shows the filter form. Use `[et_teaser]` for a p
 
 Yes. Enter the host name under "Settings" > "Evangelische Termine" > "Host". Local and private addresses are rejected.
 
-= The page shows "Der Veranstaltungskalender ist derzeit nicht verfügbar". =
+= The page shows "The event calendar is currently unavailable". =
 
 The request to the calendar failed or took too long. Check that your server may open outgoing HTTPS connections to the calendar host and that the "Host" setting is correct. The plugin waits up to 15 seconds for an answer; the filter `evangtermine_http_timeout` changes that (1 to 30 seconds).
 
@@ -99,75 +76,53 @@ Enter the URL of your CSS file under "CSS-Datei" in the settings. It replaces th
 
 = Settings =
 
-The settings are under "Settings" > "Evangelische Termine".
-
-**Veranstalter-ID** (organiser ID): shown at the top right after logging in at https://www.evangelische-termine.de/. Several IDs can be given as a comma-separated list without spaces, for example `id1,id2,id3`.
-
-**Dekanats-ID** (region ID): the ID of a Dekanat in Evangelische Termine. It is sent as `region` and shows the events of all organisers in that region.
-
-**Until**: whether events are shown until their end date (`yes` or `no`). Default: `yes`.
-
-**CSS-Datei** (CSS file): the URL of a CSS file that is used instead of the stylesheet delivered by Evangelische Termine. Enter `nocss` to load no stylesheet at all, for example when the styles are part of your theme.
-
-**Encoding**: the character encoding of your site (`utf8` or `latin1`). The data is delivered in that encoding. Default: `utf8`.
-
-**Protokoll** (protocol): `http://` or `https://`. If nothing is selected, the plugin uses `https://`.
-
-**Host**: the server that hosts the calendar. Default: `www.evangelische-termine.de`.
+The settings are under "Settings" > "Evangelische Termine". Several organiser IDs (Veranstalter-ID) are given as a comma-separated list without spaces. The CSS file (CSS-Datei) replaces the stylesheet of Evangelische Termine; enter `nocss` to load no stylesheet. The encoding is `utf8` (default) or `latin1`, the protocol `http://` or `https://` (default), the host (Host des Kalenderbetreibers) defaults to `www.evangelische-termine.de`.
 
 = Parameters =
 
-The parameters are described in detail in the [manual of Evangelische Termine](http://handbuch.evangelische-termine.de/Ausgabe-Parameter/) (German). The plugin supports:
+The parameters are described in the [manual of Evangelische Termine](https://handbuch.evangelische-termine.de/anzeige-im-internet/ausgabe-parameter) (German). The plugin supports:
 
 **vid**: organiser ID or several IDs separated by commas, for example `[et_teaser vid="952,988"]`.
 
-**region**: three-digit region number, or several numbers separated by commas. The filter form of `[et_veranstalter]` then shows an additional field to choose the organiser. Set `vid` to `all` or to a preselected organiser.
+**region**: three-digit region number, or several numbers separated by commas. `[et_veranstalter]` then shows a field to choose the organiser. Set `vid` to `all` or to a preselected organiser.
 
-**eventtype**: ID of the event category. A leading `-` excludes the category. Several IDs can be separated by commas.
+**eventtype**: ID of the event category. A leading `-` excludes it. Several IDs can be separated by commas.
 
-**highlight**: `all` shows all events, `high` only the events marked as highlight.
+**highlight**: `all` or `high` (only highlighted events).
 
-**people**: comma-separated list of target group IDs.
+**people**, **person**, **place**, **ipm**, **cha**: comma-separated IDs of target groups, contact persons, venues, event types (input masks) and channels.
 
-**person**: comma-separated list of contact person IDs.
+**itemsperpage**: number of events. For `[et_veranstalter]` use 5, 10, 20, 30, 40, 50 or 100. Default: 20.
 
-**place**: comma-separated list of venue IDs.
+**dest**: `extern` (public only, default), `intern` or `all`.
 
-**ipm**: comma-separated list of event type IDs (input masks).
-
-**cha**: comma-separated list of channel IDs.
-
-**itemsperpage**: number of events to show. For `[et_veranstalter]` use 5, 10, 20, 30, 40, 50 or 100. Default: 20.
-
-**dest**: which events are shown: `extern` (public only), `intern` (internal only) or `all`. Default: `extern`.
-
-**until**: whether an event is shown until its end date (`yes` or `no`). Default: `yes`.
+**until**: show an event until its end date (`yes`, default) or not (`no`).
 
 **q**: search terms, separated by spaces.
 
-**auswahl**: `eb` shows adult education events in Bavaria, that is events created with the input mask or the channel "Erwachsenenbildung".
+**auswahl**: `eb` shows adult education events in Bavaria (input mask or channel "Erwachsenenbildung").
 
 = Widget =
 
-The widget form offers the same parameters, plus a field for additional parameters in the form `param1=value1&param2=value2`.
+The widget form offers these parameters except `people` and `person`, plus a field for additional parameters in the form `param1=value1&param2=value2`.
 
 = Filters for developers =
 
-* `evangtermine_http_timeout`: timeout of the request to the calendar in seconds (default 15, limited to 1 to 30).
-* `evangtermine_cache_ttl`: lifetime of the cache for `[et_teaser]` and the widget in seconds (default 300, 0 switches it off).
+* `evangtermine_http_timeout`: request timeout in seconds (default 15, 1 to 30).
+* `evangtermine_cache_ttl`: cache lifetime of `[et_teaser]` and the widget in seconds (default 300, 0 = off).
 
 = Bundled libraries =
 
-* Bootstrap 3.3.7 (MIT), https://getbootstrap.com/ - used by `[et_panels]`
-* Font Awesome 4.7.0 (font: SIL OFL 1.1, CSS: MIT), https://fontawesome.com/v4/ - used by `[et_panels]`
-* jQuery UI 1.12.1 base theme, stylesheet and icons only (MIT), https://jqueryui.com/ - used by `[et_minical]` and the date filter of `[et_veranstalter]`
-* Colorbox 1.6.4 (MIT), https://www.jacklmoore.com/colorbox/ - used by `[et_minical]`
+* Bootstrap 3.4.1, CSS only (MIT), https://getbootstrap.com/ - used by `[et_panels]`. Last 3.x release, fixes the known CVEs. No Bootstrap JS.
+* Font Awesome 4.7.0, CSS and woff/woff2 fonts (OFL 1.1 / MIT), https://fontawesome.com/v4/ - used by `[et_panels]`. No JavaScript, no known CVE.
+* jQuery UI 1.12.1 base theme (MIT), https://jqueryui.com/ - used by `[et_minical]` and the date filter of `[et_veranstalter]`
+* Colorbox 1.6.4 (MIT), https://www.jacklmoore.com/colorbox/ - used by `[et_minical]`. Final release, no known CVE.
 
-`[et_veranstalter]`, `[et_panels]` and `[et_minical]` use the jQuery that ships with WordPress; `[et_veranstalter]` also uses its date picker, `[et_minical]` its jQuery UI and moment.
+jQuery, the date picker and moment come from WordPress.
 
 = Alternative =
 
-Evangelische Termine also offers its own widget that works in any CMS. You find it after logging in at https://www.evangelische-termine.de/ under "Information" > "Widgets".
+Evangelische Termine also has its own widget for any CMS (after login at the service: "Information" > "Widgets").
 
 = Credits =
 
@@ -183,94 +138,16 @@ Originally developed by Norbert Räbiger (https://profiles.wordpress.org/regibae
 
 == Changelog ==
 
-= 3.4 =
-* Security: fixed cross-site scripting and further security issues (including CVE-2025-28960). Request parameters are sanitized and URL-encoded, options and output are escaped, and the calendar host is checked against local and private addresses.
-* Security: the widget settings are limited to the known fields and sanitized when saved; output in the widget form is escaped.
-* Changed: the calendar is fetched over https:// by default.
-* Changed: the output of `[et_teaser]` and of the widget is cached for 5 minutes (filter `evangtermine_cache_ttl`, 0 switches the cache off).
-* Changed: jQuery is loaded from WordPress; the bundled copy was removed.
-* Changed: `[et_minical]` uses jQuery, jQuery UI and moment from WordPress instead of its own copies (jQuery 1.12.4), and its styles and scripts are enqueued the WordPress way. The own CSS file from the settings is enqueued as well.
-* Changed: `[et_veranstalter]` no longer uses the PHP session. The filters are passed in the URL, as before; the display does not change.
-* Fixed: `[et_minical]` uses the host from the settings instead of a fixed address, and texts from the calendar are escaped in its tooltip.
-* Fixed: `[et_veranstalter]` and the detail view no longer load jQuery, jQuery UI and a script from the calendar host in the visitor's browser; they use jQuery and the date picker from WordPress and files of the plugin.
-* Fixed: the search in `[et_veranstalter]` often ran into a timeout ("Der Veranstaltungskalender ist derzeit nicht verfügbar"). The request now waits up to 15 instead of 5 seconds (filter `evangtermine_http_timeout`).
-* Fixed: `[et_teaser]` is delivered with the default styles of Evangelische Termine as long as no own CSS file is set.
-* Fixed: compatibility with PHP 8.0 to 8.5 (undefined array keys in the widget and its form, HTTP status through the WordPress API).
-* New: deleting the plugin removes its settings and its cache (uninstall.php).
-* New: `Requires PHP: 7.4`, description of the external service, readme in English.
+= 3.5.0 =
+* Changed: the default stylesheet and the placeholder image of the service are delivered by the plugin. Visitors' browsers no longer load them from the service.
+* Changed: `[et_minical]` no longer calls the Evangelische Termine from the visitor's browser (this sent the visitor's IP address). The data and the detail view of an event come through two public read-only REST routes of this plugin; your server fetches them from the host in the settings. Only known parameters are passed on, and the answers are cached for 5 minutes (filter `evangtermine_cache_ttl`).
+* Changed: the settings page explains every setting below its field, and all labels and values are translated. The stored values do not change.
+* Changed: the source strings of the plugin are English now (WordPress.org convention); German translations for `de_DE` and `de_DE_formal` are included.
+* Security: unknown request parameters are no longer passed on to the calendar host, the `css` shortcode attribute only accepts `nocss`, and the settings page warns when `http://` is saved.
+* Fixed: `[et_veranstalter]` keeps the search term on page 2 and clears it on reset; the widget no longer overwrites a custom title; matching heading tags in the detail view.
+* Added: a "Documentation" link on the settings page and in the plugin row; user and developer documentation in the `docs/` folder of the repository.
 
-= 3.3 =
-* Fixed: display problem in `[et_panels]`.
-
-= 3.2 =
-* Fixed: jQuery is loaded locally instead of from a CDN.
-
-= 3.1 =
-* Fixed: `[et_veranstalter]` no longer passed on the search term.
-
-= 3.0 =
-* cURL is no longer required; the calendar is fetched with the HTTP API of WordPress.
-* Fixed: session handling in `[et_veranstalter]`.
-
-= 2.3.1 =
-* Added: field for additional parameters in the widget.
-
-= 2.3 =
-* Added: shortcode `[et_minical]`.
-
-= 2.2.15 =
-* Fixed: deprecation "Non-static method should be called statically".
-
-= 2.2.10 =
-* Fixed: `cha` was ignored when `auswahl=eb` was set at the same time.
-
-= 2.2.8 =
-* Fixed: a new stylesheet link in the data of Evangelische Termine is removed again when `nocss` is set.
-
-= 2.2.7 =
-* Fixed: replaced the deprecated function `create_function`.
-
-= 2.2.6 =
-* Added: shortcode `[et_panels]`.
-* Fixed: IPv6 resolution.
-
-= 2.2.5 =
-* Renamed the class `Autoloader` to `AutoloaderET` to avoid conflicts with other plugins.
-
-= 2.2.3 =
-* The accessibility icons in the detail view are loaded over SSL when available.
-
-= 2.2 =
-* The parameter `auswahl=eb` shows adult education events in Bavaria.
-
-= 2.0 =
-* Large parts of the code were rewritten.
-* The scripts of Evangelische Termine are no longer removed.
-* Fixed: Google Maps is loaded over https.
-* Fixed: images are loaded from Evangelische Termine.
-
-= 1.9 =
-* New: full-text search with the parameter `q`.
-
-= 1.8 =
-* New: the host of the calendar can be set on the settings page, so the plugin can be used for any regional church.
-* New: link to the settings on the "Plugins" screen.
-* Fixed: saving the select fields on the settings page.
-
-= 1.7 =
-* Fixed: problem with `nocss`.
-
-= 1.6 =
-* Changed: `__construct()` in the widget class.
-
-= 1.5 =
-* Fixed: some scripts in the data of Evangelische Termine are removed.
-
-= 1.2 =
-* New: documentation.
-
-= 1.1 =
-* Fixed: session handling; values are passed directly to the pager.
+See changelog.txt for older entries.
 
 == Upgrade Notice ==
 

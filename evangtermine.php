@@ -1,17 +1,21 @@
 <?php
 /**
  * @package evangtermine
- * @version 3.4
+ * @version 3.5.0
  */
 /*
  * Plugin Name: Evangelische Termine
+ * Plugin URI: https://github.com/habakuk007/evangtermine
  * Description: Shows the events of the German Protestant event calendar "Evangelische Termine" (www.evangelische-termine.de) with shortcodes and a widget.
  * Author: habakuk
- * Version: 3.4
+ * Version: 3.5.0
  * Requires at least: 5.0
  * Requires PHP: 7.4
  * Author URI: https://profiles.wordpress.org/habakuk/
  * License: GPLv2 or later
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
+ * Text Domain: evangtermine
+ * Domain Path: /languages
  */
 
 /*
@@ -28,12 +32,14 @@
  * Boston, MA 02110-1301, USA.
  */
 
-define ('ET_VERSION', '3.4');
-
-define('DEBUG', false);
-
 // Exit if accessed directly
-defined('ABSPATH') or die('No script kiddies please!');
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+define ('ET_VERSION', '3.5.0');
+
+define('ET_DEBUG', false);
 
 class evangtermine {
 	
@@ -43,49 +49,56 @@ class evangtermine {
 		require_once (__DIR__ . '/application/configs/defaults.php');
 		
 		// Autoloader aufrufen - über diesen werden die einzelnen Klassen registriert.
-		if (!defined('BASE_PATH')) {
-			define('BASE_PATH', __DIR__);
-			require_once BASE_PATH . '/autoloader.php';
-			AutoloaderET::Register();
+		if (!defined('ET_BASE_PATH')) {
+			define('ET_BASE_PATH', __DIR__);
+			require_once ET_BASE_PATH . '/autoloader.php';
+			Evangtermine_Autoloader::Register();
 		}
 		
+		// No load_plugin_textdomain(): since WordPress 4.6 translations of plugins hosted on
+		// WordPress.org (text domain = slug) are loaded automatically from the language packs.
+
 		// integrate the options menu if an admin ist logged in
 		if (is_admin ()) {
 			require_once (__DIR__ . '/application/forms/options.php');
 		}
 		// Options-Seite über das Backend-Menü Plugins aufrufen
-		add_filter ('plugin_action_links_' . plugin_basename(__FILE__), array('PluginOptionsPage', 'etPluginActions'));
+		add_filter ('plugin_action_links_' . plugin_basename(__FILE__), array('Evangtermine_PluginOptionsPage', 'etPluginActions'));
 
 		// Eigene CSS-Datei aus den Einstellungen einbinden (nach den Stylesheets des Themes)
-		add_action ('wp_enqueue_scripts', array('IncludeCSS', 'etIncludeCSS'), 20);
+		add_action ('wp_enqueue_scripts', array('Evangtermine_IncludeCSS', 'etIncludeCSS'), 20);
 
 		// Skripte und Stylesheets des Mini-Kalenders registrieren
-		add_action ('wp_enqueue_scripts', array('ShortcodeMinical', 'registerAssets'));
+		add_action ('wp_enqueue_scripts', array('Evangtermine_ShortcodeMinical', 'registerAssets'));
 		
 		// shortcode für den Teaser einbinden
-		add_shortcode('et_teaser', array('ShortcodeTeaser', 'etTeaser'));
+		add_shortcode('et_teaser', array('Evangtermine_ShortcodeTeaser', 'etTeaser'));
 		
 		// shortcode für das Veranstaltermodul einbinden
-		add_shortcode('et_veranstalter', array('ShortcodeVeranstalter', 'etVeranstalter'));
+		add_shortcode('et_veranstalter', array('Evangtermine_ShortcodeVeranstalter', 'etVeranstalter'));
 		
-		// TODO shortcode für das Panelsmodul einbinden
-		add_shortcode('et_panels', array('ShortcodePanels', 'etPanels'));
+		// shortcode für das Panelsmodul einbinden
+		add_shortcode('et_panels', array('Evangtermine_ShortcodePanels', 'etPanels'));
 		
+		// Proxy für die Abrufe des Mini-Kalenders (der Browser der Besucher ruft die Evangelischen Termine nicht direkt ab)
+		add_action ('rest_api_init', array('Evangtermine_MinicalProxy', 'registerRoutes'));
+
 		// shortcode für den Mini-Kalender
-		add_shortcode('et_minical', array('ShortcodeMinical', 'etMinical'));
-		
-		// shortcode für einen Teaser der die Daten über JSON abruft
-		// add_shortcode('et_teaserjson', array('ShortcodeTeaserJson', 'etTeaserJson'));
-		
-		// TODO shortcode für das Modul mit der Übersichtskarte http://www.evangelische-termine.de/map?vid=952&itemsPerPage=100&lat=48.92971763063&lng=10.78857421875&zoom=7&ipm=808®ion=407&vid=all
+		add_shortcode('et_minical', array('Evangtermine_ShortcodeMinical', 'etMinical'));
 		
 		// Widget einbinden
-		function EtWidget_init_widget () {
-			return register_widget('EtWidget');
-		}
-		add_action ('widgets_init', 'EtWidget_init_widget');
+		add_action( 'widgets_init', 'evangtermine_register_widget' );
 	}
 	
+}
+
+/**
+ * Registers the widget. Declared at top level, not inside the constructor.
+ *
+ * @return void
+ */
+function evangtermine_register_widget() {
+	register_widget( 'EtWidget' );
 }
 
 new evangtermine();

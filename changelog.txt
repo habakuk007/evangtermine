@@ -1,0 +1,85 @@
+== Changelog ==
+
+Older entries of the plugin. The entries of the current versions are in readme.txt.
+
+= 3.4 =
+* Security: fixed cross-site scripting and further security issues (including CVE-2025-28960). Request parameters are sanitized and URL-encoded, options and output are escaped, the widget settings are sanitized, and the calendar host is checked against local and private addresses.
+* Changed: the calendar is fetched over https:// by default. The output of `[et_teaser]` and of the widget is cached for 5 minutes (filter `evangtermine_cache_ttl`, 0 switches the cache off).
+* Changed: jQuery, jQuery UI and moment are loaded from WordPress; the bundled copies were removed. `[et_veranstalter]` and the detail view no longer load scripts from the calendar host in the visitor's browser, and `[et_veranstalter]` no longer uses the PHP session (the filters are passed in the URL, as before).
+* Fixed: `[et_minical]` uses the host from the settings instead of a fixed address and escapes texts from the calendar in its tooltip.
+* Fixed: the search in `[et_veranstalter]` often ran into a timeout. The request now waits up to 15 instead of 5 seconds (filter `evangtermine_http_timeout`).
+* Fixed: `[et_teaser]` is delivered with the default styles as long as no own CSS file is set; compatibility with PHP 8.0 to 8.5.
+* New: deleting the plugin removes its settings and cache (uninstall.php); `Requires PHP: 7.4`; description of the external service; readme in English.
+
+= 3.3 =
+* Fixed: display problem in `[et_panels]`.
+
+= 3.2 =
+* Fixed: jQuery is loaded locally instead of from a CDN.
+
+= 3.1 =
+* Fixed: `[et_veranstalter]` no longer passed on the search term.
+
+= 3.0 =
+* cURL is no longer required; the calendar is fetched with the HTTP API of WordPress.
+* Fixed: session handling in `[et_veranstalter]`.
+
+= 2.3.1 =
+* Added: field for additional parameters in the widget.
+
+= 2.3 =
+* Added: shortcode `[et_minical]`.
+
+= 2.2.15 =
+* Fixed: deprecation "Non-static method should be called statically".
+
+= 2.2.10 =
+* Fixed: `cha` was ignored when `auswahl=eb` was set at the same time.
+
+= 2.2.8 =
+* Fixed: a new stylesheet link in the data of Evangelische Termine is removed again when `nocss` is set.
+
+= 2.2.7 =
+* Fixed: replaced the deprecated function `create_function`.
+
+= 2.2.6 =
+* Added: shortcode `[et_panels]`.
+* Fixed: IPv6 resolution.
+
+= 2.2.5 =
+* Renamed the class `Autoloader` to `AutoloaderET` to avoid conflicts with other plugins.
+
+= 2.2.3 =
+* The accessibility icons in the detail view are loaded over SSL when available.
+
+= 2.2 =
+* The parameter `auswahl=eb` shows adult education events in Bavaria.
+
+= 2.0 =
+* Large parts of the code were rewritten.
+* The scripts of Evangelische Termine are no longer removed.
+* Fixed: Google Maps is loaded over https.
+* Fixed: images are loaded from Evangelische Termine.
+
+= 1.9 =
+* New: full-text search with the parameter `q`.
+
+= 1.8 =
+* New: the host of the calendar can be set on the settings page, so the plugin can be used for any regional church.
+* New: link to the settings on the "Plugins" screen.
+* Fixed: saving the select fields on the settings page.
+
+= 1.7 =
+* Fixed: problem with `nocss`.
+
+= 1.6 =
+* Changed: `__construct()` in the widget class.
+
+= 1.5 =
+* Fixed: some scripts in the data of Evangelische Termine are removed.
+
+= 1.2 =
+* New: documentation.
+
+= 1.1 =
+* Fixed: session handling; values are passed directly to the pager.

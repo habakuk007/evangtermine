@@ -12,8 +12,7 @@
 		"json",
 		"mbstring",
 		"pcre",
-		"SPL",
-		"curl"
+		"SPL"
 	],
 	"[php]": {
 		"editor.defaultFormatter": "bmewburn.vscode-intelephense-client"

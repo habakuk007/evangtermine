@@ -2,28 +2,32 @@
 
 ## Project Overview
 
-**Evangelische Termine** is a WordPress plugin (v3.3) that embeds the Protestant events database
+**Evangelische Termine** is a WordPress plugin (v3.4) that embeds the Protestant events database
 from [www.evangelische-termine.de](https://www.evangelische-termine.de) into any WordPress site.
 It provides shortcodes and a sidebar widget; the event HTML is fetched live from the remote host
 with the WordPress HTTP API (`wp_remote_get()`).
 
-The codebase is object-oriented PHP with an autoloader, no build tools, no runtime Composer dependencies (Composer is dev tooling only)
-and no npm. The plugin was closed on WordPress.org (security issue); the goal is to fix issues
-#1–#6, support PHP 8 and get it re-opened.
+The codebase is object-oriented PHP with an autoloader, no build tools, no runtime Composer dependencies (Composer and npm are dev tooling only: PHPCS and the end-to-end tests).
+The plugin was closed on WordPress.org on 2025-05-01 (security issue); issues #1–#6 are fixed,
+PHP 8 is supported and the plugin has been re-opened (version 3.4).
+Further work is tracked in the GitHub issues (milestones 3.5.0 and 3.5.1).
 
 ## File Map
 
 ```
 evangtermine.php            <- Plugin entry point, shortcode and widget registration
-autoloader.php              <- AutoloaderET (application/{controllers,models,views,helper,forms})
+autoloader.php              <- Evangtermine_Autoloader (application/{controllers,models,views,helper,forms})
 application/
   configs/defaults.php      <- ET_DEFAULT_HOST, ET_DEFAULT_PROTOCOL, ET_OPTION_* defaults
-  controllers/              <- ShortcodeVeranstalter/Teaser/Panels/Minical, EtWidget
-  models/class.etquery.php  <- EtQuery: query string, wp_remote_get, HTML post-processing
-  views/class.etview.php    <- EtView: <div> wrapper
-  helper/                   <- IncludeCSS, Debugging
+  controllers/              <- Evangtermine_ShortcodeVeranstalter/Teaser/Panels/Minical, EtWidget
+  models/class.evangtermine_query.php  <- Evangtermine_Query: query string, wp_remote_get, HTML post-processing
+  views/class.evangtermine_view.php    <- Evangtermine_View: <div> wrapper
+  helper/                   <- Evangtermine_IncludeCSS, Evangtermine_Debugging
   forms/                    <- options.php (Settings API), widget form
 assets/                     <- bundled Bootstrap, jQuery, Font Awesome, CSS
+languages/readme-translations/     <- readme.txt translations (de, de formal) for translate.wordpress.org (not in the release)
+tests/e2e/                  <- Playwright tests against WordPress Playground (not in the release)
+docs/specs/                 <- design specs, e.g. 4.0-event-pages.md for epic #107 (not in the release)
 readme.txt                  <- WordPress.org listing
 ```
 
@@ -33,6 +37,7 @@ readme.txt                  <- WordPress.org listing
 - `develop` = integration branch for further development. Protected like `master`.
 - Work in short-lived branches (`fix/<issue>-<topic>`, `feat/<issue>-<topic>`, `chore/<issue>-<topic>`) and open PRs **against `develop`**.
 - Release: PR `develop` -> `master`, then tag the merge commit (see `/wp-release`). Urgent security fixes may go to `master` first and are merged back into `develop`.
+- Versioning follows [Semantic Versioning](https://semver.org/lang/de/) (`MAJOR.MINOR.PATCH`, always three parts, no pre-release suffixes): MAJOR = breaking changes, MINOR = new backward-compatible features or behaviour changes, PATCH = bug fixes and internal work (tests, docs, coding standard). GitHub milestones are named by the target version (3.5.0, 3.5.1, 4.0.0, 4.1.0). The tag `3.4` predates this rule and stays as is.
 
 ## Key Conventions
 
@@ -44,7 +49,7 @@ readme.txt                  <- WordPress.org listing
 | Options names | `vid`, `region`, `until`, `css`, `encoding`, `etprotocol`, `ethost` (no prefix — legacy) |
 | External API host | `www.evangelische-termine.de` (configurable via option `ethost`) |
 | API transport | WordPress HTTP API (`wp_remote_get()`) |
-| Filter state | In the URL only (request value -> `EtQuery::setEtParameter()`), no PHP session |
+| Filter state | In the URL only (request value -> `Evangtermine_Query::setEtParameter()`), no PHP session |
 | Capability | `manage_options` (admin settings page) |
 | Shortcodes | `[et_veranstalter]`, `[et_teaser]`, `[et_panels]`, `[et_minical]` |
 | Widget | `EtWidget` class |
@@ -69,8 +74,21 @@ composer lint:php
 # Auto-fix
 composer fix:php
 
+# Install the E2E tooling (Playwright, WordPress Playground) - dev only, not part of the release
+npm ci && npx playwright install chromium
+
+# E2E tests in a real WordPress (WordPress Playground) with a mocked calendar host, see tests/e2e/README.md
+npm run test:e2e
+
+# Optional E2E checks against the real www.evangelische-termine.de (not run in CI)
+npm run test:e2e:live
+
+# Start the test site for manual testing: http://127.0.0.1:8881
+npm run playground
+
 # Generate .pot translation file (requires WP-CLI)
-wp i18n make-pot . languages/evangtermine.pot
+composer make:pot   # -> languages/evangtermine.pot (WP-CLI i18n from Composer, no global wp)
+composer make:mo    # compile languages/*.po to .mo
 
 # Check plugin against WP.org guidelines (requires WP-CLI + plugin-check)
 wp plugin check evangtermine
@@ -78,7 +96,7 @@ wp plugin check evangtermine
 
 ## When Adding Features
 
-1. Add new parameters to `EtQuery` (defaults) and the relevant controller in `application/controllers/`
+1. Add new parameters to `Evangtermine_Query` (defaults) and the relevant controller in `application/controllers/`
 2. Sanitize request input and escape all output (see the WordPress instructions)
 3. Add corresponding admin settings fields in `application/forms/options.php`
 4. Register the setting with `register_setting()` and a sanitize callback
@@ -92,6 +110,7 @@ wp plugin check evangtermine
 | [Accessibility](.agents/instructions/a11y.instructions.md) | `**` |
 | [HTML/CSS Colors](.agents/instructions/html-css-style-color-guide.instructions.md) | `**/*.css`, `**/*.html` |
 | [readme.txt](.agents/instructions/readme-txt.instructions.md) | `readme.txt` |
+| [WordPress.org Submission](.agents/instructions/wordpress-org-submission.instructions.md) | `readme.txt`, `changelog.txt`, `**/*.php` |
 | [AI Tool Sync](.agents/instructions/ai-tool-sync.instructions.md) | `CLAUDE.md`, `AGENTS.md`, `.github/copilot-instructions.md`, `.agents/instructions/**`, `.mcp.json` |
 | [Agent Files](.agents/instructions/agents.instructions.md) | `**/*.agent.md` |
 | [Skill Files](.agents/instructions/agent-skills.instructions.md) | `**/.agents/skills/**/SKILL.md` |

@@ -26,11 +26,13 @@ if(!defined('ET_DEFAULT_CHARSET')) {
 	define( 'ET_DEFAULT_CHARSET', 'utf8' );
 }
 
+// Index der Dokumentation (nur ein Link in der Administration, es wird nichts von dort geladen).
+define( 'ET_DOCS_URL', 'https://github.com/habakuk007/evangtermine/blob/master/docs/README.md' );
+
 define( 'ET_OPTION_AID', '');
 define( 'ET_OPTION_EVENTTYPE', '' );
 define( 'ET_OPTION_HIGHLIGHT', 'all' );
 define( 'ET_OPTION_PEOPLE', '0' );
-define( 'ET_OPTION_PERSON', 'all' );
 define( 'ET_OPTION_PLACE', 'all' );
 define( 'ET_OPTION_IPM', 'all' );
 define( 'ET_OPTION_CHA', 'all' );
@@ -38,11 +40,9 @@ define( 'ET_OPTION_ITEMSPERPAGE', '20' );
 define( 'ET_OPTION_DEST', 'extern' );
 
 define( 'ET_VERANSTALTER_MODUL', 'veranstaltungen-php');
-// define( 'ET_VERANSTALTER_MODUL', 'veranstaltungen' ); // TODO neuen Shortcode entwickeln
 define( 'ET_TEASER_MODUL', 'teaser');
 define( 'ET_DETAILS_MODUL', 'detail-php');
 define( 'ET_PANEL_MODUL', 'panels');
-define( 'ET_JSON', 'json');
 
 define( 'ET_TEMPLATE_TEASER_SHORTCODE', '1' );
 define( 'ET_TEMPLATE_TEASER_WIDGET', '2');
