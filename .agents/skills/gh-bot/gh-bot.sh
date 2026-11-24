@@ -32,7 +32,7 @@ usage() {
   cat >&2 <<'EOF'
 Usage:
   gh-bot.sh check                                verify the bot token
-  gh-bot.sh pr <branch> "<title>" ["<body>" | --body-file <path>]  open a PR as the bot (base develop; hotfix/* and develop -> master)
+  gh-bot.sh pr <branch> "<title>" ["<body>" | --body-file <path>]  open a PR as the bot (base: develop, except hotfix/* and the develop branch (release PR) -> master)
   gh-bot.sh comment <pr-number> "<text>"         comment on a PR as the bot
   gh-bot.sh comment <pr-number> --body-file <path>  comment on a PR as the bot (body from a file)
   gh-bot.sh list                                 list open PRs
