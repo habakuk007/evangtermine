@@ -81,7 +81,7 @@ msgstr "<strong>Zurückgelieferter Inhalt:</strong> das vom Dienst gelieferte HT
 
 #. Found in description list item.
 msgid "<strong>What the visitor's browser loads directly:</strong> the images of events in <code>[et_panels]</code> and in the detail view, which are stored at the service's hosting provider (currently <code>et-live.obsv3.de-global-1.spacenet.cloud</code>) or at the service itself; the popup of <code>[et_minical]</code> (shown after a click on an event) additionally references stylesheets, scripts, fonts and images of the service. These servers receive the IP address and the user agent of the visitor. The calendar and the list of events of <code>[et_minical]</code>, <code>[et_teaser]</code> and the widget load nothing from other servers."
-msgstr "<strong>Was der Browser des Besuchers direkt lädt:</strong> die Bilder der Veranstaltungen in <code>[et_panels]</code> und in der Detailansicht, die beim Hosting-Anbieter des Dienstes (derzeit <code>et-live.obsv3.de-global-1.spacenet.cloud</code>) oder beim Dienst selbst gespeichert sind; das Popup von <code>[et_minical]</code> (wird nach einem Klick auf eine Veranstaltung angezeigt) verweist zusätzlich auf Stylesheets, Skripte, Schriften und Bilder des Dienstes. Diese Server erhalten die IP-Adresse und den User-Agent des Besuchers. Der Kalender und die Veranstaltungsliste von <code>[et_minical]</code> sowie <code>[et_teaser]</code> und das Widget laden nichts von anderen Servern."
+msgstr "<strong>Was der Browser des Besuchers direkt lädt:</strong> die Bilder der Veranstaltungen in <code>[et_panels]</code> und in der Detailansicht, die beim Hosting-Anbieter des Dienstes (derzeit <code>et-live.obsv3.de-global-1.spacenet.cloud</code>) oder beim Dienst selbst gespeichert sind; das Pop-up von <code>[et_minical]</code> (wird nach einem Klick auf eine Veranstaltung angezeigt) verweist zusätzlich auf Stylesheets, Skripte, Schriften und Bilder des Dienstes. Diese Server erhalten die IP-Adresse und den User-Agent des Besuchers. Der Kalender und die Veranstaltungsliste von <code>[et_minical]</code> sowie <code>[et_teaser]</code> und das Widget laden nichts von anderen Servern."
 
 #. Found in description list item.
 msgid "<strong>Privacy policy of the service:</strong> <a href=\"https://www.evangelische-termine.de/datenschutz\">https://www.evangelische-termine.de/datenschutz</a>"
@@ -217,7 +217,7 @@ msgstr "Widget"
 
 #. Found in description paragraph.
 msgid "The widget form offers these parameters except <code>people</code> and <code>person</code>, plus a field for additional parameters in the form <code>param1=value1&amp;param2=value2</code>."
-msgstr "Das Widget-Formular bietet diese Parameter außer <code>people</code> und <code>person</code>, dazu ein Feld für weitere Parameter in der Form <code>param1=wert1&amp;param2=wert2</code>."
+msgstr "Das Widget-Formular bietet diese Parameter außer <code>people</code> und <code>person</code>, dazu ein Feld für weitere Parameter in der Form <code>param1=value1&amp;param2=value2</code>."
 
 #. Found in description header.
 msgid "Filters for developers"

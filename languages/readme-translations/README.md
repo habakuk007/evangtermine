@@ -9,7 +9,7 @@ Translations of the `readme.txt` (plugin directory page). They are **not** part 
 
 Both files are exports of the project "Stable Readme (latest release)" of https://translate.wordpress.org/projects/wp-plugins/evangtermine/stable-readme/ , with the `msgstr` filled in. Keep the `msgid`s and the GlotPress header unchanged.
 
-`readme-de_DE.mo` is the compiled informal file (for an import in the MO format). It is generated: after changing `readme-de_DE.po`, copy the `.po` to an empty folder, run `composer make:mo` logic there (`php vendor/wp-cli/wp-cli/php/boot-fs.php i18n make-mo <folder>`) and copy the `.mo` back.
+`readme-de_DE.mo` is the compiled informal file (for an import in the MO format). It is generated: after changing `readme-de_DE.po`, copy the `.po` to an empty folder, compile it with `php vendor/wp-cli/wp-cli/php/boot-fs.php i18n make-mo <folder>` (the same command as `composer make:mo`, but on that folder) and copy the `.mo` back.
 
 ## Import
 
