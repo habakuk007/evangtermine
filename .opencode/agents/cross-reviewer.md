@@ -1,11 +1,13 @@
 ---
-description: Headless reviewer of the skill cross-review. A primary agent, because `opencode run --agent` starts the default agent (which may edit) when the named agent is a subagent. Cannot edit, run commands or reach the web.
+description: Headless reviewer of the skill cross-review. A primary agent, because `opencode run --agent` starts the default agent (which may edit) when the named agent is a subagent. Every tool is denied except read, grep, glob and list, so it cannot edit, run commands, reach the web or call MCP servers.
 mode: primary
 permission:
-  edit: deny
-  bash: deny
-  webfetch: deny
-  task: deny
+  "*": deny
+  read: allow
+  grep: allow
+  glob: allow
+  list: allow
+  external_directory: allow
 ---
 
 You review a pull request of the WordPress plugin evangtermine in a fresh context for the skill `cross-review` (`.agents/skills/cross-review/SKILL.md`).

@@ -66,8 +66,12 @@ SECURITY_CRITICAL = (
     "evangtermine.php",
     "uninstall.php",
 )
-# Generated or bundled files are not sent to the reviewer; context.md lists them. Git pathspecs.
-NOISE_PATHSPECS = ("assets/**", "languages/**", "package-lock.json", "composer.lock", "vendor/**", "node_modules/**")
+# Generated files and bundled libraries are not sent to the reviewer; context.md lists them. Git pathspecs.
+# The plugin's own assets (et_*.js, et_minical.css, publicintegration.css, .et_ class names) stay in the diff.
+NOISE_PATHSPECS = (
+    "assets/font-awesome-*/**", "assets/ui/**", "assets/scripts/jquery.*", "assets/styles/bootstrap*",
+    "languages/**", "package-lock.json", "composer.lock", "vendor/**", "node_modules/**",
+)
 
 SECRET_PATTERNS = {
     "private key block": r"-----BEGIN [A-Z ]*PRIVATE KEY-----",
@@ -371,7 +375,7 @@ def reviewer_command(tool, repo, tmp, pr_number, model=""):
         raise CrossReviewError("The model key has characters that are not allowed: %r" % model)
     tmp = Path(tmp)
     if tool == "opencode":
-        args = ["opencode", "run", "--dir", str(repo), "--agent", AGENTS["opencode"], "--title", "Review PR %s" % pr_number]
+        args = ["opencode", "run", "--agent", AGENTS["opencode"], "--title", "Review PR %s" % pr_number]
         if model:
             args += ["-m", model]
         attach = ["prompt.md", "pr.diff", "commits.txt", "context.md"]
@@ -387,6 +391,11 @@ def reviewer_command(tool, repo, tmp, pr_number, model=""):
             args += ["--model", model]
         return args, tmp / "prompt.md"
     raise CrossReviewError("--tool must be opencode or claude")
+
+
+def repo_state(repo):
+    """HEAD and the porcelain status: a read-only reviewer must leave both as they were."""
+    return git(repo, "rev-parse", "HEAD")[1], git(repo, "status", "--porcelain")[1]
 
 
 def fell_back_to_default_agent(log):
@@ -574,15 +583,20 @@ def execute(args):
         model = args.model or settings["opencodeModel" if args.tool == "opencode" else "claudeModel"]
         command, stdin_file = reviewer_command(args.tool, args.repo_path, args.tmp, args.pr_number, model)
         out_file = Path(args.tmp) / ("review-%s.txt" % args.tool)
+        before = repo_state(args.repo_path)
         result = run_reviewer(command, stdin_file, args.repo_path, out_file, args.timeout_seconds)
         log = Path(result["ErrFile"]).read_text(encoding="utf-8", errors="replace")
-        fell_back = fell_back_to_default_agent(log)
+        out_text = out_file.read_text(encoding="utf-8", errors="replace") if out_file.is_file() else ""
+        changed = repo_state(args.repo_path) != before
+        fell_back = fell_back_to_default_agent(log) or fell_back_to_default_agent(out_text) or changed
         report = {"Ok": result["ExitCode"] == 0 and not result["TimedOut"] and not fell_back, "ExitCode": result["ExitCode"],
                   "TimedOut": result["TimedOut"], "OutFile": str(out_file), "ErrFile": result["ErrFile"],
                   "ErrTail": "\n".join(log.splitlines()[-15:])}
         if fell_back:
             report["Problems"] = ["The tool ran the default agent instead of the reviewer, so it was not read-only. "
                                   "Do not use this review; check git status of the repository and tell the user."]
+            if changed:
+                report["Problems"].append("HEAD or the working tree changed while the reviewer ran.")
         return report
     if args.action == "extract":
         require(args, "tmp", "tool")

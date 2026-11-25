@@ -257,7 +257,6 @@ class GitTest(unittest.TestCase):
         self.assertEqual(list(self.base.iterdir()), [])
         cr.prepare(self.repo, "develop", "7", "r", "claude", allow_secret_like_text=True, base_directory=self.base)
 
-
     def commit_files(self, files, message="more"):
         for name, text in files.items():
             path = self.repo / name
@@ -267,17 +266,30 @@ class GitTest(unittest.TestCase):
         self.run_git(self.repo, "commit", "-m", message)
 
     def test_prepare_leaves_generated_and_bundled_files_out_of_the_diff(self):
-        self.commit_files({"assets/lib.js": "bundled\n", "languages/x.pot": "msgid\n", "application/a.php": "<?php\n"})
+        self.commit_files({"assets/ui/lib.js": "bundled\n", "languages/x.pot": "msgid\n", "application/a.php": "<?php\n"})
         result = cr.prepare(self.repo, "develop", "7", "r", "claude", base_directory=self.base)
         tmp = Path(result["Tmp"])
         diff = (tmp / "pr.diff").read_text(encoding="utf-8")
         self.assertIn("application/a.php", diff)
         self.assertNotIn("bundled", diff)
         self.assertNotIn("msgid", diff)
-        self.assertEqual(result["Skipped"], ["assets/lib.js", "languages/x.pot"])
+        self.assertEqual(result["Skipped"], ["assets/ui/lib.js", "languages/x.pot"])
         context = (tmp / "context.md").read_text(encoding="utf-8")
-        self.assertIn("- assets/lib.js", context)
+        self.assertIn("- assets/ui/lib.js", context)
         self.assertIn("generated or bundled files, not reviewed", context)
+
+    def test_the_plugins_own_assets_stay_in_the_diff(self):
+        self.commit_files({"assets/scripts/et_calendar.js": "own code" + chr(10), "assets/styles/publicintegration.css": ".et_x{}" + chr(10)})
+        result = cr.prepare(self.repo, "develop", "7", "r", "claude", base_directory=self.base)
+        diff = (Path(result["Tmp"]) / "pr.diff").read_text(encoding="utf-8")
+        self.assertIn("own code", diff)
+        self.assertIn(".et_x", diff)
+        self.assertEqual(result["Skipped"], [])
+
+    def test_repo_state_changes_when_the_tree_or_head_changes(self):
+        before = cr.repo_state(self.repo)
+        (self.repo / "dirty.txt").write_text("x", encoding="utf-8")
+        self.assertNotEqual(cr.repo_state(self.repo), before)
 
     def test_prepare_with_only_noise_still_builds_an_input(self):
         self.run_git(self.repo, "reset", "--hard", "develop")
