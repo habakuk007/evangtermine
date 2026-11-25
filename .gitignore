@@ -15,3 +15,7 @@
 
 # Release ZIP and file set built by .github/scripts/build-release.sh
 /build/
+
+# Temporary comment bodies of the gh-bot / cross-review skills, and Python caches
+.gh-bot-comment-*.md
+__pycache__/

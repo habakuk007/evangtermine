@@ -85,3 +85,9 @@ If the output contains a WARNING, pass it on to the user and continue.
 - commit or push unless the user asked for that step.
 
 Project rules still apply: commit message format and branch/PR targets are in `CLAUDE.md`.
+
+## After opening a PR
+
+If the developer enabled the opt-in second-AI review, run the [cross-review](../cross-review/SKILL.md)
+skill right after the PR is open (it does nothing unless the developer's personal setting asks for it).
+It posts its review and reply through `gh-bot.sh comment`.

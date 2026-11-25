@@ -22,6 +22,8 @@ GitHub Copilot reads only `.github/instructions/` and `.github/agents/`, and git
   agents/             ← tracked copy of .agents/agents/        (do not edit directly)
 
 .claude/commands/     ← slash commands that reference agents and skills
+.claude/agents/       ← Claude Code agent used headless by the skill cross-review (cross-reviewer, read-only)
+.opencode/agents/     ← OpenCode agent used headless by the skill cross-review (cross-reviewer, primary, edit/bash denied)
 
 CLAUDE.md             ← instruction + agent + skill tables + project facts
 AGENTS.md             ← instruction + agent + skill tables + MCP table + project facts
