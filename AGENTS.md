@@ -137,6 +137,7 @@ Each skill has a corresponding Claude Code slash command in `.claude/commands/`.
 | [translate-de/SKILL.md](.agents/skills/translate-de/SKILL.md) | `/translate-de` | German translation (du/Sie) per WordPress Polyglots Style Guide and Glossary |
 | [wp-release/SKILL.md](.agents/skills/wp-release/SKILL.md) | `/wp-release` | Full plugin release workflow (version bump → tag → GitHub release) |
 | [grill-me/SKILL.md](.agents/skills/grill-me/SKILL.md) | `/grill-me` | Stress-test a plan through relentless questions |
+| [cross-review/SKILL.md](.agents/skills/cross-review/SKILL.md) | `/cross-review` | Opt-in second-AI review of a pull request: post as bot, evaluate, reply, fix valid findings (one round) |
 
 ## Available Instruction Files
 

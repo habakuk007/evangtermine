@@ -145,3 +145,4 @@ Invoke via Claude Code slash commands (e.g. `/gh issue create`).
 | `/translate-de` | [translate-de/SKILL.md](.agents/skills/translate-de/SKILL.md) | German translation (du/Sie) per WordPress Polyglots Style Guide and Glossary |
 | `/wp-release` | [wp-release/SKILL.md](.agents/skills/wp-release/SKILL.md) | Full plugin release workflow |
 | `/grill-me` | [grill-me/SKILL.md](.agents/skills/grill-me/SKILL.md) | Stress-test a plan through relentless questions |
+| `/cross-review` | [cross-review/SKILL.md](.agents/skills/cross-review/SKILL.md) | Opt-in second-AI review of a pull request: post as bot, evaluate, reply, fix valid findings (one round) |
