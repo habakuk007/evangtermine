@@ -10,6 +10,8 @@ Sources (source of truth, check them for newer entries):
 
 The Sie glossary has the same terms and translations; only the comments of `Customizer`, `LTR`, `Resource Hints` and `RTL` are written in Sie-form ("Sehen Sie hierzu: ..."), and the comment of `Collaborator` has a typo fix. Missing in the glossary: `widget`, `settings`, `event`, `calendar`; follow the existing translations (`Widget`, `Einstellungen`, ...).
 
+Re-checked on 2026-11-28 against translate.wordpress.org: all 520 rows of `default` are unchanged, and `formal` differs only in the comments named above. The English (en_GB) glossary is in `glossary-en_GB.md`.
+
 How to refresh: `curl` the glossary page into an empty directory and parse the table rows (columns: item, part of speech, translation, comments).
 
 Project terms that are not in the glossary (`Veranstalter`, `Dekanat`, ...) are in the section "Plugin vocabulary" of `../SKILL.md`. The list below is in the order of translate.wordpress.org and contains duplicate rows for singular/plural and verb forms, as the source does.
