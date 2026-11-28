@@ -5,7 +5,7 @@ description: Translate or review German (de_DE "du", de_DE_formal "Sie") strings
 
 # Translate German (de_DE / de_DE_formal)
 
-Rules for German translations of this plugin. Sources: [Style Guide](https://de.wordpress.org/team/handbook/polyglots-team/style-guide/) and [Glossar](https://de.wordpress.org/team/handbook/polyglots-team/das-glossar/) of the German Polyglots team. The complete term list is in [references/glossary.md](references/glossary.md); the full rules are in [references/style-guide.md](references/style-guide.md).
+Rules for German translations of this plugin. Sources: [Style Guide](https://de.wordpress.org/team/handbook/polyglots-team/style-guide/) and [Glossar](https://de.wordpress.org/team/handbook/polyglots-team/das-glossar/) of the German Polyglots team. The complete term list is in [references/glossary.md](references/glossary.md); the full rules are in [references/style-guide.md](references/style-guide.md). How translations reach users (PTE, 90 % threshold, language packs) is in [references/plugin-author-guide.md](references/plugin-author-guide.md); how to write source strings is in [references/i18n-source-strings.md](references/i18n-source-strings.md).
 
 ## When to Use
 
@@ -87,5 +87,7 @@ If `msgfmt` is not installed, `composer make:mo` (WP-CLI) reports syntax errors 
 ## References
 
 - `references/style-guide.md` — summary of the Style Guide (rules in our own words)
+- `references/plugin-author-guide.md` — Polyglots Plugin/Theme Authors Guide and linked handbook pages (roles, PTE request, statuses, 90 % rule, language packs)
+- `references/i18n-source-strings.md` — rules for writing translatable source strings (gettext functions, text domain, placeholders, plurals, JS)
 - `references/glossary.md` — complete glossary export (520 entries, 2026-11-21) and how to refresh it
 - `languages/readme-translations/README.md` — readme import into translate.wordpress.org
