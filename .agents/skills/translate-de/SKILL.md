@@ -89,5 +89,6 @@ If `msgfmt` is not installed, `composer make:mo` (WP-CLI) reports syntax errors 
 - `references/style-guide.md` — summary of the Style Guide (rules in our own words)
 - `references/plugin-author-guide.md` — Polyglots Plugin/Theme Authors Guide and linked handbook pages (roles, PTE request, statuses, 90 % rule, language packs)
 - `references/i18n-source-strings.md` — rules for writing translatable source strings (gettext functions, text domain, placeholders, plurals, JS)
+- `references/glossary-en_GB.md` — complete English (en_GB) glossary export (674 entries, 2026-11-28), only for English locale work
 - `references/glossary.md` — complete glossary export (520 entries, 2026-11-21) and how to refresh it
 - `languages/readme-translations/README.md` — readme import into translate.wordpress.org

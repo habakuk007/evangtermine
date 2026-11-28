@@ -42,6 +42,27 @@ Notes: every GTE of a tagged locale is notified automatically. Variants such as 
 
 **CLPTE (professional translators), all five criteria:** (1) vendor uses the community style guides and glossaries and links them publicly; (2) a new dedicated account with contact info ([examples](https://make.wordpress.org/polyglots/teams/clpte-list/)); (3) translation sources (vendor) disclosed; (4) organization has a Slack account on chat.wordpress.org and notifies the GTEs; (5) display name marks the role, e.g. `XYZ Translation Team (CLPTE)`. Request on the front page of the Polyglots blog, tag `clpte`.
 
+## Locale rules: German (de_DE, de_DE_formal)
+
+Sources (read 2026-11-28): [Erste Schritte](https://de.wordpress.org/team/handbook/polyglots-team/hilf-mit-bei-der-uebersetzung/erste-schritte/), [Wie die deutsche Community PTE-Rechte vergibt](https://de.wordpress.org/team/handbook/polyglots-team/hilf-mit-bei-der-uebersetzung/wie-die-deutsche-community-pte-rechte-vergibt/), [Style Guide](https://de.wordpress.org/team/handbook/polyglots-team/style-guide/). The English subpage "How the German Community handles PTE Requests" was not read.
+
+- **Where to ask:** a post on the Polyglots blog (tag `#de_DE`) **or** the channel `#polyglots` of the German Slack (<https://de.wordpress.org/slack/>). Both are valid. When suggesting translations, post the permalink in `#polyglots` to speed up the review; no string count and no waiting time are given ("bitte habe etwas Geduld").
+- **Who decides:** the German GTEs, under fixed rules. PTE rights cover **both branches** (`default` = du and `formal` = Sie): review, reject, overwrite, approve.
+- **Plugin authors:** every author, German-speaking or not, gets PTE for the project on request, and may nominate a helper who translated the project. Translations must be checked by someone who speaks German; the team tells authors that translations are otherwise unchecked.
+- **Order of authority:** glossary, then style guide, then the official spelling rules (grammis.ids-mannheim.de), then Duden. Glossary terms (dashed underline in GlotPress) are mandatory.
+- **No machine translation** for de_DE. Reject your own faulty suggestions and resubmit corrected ones so reviewers see the fix.
+- Translate both branches: switch with the dropdown or replace `locale/de/default/` by `locale/de/formal/` in the URL.
+- Other German locales: `de_AT` has only a glossary; `de_CH` has its own [handbook](https://de-ch.wordpress.org/team/handbook/uebersetzungen/) and an informal glossary (not read).
+
+## Locale rules: English (en_GB and others)
+
+Sources (read 2026-11-28): [en_GB style and start guide](https://en-gb.wordpress.org/translations/), the en_GB team feed. The `en_ZA` start guide (<https://en-za.wordpress.org/get-involved/>) was not read. `en_AU`, `en_CA`, `en_NZ` list only a glossary, no PTE process.
+
+- **en_GB process:** first submit many strings (the page says hundreds) as a normal contributor; strings are checked a couple of times a week and validated usually within a few days. Then request PTE for the project with a Polyglots blog post in the standard format. Recently seen high-quality submissions (ideally 100 % of the plugin) are approved as soon as possible. Authors may request PTE for their own plugin or nominate a helper. Discussion: Slack `#en-gb` (invite on the page).
+- **en_GB style:** no ampersands, Oxford comma, 24-hour time; for variants use "Copy from original".
+- **Source strings must be English.** The team rejects en_GB suggestions when the source strings are in another language; fix the source first, and translate from English, never from another language.
+- For the other English locales use the generic request above and check the team's start guide first.
+
 ## Statuses on translate.wordpress.org
 
 | Status | Meaning |
